@@ -13869,3 +13869,7 @@
 2026-05-03 20:41:56:4156 [32minfo[39m: [32m192.168.0.102 - - [03/May/2026:15:11:56 +0000] "GET /api/entries/my-unit HTTP/1.1" 304 - "-" "okhttp/4.12.0"[39m
 2026-05-03 20:41:57:4157 [32minfo[39m: [32mNotification worker is ready and listening for jobs[39m
 2026-05-03 20:42:06:426 [32minfo[39m: [32m192.168.0.102 - - [03/May/2026:15:12:06 +0000] "GET /api/entries/my-unit HTTP/1.1" 304 - "-" "okhttp/4.12.0"[39m
+2026-05-03 20:42:17:4217 [32minfo[39m: [32m🚀 KLB Connect Backend running on port 5001 (Bound to 0.0.0.0)[39m
+2026-05-03 20:42:17:4217 [32minfo[39m: [32mEnvironment: development[39m
+2026-05-03 20:42:17:4217 [32minfo[39m: [32mSuccessfully connected to Redis[39m
+2026-05-03 20:42:18:4218 [32minfo[39m: [32mNotification worker is ready and listening for jobs[39m
