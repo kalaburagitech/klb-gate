@@ -85,7 +85,8 @@ export class EntryService {
   }
 
   static async approveEntry(entryId: string, status: EntryStatus) {
-    if (![EntryStatus.APPROVED, EntryStatus.REJECTED].includes(status)) {
+    const allowed: string[] = [EntryStatus.APPROVED, EntryStatus.REJECTED];
+    if (!allowed.includes(status)) {
       throw new AppError('Invalid status update', 400);
     }
 

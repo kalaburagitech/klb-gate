@@ -24,7 +24,7 @@ export class AmenityController {
   static async createBooking(req: Request, res: Response, next: NextFunction) {
     try {
       const { amenityId, date, startTime, endTime } = req.body;
-      const userId = req.user?.id;
+      const userId = req.user?.id as string;
       const tenantId = req.user?.tenantId;
 
       if (!userId || !tenantId) throw new AppError('Unauthorized', 401);
@@ -68,7 +68,7 @@ export class AmenityController {
   // List user's bookings
   static async listMyBookings(req: Request, res: Response, next: NextFunction) {
     try {
-      const userId = req.user?.id;
+      const userId = req.user?.id as string;
       if (!userId) throw new AppError('Unauthorized', 401);
 
       const bookings = await prisma.booking.findMany({
@@ -87,10 +87,10 @@ export class AmenityController {
   static async cancelBooking(req: Request, res: Response, next: NextFunction) {
     try {
       const { bookingId } = req.params;
-      const userId = req.user?.id;
+      const userId = req.user?.id as string;
 
       const booking = await prisma.booking.findUnique({
-        where: { id: bookingId }
+        where: { id: bookingId as string }
       });
 
       if (!booking || booking.userId !== userId) {
@@ -98,7 +98,7 @@ export class AmenityController {
       }
 
       await prisma.booking.update({
-        where: { id: bookingId },
+        where: { id: bookingId as string },
         data: { status: 'CANCELLED' }
       });
 

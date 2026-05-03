@@ -40,6 +40,9 @@ export class VisitorController {
         throw new AppError('Entry ID is required', 400);
       }
 
+      const allowedStatuses: string[] = [EntryStatus.APPROVED, EntryStatus.REJECTED];
+      if (!allowedStatuses.includes(status)) throw new AppError('Invalid status', 400);
+
       const entry = await EntryService.approveEntry(entryId, status);
 
       res.status(200).json({ success: true, data: entry });
@@ -95,34 +98,30 @@ export class VisitorController {
       const { unitNumber: paramUnit } = req.params;
       const tenantId = req.user?.tenantId;
       const role = req.user?.role;
-      const userUnit = req.user?.unitNumber;
+      const userUnitId = req.user?.unitId;
 
-      console.log(`🔍 [VisitorController] listByUnit - Role: ${role}, UserUnit: ${userUnit}, ParamUnit: ${paramUnit}, Tenant: ${tenantId}`);
+      console.log(`🔍 [VisitorController] listByUnit - Role: ${role}, UserUnit: ${userUnitId}, ParamUnit: ${paramUnit}, Tenant: ${tenantId}`);
 
       if (!tenantId) throw new AppError('Context missing', 403);
 
       // Security: Residents can only view their own unit
-      let unitNumber = role === 'RESIDENT' ? userUnit : paramUnit;
+      let unitId = role === 'RESIDENT' ? userUnitId : paramUnit;
 
-      // Fallback: If unitNumber is missing from token (older sessions), fetch from DB
-      if (role === 'RESIDENT' && !unitNumber) {
-        const user = await prisma.user.findUnique({ where: { id: req.user?.userId } });
-        unitNumber = user?.unitNumber || undefined;
-        console.log(`💡 [VisitorController] Fallback UnitNumber: ${unitNumber}`);
-      }
-
-      if (!unitNumber) {
-        console.warn(`⚠️ [VisitorController] No unitNumber found for resident ${req.user?.userId}`);
+      if (!unitId) {
+        console.warn(`⚠️ [VisitorController] No unitId found for resident ${req.user?.userId}`);
         return res.status(200).json({ success: true, data: [] });
       }
 
       const entries = await prisma.entry.findMany({
-        where: { tenantId, unitNumber },
+        where: { 
+          tenantId: tenantId as string, 
+          unitId: unitId as string 
+        },
         include: { visitor: true },
         orderBy: { createdAt: 'desc' }
       });
 
-      console.log(`✅ [VisitorController] Found ${entries.length} entries for unit ${unitNumber}`);
+      console.log(`✅ [VisitorController] Found ${entries.length} entries for unit ${unitId}`);
 
       // Transform photoId from ID to full URL
       const formattedEntries = await Promise.all(entries.map(async (e: any) => ({
@@ -193,7 +192,7 @@ export class VisitorController {
           visitorName,
           phoneNumber,
           code,
-          expectedDate: new Date(expectedDate),
+          expectedDate: new Date(expectedDate as string),
           isUsed: false
         }
       });
@@ -214,18 +213,15 @@ export class VisitorController {
       if (!guardId || !tenantId) throw new AppError('Unauthorized', 401);
 
       const pre = await prisma.preApprovedVisit.findUnique({ 
-        where: { id },
+        where: { id: id as string },
         include: { resident: true }
       });
       if (!pre) throw new AppError('Pre‑approved visit not found', 404);
       if (pre.isUsed) throw new AppError('Visit already used', 400);
 
-      // Resolve resident unit number (fallback to resident's unit if not stored on pre)
-      let unitNumber = pre.unitNumber;
-      if (!unitNumber) {
-        const resident = await prisma.user.findUnique({ where: { id: pre.residentId } });
-        unitNumber = resident?.unitNumber;
-      }
+      // Resolve resident unit number
+      const resident = await prisma.user.findUnique({ where: { id: pre.residentId } });
+      const unitNumber = resident?.unitNumber;
 
       // Create Entry record linked to the pre‑approved visit
       // Create Entry record linked to the pre‑approved visit
@@ -248,8 +244,8 @@ export class VisitorController {
 
       const entry = await prisma.entry.create({
         data: {
-          tenantId,
-          unitNumber: pre.resident.unitNumber || '',
+          tenantId: tenantId as string,
+          unitNumber: unitNumber || '',
           visitorId: visitor.id,
           purpose: 'Pre-approved visit',
           status: 'APPROVED',
@@ -258,7 +254,7 @@ export class VisitorController {
       });
 
       // Mark the pre‑approved visit as used
-      await prisma.preApprovedVisit.update({ where: { id }, data: { isUsed: true } });
+      await prisma.preApprovedVisit.update({ where: { id: id as string }, data: { isUsed: true } });
 
       res.status(200).json({ success: true, data: entry });
     } catch (error) {

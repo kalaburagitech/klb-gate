@@ -3,12 +3,17 @@ import jwt from 'jsonwebtoken';
 import { AppError } from './error.middleware';
 import { logger } from '../config/logger';
 
-interface JWTPayload {
+export interface JWTPayload {
+  id: string;
   userId: string;
   role: string;
   tenantId: string;
   organizationId: string;
   unitNumber?: string;
+}
+
+export interface AuthRequest extends Request {
+  user?: JWTPayload;
 }
 
 declare global {

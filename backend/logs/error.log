@@ -1896,3 +1896,4 @@
 2026-05-03 17:36:03:363 [31merror[39m: [31mRedis connection error: read ECONNRESET[39m
 2026-05-03 17:41:19:4119 [31merror[39m: [31m[POST] /api/auth/otp/send >> 404 - Phone number not registered. Please contact your society admin.[39m
 2026-05-03 18:27:08:278 [31merror[39m: [31mRedis connection error: read ECONNRESET[39m
+2026-05-03 20:34:27:3427 [31merror[39m: [31m[GET] /api/admin/stats >> 401 - Unauthorized[39m

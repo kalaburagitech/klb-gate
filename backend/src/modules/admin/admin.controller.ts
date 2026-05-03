@@ -52,10 +52,10 @@ export class AdminController {
   static async updateOrganization(req: Request, res: Response, next: NextFunction) {
     try {
       const { id } = req.params;
-      const { name, slug, logoUrl } = req.body;
+      const { name, slug, logoId } = req.body;
       const org = await prisma.organization.update({
         where: { id },
-        data: { name, slug, logoUrl }
+        data: { name, slug, logoId }
       });
       res.status(200).json({ success: true, data: org });
     } catch (error: any) {
@@ -71,12 +71,12 @@ export class AdminController {
       const { id } = req.params;
       
       // Check for regions
-      const regionsCount = await prisma.region.count({ where: { organizationId: id } });
+      const regionsCount = await prisma.region.count({ where: { organizationId: id as string } });
       if (regionsCount > 0) {
         throw new AppError('Cannot delete organization with active regions', 400);
       }
 
-      await prisma.organization.delete({ where: { id } });
+      await prisma.organization.delete({ where: { id: id as string } });
       res.status(200).json({ success: true, message: 'Organization deleted' });
     } catch (error) {
       next(error);
@@ -111,7 +111,7 @@ export class AdminController {
 
   static async listRegions(req: Request, res: Response, next: NextFunction) {
     try {
-      const organizationId = req.user?.organizationId || req.query.organizationId;
+      const organizationId = req.user?.organizationId || (req.query.organizationId as string);
       const tenantId = req.user?.tenantId;
       const role = req.user?.role;
 
@@ -155,7 +155,7 @@ export class AdminController {
       }
 
       // 1. Get existing user to check unit change
-      const existingUser = await prisma.user.findUnique({ where: { id } });
+      const existingUser = await prisma.user.findUnique({ where: { id: id as string } });
       if (!existingUser) throw new AppError('User not found', 404);
 
       // 2. Validate unit belongs to tenant if both provided
@@ -193,7 +193,7 @@ export class AdminController {
 
       // 4. Update User
       const user = await prisma.user.update({
-        where: { id },
+        where: { id: id as string },
         data: updateData
       });
 
@@ -232,7 +232,7 @@ export class AdminController {
         throw new AppError('You cannot delete your own account', 400);
       }
       
-      const user = await prisma.user.findUnique({ where: { id } });
+      const user = await prisma.user.findUnique({ where: { id: id as string } });
       if (!user) throw new AppError('User not found', 404);
 
       // Security Check: Non-super admins can only delete users in their own organization
@@ -250,7 +250,7 @@ export class AdminController {
         });
       }
 
-      await prisma.user.delete({ where: { id } });
+      await prisma.user.delete({ where: { id: id as string } });
       res.status(200).json({ success: true, message: 'User deleted' });
     } catch (error) {
       next(error);
@@ -345,7 +345,7 @@ export class AdminController {
       const { id } = req.params;
       const { name, organizationId } = req.body;
       const region = await prisma.region.update({
-        where: { id },
+        where: { id: id as string },
         data: { name, organizationId }
       });
       res.status(200).json({ success: true, data: region });
@@ -362,12 +362,12 @@ export class AdminController {
       const { id } = req.params;
       
       // Check for tenants
-      const tenantsCount = await prisma.tenant.count({ where: { regionId: id } });
+      const tenantsCount = await prisma.tenant.count({ where: { regionId: id as string } });
       if (tenantsCount > 0) {
         throw new AppError('Cannot delete region with active societies', 400);
       }
 
-      await prisma.region.delete({ where: { id } });
+      await prisma.region.delete({ where: { id: id as string } });
       res.status(200).json({ success: true, message: 'Region deleted' });
     } catch (error) {
       next(error);
@@ -425,7 +425,7 @@ export class AdminController {
       const { id } = req.params;
       const { name, slug, address, organizationId, regionId } = req.body;
       const tenant = await prisma.tenant.update({
-        where: { id },
+        where: { id: id as string },
         data: { name, slug, address, organizationId, regionId }
       });
       res.status(200).json({ success: true, data: tenant });
@@ -442,14 +442,14 @@ export class AdminController {
       const { id } = req.params;
 
       // Check for users
-      const usersCount = await prisma.user.count({ where: { tenantId: id } });
+      const usersCount = await prisma.user.count({ where: { tenantId: id as string } });
       if (usersCount > 0) {
         throw new AppError('Cannot delete society with registered residents/staff', 400);
       }
 
       // Delete units first
       await prisma.unit.deleteMany({ where: { tenantId: id } });
-      await prisma.tenant.delete({ where: { id } });
+      await prisma.tenant.delete({ where: { id: id as string } });
       
       res.status(200).json({ success: true, message: 'Society deleted' });
     } catch (error) {
@@ -466,7 +466,7 @@ export class AdminController {
       const unit = await prisma.unit.create({
         data: {
           unitNumber,
-          tenantId
+          tenantId: tenantId as string
         }
       });
 
@@ -479,7 +479,7 @@ export class AdminController {
   // Listing Methods
   static async listTenants(req: Request, res: Response, next: NextFunction) {
     try {
-      const organizationId = req.user?.organizationId || req.query.organizationId;
+      const organizationId = req.user?.organizationId || (req.query.organizationId as string);
       const tenantId = req.user?.tenantId;
       const role = req.user?.role;
 
