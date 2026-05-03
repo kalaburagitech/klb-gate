@@ -13889,3 +13889,7 @@
 2026-05-03 20:48:40:4840 [32minfo[39m: [32mEnvironment: development[39m
 2026-05-03 20:48:41:4841 [32minfo[39m: [32mSuccessfully connected to Redis[39m
 2026-05-03 20:48:41:4841 [32minfo[39m: [32mNotification worker is ready and listening for jobs[39m
+2026-05-03 20:48:47:4847 [32minfo[39m: [32m🚀 KLB Connect Backend running on port 5001 (Bound to 0.0.0.0)[39m
+2026-05-03 20:48:47:4847 [32minfo[39m: [32mEnvironment: development[39m
+2026-05-03 20:48:47:4847 [32minfo[39m: [32mSuccessfully connected to Redis[39m
+2026-05-03 20:48:48:4848 [32minfo[39m: [32mNotification worker is ready and listening for jobs[39m
