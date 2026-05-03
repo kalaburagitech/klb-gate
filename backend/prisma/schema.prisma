@@ -1,0 +1,254 @@
+// KLB Connect: Enterprise Multi-Tenant Prisma Schema
+// Architected for Scale: MyGate Style Security & Community Ecosystem
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum Role {
+  SUPER_ADMIN
+  ORG_ADMIN
+  REGION_MANAGER
+  TENANT_ADMIN
+  OFFICER
+  GUARD
+  RESIDENT
+}
+
+enum EntryStatus {
+  PENDING_APPROVAL
+  APPROVED
+  REJECTED
+  CHECKED_IN
+  CHECKED_OUT
+}
+
+enum VisitorType {
+  GUEST
+  DAILY_SERVICE
+  PRE_APPROVED
+  DELIVERY
+  RECURRING
+}
+
+enum BookingStatus {
+  PENDING
+  CONFIRMED
+  CANCELLED
+  COMPLETED
+}
+
+model Organization {
+  id          String   @id @default(uuid()) @db.Uuid
+  name        String
+  slug        String   @unique
+  logoId      String?  @map("logo_id")
+  createdAt   DateTime @default(now()) @map("created_at")
+  updatedAt   DateTime @updatedAt @map("updated_at")
+  regions     Region[]
+  users       User[]
+  tenants     Tenant[]
+
+  @@map("organizations")
+}
+
+model Region {
+  id             String       @id @default(uuid()) @db.Uuid
+  name           String       // e.g., Bangalore North
+  organizationId String       @map("organization_id") @db.Uuid
+  organization   Organization @relation(fields: [organizationId], references: [id])
+  tenants        Tenant[]
+  createdAt      DateTime     @default(now()) @map("created_at")
+  updatedAt      DateTime     @updatedAt @map("updated_at")
+
+  @@map("regions")
+}
+
+model Tenant {
+  id             String       @id @default(uuid()) @db.Uuid
+  name           String
+  slug           String       @unique
+  address        String?
+  regionId       String?      @map("region_id") @db.Uuid
+  region         Region?      @relation(fields: [regionId], references: [id])
+  organizationId String       @map("organization_id") @db.Uuid
+  organization   Organization @relation(fields: [organizationId], references: [id])
+  createdAt      DateTime     @default(now()) @map("created_at")
+  updatedAt      DateTime     @updatedAt @map("updated_at")
+  createdBy      String?      @map("created_by") @db.Uuid
+  
+  users          User[]
+  visitors       Visitor[]
+  entries        Entry[]
+  units          Unit[]
+  amenities      Amenity[]
+  recurringVisitors RecurringVisitor[]
+
+  @@map("tenants")
+}
+
+model User {
+  id             String        @id @default(uuid()) @db.Uuid
+  email          String        @unique
+  password       String
+  firstName      String        @map("first_name")
+  lastName       String        @map("last_name")
+  phoneNumber    String?       @map("phone_number")
+  idProofId      String?       @map("id_proof_id")
+  role           Role          @default(GUARD)
+  unitNumber     String?       @map("unit_number")
+  tenantId       String?       @map("tenant_id") @db.Uuid
+  tenant         Tenant?       @relation(fields: [tenantId], references: [id])
+  unitId         String?       @map("unit_id") @db.Uuid
+  unit           Unit?         @relation(fields: [unitId], references: [id])
+  organizationId String?       @map("organization_id") @db.Uuid
+  organization   Organization? @relation(fields: [organizationId], references: [id])
+  createdAt      DateTime      @default(now()) @map("created_at")
+  updatedAt      DateTime      @updatedAt @map("updated_at")
+  
+  entriesHandled Entry[]       @relation("HandledBy")
+  bookings       Booking[]
+  preApprovedVisits PreApprovedVisit[]
+
+  @@index([tenantId, role])
+  @@index([phoneNumber])
+  @@map("users")
+}
+
+model Unit {
+  id          String   @id @default(uuid()) @db.Uuid
+  unitNumber  String   @map("unit_number")
+  tenantId    String   @map("tenant_id") @db.Uuid
+  tenant      Tenant   @relation(fields: [tenantId], references: [id])
+  ownerId     String?  @map("owner_id") @db.Uuid
+  isOccupied  Boolean  @default(false) @map("is_occupied")
+  createdAt   DateTime @default(now()) @map("created_at")
+  updatedAt   DateTime @updatedAt @map("updated_at")
+  residents   User[]
+
+  @@unique([unitNumber, tenantId])
+  @@index([tenantId, unitNumber])
+  @@map("units")
+}
+
+model Visitor {
+  id          String      @id @default(uuid()) @db.Uuid
+  name        String
+  phone       String
+  type        VisitorType @default(GUEST)
+  photoId     String?     @map("photo_id")
+  tenantId    String      @map("tenant_id") @db.Uuid
+  tenant      Tenant      @relation(fields: [tenantId], references: [id])
+  createdAt   DateTime    @default(now()) @map("created_at")
+  updatedAt   DateTime    @updatedAt @map("updated_at")
+  entries     Entry[]
+
+  @@unique([phone, tenantId])
+  @@index([tenantId, createdAt])
+  @@map("visitors")
+}
+
+model RecurringVisitor {
+  id          String      @id @default(uuid()) @db.Uuid
+  name        String
+  phone       String
+  serviceType String      @map("service_type") // Maid, Milk, etc.
+  startTime   String      @map("start_time")   // e.g., "08:00"
+  endTime     String      @map("end_time")     // e.g., "10:00"
+  days        String      // e.g., "MON,TUE,WED,THU,FRI,SAT,SUN"
+  residentId  String      @map("resident_id") @db.Uuid
+  tenantId    String      @map("tenant_id") @db.Uuid
+  tenant      Tenant      @relation(fields: [tenantId], references: [id])
+  createdAt   DateTime    @default(now()) @map("created_at")
+  updatedAt   DateTime    @updatedAt @map("updated_at")
+
+  @@map("recurring_visitors")
+}
+
+model Entry {
+  id             String      @id @default(uuid()) @db.Uuid
+  visitorId      String      @map("visitor_id") @db.Uuid
+  visitor        Visitor     @relation(fields: [visitorId], references: [id])
+  tenantId       String      @map("tenant_id") @db.Uuid
+  tenant         Tenant      @relation(fields: [tenantId], references: [id])
+  handledById    String?     @map("handled_by_id") @db.Uuid
+  handledBy      User?       @relation("HandledBy", fields: [handledById], references: [id])
+  residentId     String?     @map("resident_id") @db.Uuid
+  unitNumber     String?     @map("unit_number")
+  purpose        String?
+  photoId        String?     @map("photo_id")
+  status         EntryStatus @default(PENDING_APPROVAL)
+  checkInTime    DateTime?   @map("check_in_time")
+  checkOutTime   DateTime?   @map("check_out_time")
+  createdAt      DateTime    @default(now()) @map("created_at")
+  updatedAt      DateTime    @updatedAt @map("updated_at")
+
+  @@index([tenantId, status])
+  @@map("entries")
+}
+
+model Amenity {
+  id          String    @id @default(uuid()) @db.Uuid
+  name        String    // Pool, Gym, etc.
+  description String?
+  capacity    Int       @default(10)
+  openTime    String    @map("open_time") // "06:00"
+  closeTime   String    @map("close_time") // "22:00"
+  tenantId    String    @map("tenant_id") @db.Uuid
+  tenant      Tenant    @relation(fields: [tenantId], references: [id])
+  bookings    Booking[]
+  createdAt   DateTime  @default(now()) @map("created_at")
+  updatedAt   DateTime  @updatedAt @map("updated_at")
+
+  @@map("amenities")
+}
+
+model Booking {
+  id          String        @id @default(uuid()) @db.Uuid
+  amenityId   String        @map("amenity_id") @db.Uuid
+  amenity     Amenity       @relation(fields: [amenityId], references: [id])
+  userId      String        @map("user_id") @db.Uuid
+  user        User          @relation(fields: [userId], references: [id])
+  date        DateTime
+  startTime   String        @map("start_time") // "10:00"
+  endTime     String        @map("end_time")   // "11:00"
+  status      BookingStatus @default(PENDING)
+  tenantId    String        @map("tenant_id") @db.Uuid
+  createdAt   DateTime      @default(now()) @map("created_at")
+  updatedAt   DateTime      @updatedAt @map("updated_at")
+
+  @@map("bookings")
+}
+
+model PreApprovedVisit {
+  id           String   @id @default(uuid()) @db.Uuid
+  tenantId     String   @map("tenant_id") @db.Uuid
+  residentId   String   @map("resident_id") @db.Uuid
+  resident     User     @relation(fields: [residentId], references: [id])
+  visitorName  String   @map("visitor_name")
+  phoneNumber  String?  @map("phone_number")
+  code         String   @unique
+  expectedDate DateTime @map("expected_date")
+  isUsed       Boolean  @default(false) @map("is_used")
+  createdAt    DateTime @default(now()) @map("created_at")
+
+  @@map("pre_approved_visits")
+}
+
+model Media {
+  id        String   @id @default(uuid()) @db.Uuid
+  fileName  String   @map("file_name")
+  fileUrl   String   @map("file_url")
+  fileType  String   @map("file_type")
+  fileSize  Int      @map("file_size")
+  tenantId  String   @map("tenant_id") @db.Uuid
+  createdAt DateTime @default(now()) @map("created_at")
+  createdBy String?  @map("created_by") @db.Uuid
+
+  @@map("media")
+}

@@ -1,0 +1,57 @@
+KLB GATE: EXECUTION GUIDE
+==========================
+
+Follow these steps to get the entire KLB Gate system up and running.
+
+1. ENVIRONMENT SETUP
+--------------------
+Go to d:\klb-gate\backend and create a file named .env
+Add the following content:
+
+PORT=4000
+DATABASE_URL="postgresql://USER:PASSWORD@localhost:5432/klb_gate?schema=public"
+JWT_SECRET="your_ultra_secure_secret_key"
+STORAGE_BASE_URL=https://klb-media-production.up.railway.app
+STORAGE_API_KEY=ac91e0de11f091043c6fb6f5f62ce56de8deb4321c9e8ed8188d76770091e6e7
+
+2. DATABASE MIGRATION
+---------------------
+Open a terminal in d:\klb-gate\backend and run:
+npx prisma migrate dev --name init
+
+3. RUNNING THE BACKEND
+----------------------
+In the backend terminal, run:
+npm run dev
+
+The API will be available at http://localhost:4000
+
+4. RUNNING THE MOBILE APP
+-------------------------
+Open a terminal in d:\klb-gate\mobile and run:
+npx expo start
+
+- Scan the QR code with Expo Go (Android).
+- Press 'a' for Android Emulator.
+- Press 'w' for Web view.
+
+5. RUNNING THE ADMIN DASHBOARD (WEB)
+------------------------------------
+Open a terminal in d:\klb-gate\dashboard and run:
+npm run dev
+
+The Admin Panel will be available at http://localhost:3000
+
+-----------------------------------------------------------
+PROJECT STRUCTURE:
+- /backend: Express API & Database logic
+- /mobile: Expo React Native app (Guards/Residents)
+- /dashboard: React/Vite web app (Super Admin/Admin)
+- /docs: Documentation & API Reference
+-----------------------------------------------------------
+
+6 if db is clear run 
+npx prisma db seed
+🔐 Initial Login Credentials:
+Super Admin: superadmin@klbconnect.com / Admin@123
+Sample Society Admin: admin@foresthills.com / Tenant@123

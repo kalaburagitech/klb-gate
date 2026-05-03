@@ -1,0 +1,1898 @@
+2026-05-01 22:21:33:2133 [31merror[39m: [31m[POST] /api/auth/login >> 401 - Invalid credentials[39m
+2026-05-01 22:36:45:3645 [31merror[39m: [31m[POST] /api/media/upload >> 403 - Tenant context missing[39m
+2026-05-01 22:37:09:379 [31merror[39m: [31m[POST] /api/media/upload >> 403 - Tenant context missing[39m
+2026-05-01 22:37:20:3720 [31merror[39m: [31m[POST] /api/admin/users >> 500 - [39m
+[31mInvalid `prisma.user.create()` invocation in[39m
+[31mD:\klb-gate\backend\src\modules\admin\admin.controller.ts:44:38[39m
+
+[31m  41 [39m
+[31m  42 const hashedPassword = await bcrypt.hash(password, 10);[39m
+[31m  43 [39m
+[31m→ 44 const user = await prisma.user.create([39m
+[31mUnique constraint failed on the fields: (`email`)[39m
+2026-05-01 22:39:20:3920 [31merror[39m: [31mMediaService: Upload error >> Invalid credentials or API key[39m
+2026-05-01 22:39:20:3920 [31merror[39m: [31m[POST] /api/media/upload >> 502 - Failed to process media upload through external provider[39m
+2026-05-01 22:39:29:3929 [31merror[39m: [31m[POST] /api/media/upload >> 500 - File too large[39m
+2026-05-01 22:39:41:3941 [31merror[39m: [31mMediaService: Upload error >> Invalid credentials or API key[39m
+2026-05-01 22:39:41:3941 [31merror[39m: [31m[POST] /api/media/upload >> 502 - Failed to process media upload through external provider[39m
+2026-05-01 22:41:08:418 [31merror[39m: [31mMediaService: Upload error >> Invalid credentials or API key[39m
+2026-05-01 22:41:08:418 [31merror[39m: [31m[POST] /api/media/upload >> 502 - Failed to process media upload through external provider[39m
+2026-05-01 22:42:41:4241 [31merror[39m: [31mMediaService: Upload error >> Invalid credentials or API key[39m
+2026-05-01 22:42:41:4241 [31merror[39m: [31m[POST] /api/media/upload >> 502 - Failed to process media upload through external provider[39m
+2026-05-01 22:43:29:4329 [31merror[39m: [31mMediaService: Upload error >> Invalid credentials or API key[39m
+2026-05-01 22:43:29:4329 [31merror[39m: [31m[POST] /api/media/upload >> 502 - Failed to process media upload through external provider[39m
+2026-05-02 16:53:27:5327 [31merror[39m: [31m[GET] /api/admin/users >> 500 - [39m
+[31mInvalid `prisma.user.findMany()` invocation in[39m
+[31mD:\klb-gate\backend\src\modules\admin\admin.controller.ts:129:39[39m
+
+[31m  126 const tenantId = req.user?.tenantId;[39m
+[31m  127 const role = req.user?.role;[39m
+[31m  128 [39m
+[31m→ 129 const users = await prisma.user.findMany([39m
+[31mCan't reach database server at `switchyard.proxy.rlwy.net:45008`[39m
+
+[31mPlease make sure your database server is running at `switchyard.proxy.rlwy.net:45008`.[39m
+2026-05-02 16:53:27:5327 [31merror[39m: [31m[GET] /api/visitors/entries >> 500 - [39m
+[31mInvalid `prisma.entry.findMany()` invocation in[39m
+[31mD:\klb-gate\backend\src\modules\visitor\visitor.controller.ts:98:42[39m
+
+[31m  95 const tenantId = req.user?.tenantId;[39m
+[31m  96 if (!tenantId) throw new AppError('Context missing', 403);[39m
+[31m  97 [39m
+[31m→ 98 const entries = await prisma.entry.findMany([39m
+[31mCan't reach database server at `switchyard.proxy.rlwy.net:45008`[39m
+
+[31mPlease make sure your database server is running at `switchyard.proxy.rlwy.net:45008`.[39m
+2026-05-02 16:53:32:5332 [31merror[39m: [31m[GET] /api/admin/users >> 500 - [39m
+[31mInvalid `prisma.user.findMany()` invocation in[39m
+[31mD:\klb-gate\backend\src\modules\admin\admin.controller.ts:129:39[39m
+
+[31m  126 const tenantId = req.user?.tenantId;[39m
+[31m  127 const role = req.user?.role;[39m
+[31m  128 [39m
+[31m→ 129 const users = await prisma.user.findMany([39m
+[31mCan't reach database server at `switchyard.proxy.rlwy.net:45008`[39m
+
+[31mPlease make sure your database server is running at `switchyard.proxy.rlwy.net:45008`.[39m
+2026-05-02 16:53:32:5332 [31merror[39m: [31m[GET] /api/visitors/entries >> 500 - [39m
+[31mInvalid `prisma.entry.findMany()` invocation in[39m
+[31mD:\klb-gate\backend\src\modules\visitor\visitor.controller.ts:98:42[39m
+
+[31m  95 const tenantId = req.user?.tenantId;[39m
+[31m  96 if (!tenantId) throw new AppError('Context missing', 403);[39m
+[31m  97 [39m
+[31m→ 98 const entries = await prisma.entry.findMany([39m
+[31mCan't reach database server at `switchyard.proxy.rlwy.net:45008`[39m
+
+[31mPlease make sure your database server is running at `switchyard.proxy.rlwy.net:45008`.[39m
+2026-05-02 16:53:35:5335 [31merror[39m: [31mRedis connection error: read ECONNRESET[39m
+2026-05-02 17:09:07:97 [31merror[39m: [31mMediaService: Upload error >> Invalid credentials or API key[39m
+2026-05-02 17:09:07:97 [31merror[39m: [31m[POST] /api/media/upload >> 502 - Failed to process media upload through external provider[39m
+2026-05-02 17:34:54:3454 [31merror[39m: [31m[POST] /api/auth/login >> 401 - Invalid credentials[39m
+2026-05-02 17:34:59:3459 [31merror[39m: [31m[POST] /api/auth/login >> 401 - Invalid credentials[39m
+2026-05-02 17:36:06:366 [31merror[39m: [31m[POST] /api/auth/login >> 401 - Invalid credentials[39m
+2026-05-02 17:36:18:3618 [31merror[39m: [31m[POST] /api/auth/login >> 401 - Invalid credentials[39m
+2026-05-02 17:36:30:3630 [31merror[39m: [31m[POST] /api/auth/login >> 401 - Invalid credentials[39m
+2026-05-02 18:10:06:106 [31merror[39m: [31m[POST] /api/admin/organizations >> 500 - [39m
+[31mInvalid `prisma.organization.create()` invocation in[39m
+[31mD:\klb-gate\backend\src\modules\admin\admin.controller.ts:11:45[39m
+
+[31m   8 static async createOrganization(req: Request, res: Response, next: NextFunction) {[39m
+[31m   9   try {[39m
+[31m  10     const { name, slug } = req.body;[39m
+[31m→ 11     const org = await prisma.organization.create([39m
+[31mUnique constraint failed on the fields: (`slug`)[39m
+2026-05-02 18:29:44:2944 [31merror[39m: [31mRedis connection error: read ECONNRESET[39m
+2026-05-02 18:39:02:392 [31merror[39m: [31m[POST] /api/admin/organizations >> 500 - [39m
+[31mInvalid `prisma.organization.create()` invocation in[39m
+[31mD:\klb-gate\backend\src\modules\admin\admin.controller.ts:11:45[39m
+
+[31m   8 static async createOrganization(req: Request, res: Response, next: NextFunction) {[39m
+[31m   9   try {[39m
+[31m  10     const { name, slug } = req.body;[39m
+[31m→ 11     const org = await prisma.organization.create([39m
+[31mUnique constraint failed on the fields: (`slug`)[39m
+2026-05-02 18:39:04:394 [31merror[39m: [31m[POST] /api/admin/organizations >> 500 - [39m
+[31mInvalid `prisma.organization.create()` invocation in[39m
+[31mD:\klb-gate\backend\src\modules\admin\admin.controller.ts:11:45[39m
+
+[31m   8 static async createOrganization(req: Request, res: Response, next: NextFunction) {[39m
+[31m   9   try {[39m
+[31m  10     const { name, slug } = req.body;[39m
+[31m→ 11     const org = await prisma.organization.create([39m
+[31mUnique constraint failed on the fields: (`slug`)[39m
+2026-05-02 18:39:15:3915 [31merror[39m: [31m[POST] /api/admin/organizations >> 500 - [39m
+[31mInvalid `prisma.organization.create()` invocation in[39m
+[31mD:\klb-gate\backend\src\modules\admin\admin.controller.ts:11:45[39m
+
+[31m   8 static async createOrganization(req: Request, res: Response, next: NextFunction) {[39m
+[31m   9   try {[39m
+[31m  10     const { name, slug } = req.body;[39m
+[31m→ 11     const org = await prisma.organization.create([39m
+[31mUnique constraint failed on the fields: (`slug`)[39m
+2026-05-02 18:40:51:4051 [31merror[39m: [31m[POST] /api/admin/organizations >> 400 - An organization with this slug already exists[39m
+2026-05-02 18:41:19:4119 [31merror[39m: [31m[POST] /api/admin/organizations >> 400 - An organization with this slug already exists[39m
+2026-05-02 18:41:37:4137 [31merror[39m: [31m[POST] /api/admin/organizations >> 400 - An organization with this slug already exists[39m
+2026-05-02 18:42:05:425 [31merror[39m: [31m[POST] /api/admin/organizations >> 400 - An organization with this slug already exists[39m
+2026-05-02 18:42:31:4231 [31merror[39m: [31m[POST] /api/admin/organizations >> 400 - An organization with this slug already exists[39m
+2026-05-02 18:43:48:4348 [31merror[39m: [31m[POST] /api/admin/organizations >> 400 - An organization with this slug already exists[39m
+2026-05-02 18:44:28:4428 [31merror[39m: [31m[GET] /api/admin/organizations >> 500 - [39m
+[31mInvalid `prisma.organization.findMany()` invocation in[39m
+[31mD:\klb-gate\backend\src\modules\admin\admin.controller.ts:25:46[39m
+
+[31m  22 [39m
+[31m  23 static async listOrganizations(req: Request, res: Response, next: NextFunction) {[39m
+[31m  24   try {[39m
+[31m→ 25     const orgs = await prisma.organization.findMany({[39m
+[31m           include: {[39m
+[31m             _count: {[39m
+[31m               select: {[39m
+[31m                 regions: true,[39m
+[31m                 tenants: true,[39m
+[31m                 ~~~~~~~[39m
+[31m         ?       users?: true[39m
+[31m               }[39m
+[31m             }[39m
+[31m           }[39m
+[31m         })[39m
+
+[31mUnknown field `tenants` for select statement on model `OrganizationCountOutputType`. Available options are marked with ?.[39m
+2026-05-02 18:44:28:4428 [31merror[39m: [31m[GET] /api/admin/organizations >> 500 - [39m
+[31mInvalid `prisma.organization.findMany()` invocation in[39m
+[31mD:\klb-gate\backend\src\modules\admin\admin.controller.ts:25:46[39m
+
+[31m  22 [39m
+[31m  23 static async listOrganizations(req: Request, res: Response, next: NextFunction) {[39m
+[31m  24   try {[39m
+[31m→ 25     const orgs = await prisma.organization.findMany({[39m
+[31m           include: {[39m
+[31m             _count: {[39m
+[31m               select: {[39m
+[31m                 regions: true,[39m
+[31m                 tenants: true,[39m
+[31m                 ~~~~~~~[39m
+[31m         ?       users?: true[39m
+[31m               }[39m
+[31m             }[39m
+[31m           }[39m
+[31m         })[39m
+
+[31mUnknown field `tenants` for select statement on model `OrganizationCountOutputType`. Available options are marked with ?.[39m
+2026-05-02 18:44:44:4444 [31merror[39m: [31m[POST] /api/admin/organizations >> 400 - An organization with this slug already exists[39m
+2026-05-02 18:45:50:4550 [31merror[39m: [31m[POST] /api/admin/organizations >> 400 - An organization with this slug already exists[39m
+2026-05-02 18:46:04:464 [31merror[39m: [31m[GET] /api/admin/organizations >> 500 - [39m
+[31mInvalid `prisma.organization.findMany()` invocation in[39m
+[31mD:\klb-gate\backend\src\modules\admin\admin.controller.ts:25:46[39m
+
+[31m  22 [39m
+[31m  23 static async listOrganizations(req: Request, res: Response, next: NextFunction) {[39m
+[31m  24   try {[39m
+[31m→ 25     const orgs = await prisma.organization.findMany({[39m
+[31m           include: {[39m
+[31m             _count: {[39m
+[31m               select: {[39m
+[31m                 regions: true,[39m
+[31m                 tenants: true,[39m
+[31m                 ~~~~~~~[39m
+[31m         ?       users?: true[39m
+[31m               }[39m
+[31m             }[39m
+[31m           }[39m
+[31m         })[39m
+
+[31mUnknown field `tenants` for select statement on model `OrganizationCountOutputType`. Available options are marked with ?.[39m
+2026-05-02 18:46:04:464 [31merror[39m: [31m[GET] /api/admin/organizations >> 500 - [39m
+[31mInvalid `prisma.organization.findMany()` invocation in[39m
+[31mD:\klb-gate\backend\src\modules\admin\admin.controller.ts:25:46[39m
+
+[31m  22 [39m
+[31m  23 static async listOrganizations(req: Request, res: Response, next: NextFunction) {[39m
+[31m  24   try {[39m
+[31m→ 25     const orgs = await prisma.organization.findMany({[39m
+[31m           include: {[39m
+[31m             _count: {[39m
+[31m               select: {[39m
+[31m                 regions: true,[39m
+[31m                 tenants: true,[39m
+[31m                 ~~~~~~~[39m
+[31m         ?       users?: true[39m
+[31m               }[39m
+[31m             }[39m
+[31m           }[39m
+[31m         })[39m
+
+[31mUnknown field `tenants` for select statement on model `OrganizationCountOutputType`. Available options are marked with ?.[39m
+2026-05-02 18:46:17:4617 [31merror[39m: [31m[POST] /api/admin/organizations >> 400 - An organization with this slug already exists[39m
+2026-05-02 18:46:28:4628 [31merror[39m: [31m[GET] /api/admin/organizations >> 500 - [39m
+[31mInvalid `prisma.organization.findMany()` invocation in[39m
+[31mD:\klb-gate\backend\src\modules\admin\admin.controller.ts:25:46[39m
+
+[31m  22 [39m
+[31m  23 static async listOrganizations(req: Request, res: Response, next: NextFunction) {[39m
+[31m  24   try {[39m
+[31m→ 25     const orgs = await prisma.organization.findMany({[39m
+[31m           include: {[39m
+[31m             _count: {[39m
+[31m               select: {[39m
+[31m                 regions: true,[39m
+[31m                 tenants: true,[39m
+[31m                 ~~~~~~~[39m
+[31m         ?       users?: true[39m
+[31m               }[39m
+[31m             }[39m
+[31m           }[39m
+[31m         })[39m
+
+[31mUnknown field `tenants` for select statement on model `OrganizationCountOutputType`. Available options are marked with ?.[39m
+2026-05-02 18:46:28:4628 [31merror[39m: [31m[GET] /api/admin/organizations >> 500 - [39m
+[31mInvalid `prisma.organization.findMany()` invocation in[39m
+[31mD:\klb-gate\backend\src\modules\admin\admin.controller.ts:25:46[39m
+
+[31m  22 [39m
+[31m  23 static async listOrganizations(req: Request, res: Response, next: NextFunction) {[39m
+[31m  24   try {[39m
+[31m→ 25     const orgs = await prisma.organization.findMany({[39m
+[31m           include: {[39m
+[31m             _count: {[39m
+[31m               select: {[39m
+[31m                 regions: true,[39m
+[31m                 tenants: true,[39m
+[31m                 ~~~~~~~[39m
+[31m         ?       users?: true[39m
+[31m               }[39m
+[31m             }[39m
+[31m           }[39m
+[31m         })[39m
+
+[31mUnknown field `tenants` for select statement on model `OrganizationCountOutputType`. Available options are marked with ?.[39m
+2026-05-02 18:49:45:4945 [31merror[39m: [31m[DELETE] /api/admin/organizations/dfc0d588-f8cb-4c13-a9c8-8c297c50f8e7 >> 400 - Cannot delete organization with active regions[39m
+2026-05-02 18:55:02:552 [31merror[39m: [31m[POST] /api/admin/tenants >> 400 - A society with this slug already exists[39m
+2026-05-02 18:56:14:5614 [31merror[39m: [31m[POST] /api/admin/users >> 400 - A user with this email or phone already exists[39m
+2026-05-02 19:32:50:3250 [31merror[39m: [31mRedis connection error: read ECONNRESET[39m
+2026-05-02 19:32:50:3250 [31merror[39m: [31mRedis connection error: connect ENETUNREACH 66.33.22.232:46685[39m
+2026-05-02 19:32:50:3250 [31merror[39m: [31mRedis connection error: connect ENETUNREACH 66.33.22.232:46685[39m
+2026-05-02 19:32:51:3251 [31merror[39m: [31mRedis connection error: connect ENETUNREACH 66.33.22.232:46685[39m
+2026-05-02 19:32:51:3251 [31merror[39m: [31mRedis connection error: connect ENETUNREACH 66.33.22.232:46685[39m
+2026-05-02 19:32:51:3251 [31merror[39m: [31mRedis connection error: connect ENETUNREACH 66.33.22.232:46685[39m
+2026-05-02 19:32:51:3251 [31merror[39m: [31mRedis connection error: connect ENETUNREACH 66.33.22.232:46685[39m
+2026-05-02 19:32:52:3252 [31merror[39m: [31mRedis connection error: connect ENETUNREACH 66.33.22.232:46685[39m
+2026-05-02 19:32:52:3252 [31merror[39m: [31mRedis connection error: connect ENETUNREACH 66.33.22.232:46685[39m
+2026-05-02 19:32:53:3253 [31merror[39m: [31mRedis connection error: connect ENETUNREACH 66.33.22.232:46685[39m
+2026-05-02 19:32:53:3253 [31merror[39m: [31mRedis connection error: connect ENETUNREACH 66.33.22.232:46685[39m
+2026-05-02 19:32:54:3254 [31merror[39m: [31mRedis connection error: connect ENETUNREACH 66.33.22.232:46685[39m
+2026-05-02 19:32:54:3254 [31merror[39m: [31mRedis connection error: connect ENETUNREACH 66.33.22.232:46685[39m
+2026-05-02 19:34:44:3444 [31merror[39m: [31mRedis connection error: connect ENETUNREACH 66.33.22.232:46685[39m
+2026-05-02 19:34:45:3445 [31merror[39m: [31mRedis connection error: connect ENETUNREACH 66.33.22.232:46685[39m
+2026-05-02 19:34:45:3445 [31merror[39m: [31mRedis connection error: connect ENETUNREACH 66.33.22.232:46685[39m
+2026-05-02 19:34:46:3446 [31merror[39m: [31mRedis connection error: connect ENETUNREACH 66.33.22.232:46685[39m
+2026-05-02 19:34:47:3447 [31merror[39m: [31mRedis connection error: connect ENETUNREACH 66.33.22.232:46685[39m
+2026-05-02 19:34:48:3448 [31merror[39m: [31mRedis connection error: connect ENETUNREACH 66.33.22.232:46685[39m
+2026-05-02 19:34:50:3450 [31merror[39m: [31mRedis connection error: connect ENETUNREACH 66.33.22.232:46685[39m
+2026-05-02 19:43:33:4333 [31merror[39m: [31mRedis connection error: read ECONNRESET[39m
+2026-05-02 20:22:20:2220 [31merror[39m: [31m[GET] /api/admin/stats >> 500 - Cannot read properties of undefined (reading 'count')[39m
+2026-05-02 20:22:50:2250 [31merror[39m: [31m[GET] /api/admin/stats >> 500 - Cannot read properties of undefined (reading 'count')[39m
+2026-05-02 20:48:55:4855 [31merror[39m: [31m[POST] /api/admin/users >> 500 - [39m
+[31mInvalid `prisma.user.create()` invocation in[39m
+[31mD:\klb-gate\backend\src\modules\admin\admin.controller.ts:134:38[39m
+
+[31m  131 [39m
+[31m  132 const hashedPassword = await bcrypt.hash(password, 10);[39m
+[31m  133 [39m
+[31m→ 134 const user = await prisma.user.create([39m
+[31mInconsistent column data: Error creating UUID, invalid length: expected length 32 for simple format, found 0[39m
+2026-05-02 20:51:02:512 [31merror[39m: [31m[POST] /api/admin/users >> 500 - [39m
+[31mInvalid `prisma.user.create()` invocation in[39m
+[31mD:\klb-gate\backend\src\modules\admin\admin.controller.ts:183:38[39m
+
+[31m  180 [39m
+[31m  181 const hashedPassword = await bcrypt.hash(password, 10);[39m
+[31m  182 [39m
+[31m→ 183 const user = await prisma.user.create([39m
+[31mInconsistent column data: Error creating UUID, invalid length: expected length 32 for simple format, found 0[39m
+2026-05-02 20:51:12:5112 [31merror[39m: [31m[POST] /api/admin/users >> 500 - [39m
+[31mInvalid `prisma.user.create()` invocation in[39m
+[31mD:\klb-gate\backend\src\modules\admin\admin.controller.ts:183:38[39m
+
+[31m  180 [39m
+[31m  181 const hashedPassword = await bcrypt.hash(password, 10);[39m
+[31m  182 [39m
+[31m→ 183 const user = await prisma.user.create([39m
+[31mInconsistent column data: Error creating UUID, invalid length: expected length 32 for simple format, found 0[39m
+2026-05-02 20:51:58:5158 [31merror[39m: [31m[POST] /api/admin/users >> 500 - [39m
+[31mInvalid `prisma.user.create()` invocation in[39m
+[31mD:\klb-gate\backend\src\modules\admin\admin.controller.ts:183:38[39m
+
+[31m  180 [39m
+[31m  181 const hashedPassword = await bcrypt.hash(password, 10);[39m
+[31m  182 [39m
+[31m→ 183 const user = await prisma.user.create([39m
+[31mInconsistent column data: Error creating UUID, invalid length: expected length 32 for simple format, found 0[39m
+2026-05-02 20:52:21:5221 [31merror[39m: [31m[POST] /api/admin/users >> 500 - [39m
+[31mInvalid `prisma.user.create()` invocation in[39m
+[31mD:\klb-gate\backend\src\modules\admin\admin.controller.ts:183:38[39m
+
+[31m  180 [39m
+[31m  181 const hashedPassword = await bcrypt.hash(password, 10);[39m
+[31m  182 [39m
+[31m→ 183 const user = await prisma.user.create([39m
+[31mInconsistent column data: Error creating UUID, invalid length: expected length 32 for simple format, found 0[39m
+2026-05-02 20:54:16:5416 [31merror[39m: [31m[POST] /api/auth/login >> 401 - Invalid credentials[39m
+2026-05-02 20:54:20:5420 [31merror[39m: [31m[POST] /api/auth/login >> 401 - Invalid credentials[39m
+2026-05-02 20:54:28:5428 [31merror[39m: [31m[POST] /api/auth/login >> 401 - Invalid credentials[39m
+2026-05-02 20:57:38:5738 [31merror[39m: [31m[GET] /api/admin/tenants >> 403 - Access forbidden: insufficient permissions[39m
+2026-05-02 20:57:38:5738 [31merror[39m: [31m[GET] /api/admin/organizations >> 403 - Access forbidden: insufficient permissions[39m
+2026-05-02 20:57:38:5738 [31merror[39m: [31m[GET] /api/admin/regions >> 403 - Access forbidden: insufficient permissions[39m
+2026-05-02 20:57:38:5738 [31merror[39m: [31m[GET] /api/admin/tenants >> 403 - Access forbidden: insufficient permissions[39m
+2026-05-02 20:57:38:5738 [31merror[39m: [31m[GET] /api/admin/organizations >> 403 - Access forbidden: insufficient permissions[39m
+2026-05-02 20:57:38:5738 [31merror[39m: [31m[GET] /api/admin/regions >> 403 - Access forbidden: insufficient permissions[39m
+2026-05-02 20:57:52:5752 [31merror[39m: [31m[GET] /api/admin/regions >> 403 - Access forbidden: insufficient permissions[39m
+2026-05-02 20:57:52:5752 [31merror[39m: [31m[GET] /api/admin/organizations >> 403 - Access forbidden: insufficient permissions[39m
+2026-05-02 20:57:52:5752 [31merror[39m: [31m[GET] /api/admin/regions >> 403 - Access forbidden: insufficient permissions[39m
+2026-05-02 20:57:52:5752 [31merror[39m: [31m[GET] /api/admin/organizations >> 403 - Access forbidden: insufficient permissions[39m
+2026-05-02 20:57:54:5754 [31merror[39m: [31m[GET] /api/admin/organizations >> 403 - Access forbidden: insufficient permissions[39m
+2026-05-02 20:57:54:5754 [31merror[39m: [31m[GET] /api/admin/regions >> 403 - Access forbidden: insufficient permissions[39m
+2026-05-02 20:57:54:5754 [31merror[39m: [31m[GET] /api/admin/organizations >> 403 - Access forbidden: insufficient permissions[39m
+2026-05-02 20:57:54:5754 [31merror[39m: [31m[GET] /api/admin/regions >> 403 - Access forbidden: insufficient permissions[39m
+2026-05-02 20:57:54:5754 [31merror[39m: [31m[GET] /api/admin/tenants >> 403 - Access forbidden: insufficient permissions[39m
+2026-05-02 20:57:54:5754 [31merror[39m: [31m[GET] /api/admin/tenants >> 403 - Access forbidden: insufficient permissions[39m
+2026-05-02 20:58:00:580 [31merror[39m: [31m[GET] /api/admin/regions >> 403 - Access forbidden: insufficient permissions[39m
+2026-05-02 20:58:00:580 [31merror[39m: [31m[GET] /api/admin/organizations >> 403 - Access forbidden: insufficient permissions[39m
+2026-05-02 20:58:00:580 [31merror[39m: [31m[GET] /api/admin/regions >> 403 - Access forbidden: insufficient permissions[39m
+2026-05-02 20:58:00:580 [31merror[39m: [31m[GET] /api/admin/organizations >> 403 - Access forbidden: insufficient permissions[39m
+2026-05-02 20:58:01:581 [31merror[39m: [31m[GET] /api/admin/organizations >> 403 - Access forbidden: insufficient permissions[39m
+2026-05-02 20:58:01:581 [31merror[39m: [31m[GET] /api/admin/regions >> 403 - Access forbidden: insufficient permissions[39m
+2026-05-02 20:58:01:581 [31merror[39m: [31m[GET] /api/admin/organizations >> 403 - Access forbidden: insufficient permissions[39m
+2026-05-02 20:58:01:581 [31merror[39m: [31m[GET] /api/admin/tenants >> 403 - Access forbidden: insufficient permissions[39m
+2026-05-02 20:58:01:581 [31merror[39m: [31m[GET] /api/admin/regions >> 403 - Access forbidden: insufficient permissions[39m
+2026-05-02 20:58:01:581 [31merror[39m: [31m[GET] /api/admin/tenants >> 403 - Access forbidden: insufficient permissions[39m
+2026-05-02 20:58:02:582 [31merror[39m: [31m[GET] /api/admin/regions >> 403 - Access forbidden: insufficient permissions[39m
+2026-05-02 20:58:02:582 [31merror[39m: [31m[GET] /api/admin/regions >> 403 - Access forbidden: insufficient permissions[39m
+2026-05-02 20:58:03:583 [31merror[39m: [31m[GET] /api/admin/organizations >> 403 - Access forbidden: insufficient permissions[39m
+2026-05-02 20:58:03:583 [31merror[39m: [31m[GET] /api/admin/organizations >> 403 - Access forbidden: insufficient permissions[39m
+2026-05-02 20:59:00:590 [31merror[39m: [31m[GET] /api/admin/tenants >> 403 - Access forbidden: insufficient permissions[39m
+2026-05-02 20:59:00:590 [31merror[39m: [31m[GET] /api/admin/tenants >> 403 - Access forbidden: insufficient permissions[39m
+2026-05-02 20:59:00:590 [31merror[39m: [31m[GET] /api/admin/organizations >> 403 - Access forbidden: insufficient permissions[39m
+2026-05-02 20:59:00:590 [31merror[39m: [31m[GET] /api/admin/regions >> 403 - Access forbidden: insufficient permissions[39m
+2026-05-02 20:59:00:590 [31merror[39m: [31m[GET] /api/admin/organizations >> 403 - Access forbidden: insufficient permissions[39m
+2026-05-02 20:59:00:590 [31merror[39m: [31m[GET] /api/admin/regions >> 403 - Access forbidden: insufficient permissions[39m
+2026-05-02 20:59:20:5920 [31merror[39m: [31mRedis connection error: [39m
+2026-05-02 20:59:20:5920 [31merror[39m: [31mRedis connection error: [39m
+2026-05-02 20:59:20:5920 [31merror[39m: [31mRedis connection error: [39m
+2026-05-02 20:59:20:5920 [31merror[39m: [31mRedis connection error: [39m
+2026-05-02 20:59:20:5920 [31merror[39m: [31mRedis connection error: [39m
+2026-05-02 20:59:20:5920 [31merror[39m: [31mRedis connection error: [39m
+2026-05-02 20:59:21:5921 [31merror[39m: [31mRedis connection error: [39m
+2026-05-02 20:59:21:5921 [31merror[39m: [31mRedis connection error: [39m
+2026-05-02 20:59:22:5922 [31merror[39m: [31mRedis connection error: [39m
+2026-05-02 20:59:22:5922 [31merror[39m: [31mRedis connection error: [39m
+2026-05-02 20:59:23:5923 [31merror[39m: [31mRedis connection error: [39m
+2026-05-02 20:59:23:5923 [31merror[39m: [31mRedis connection error: [39m
+2026-05-02 20:59:24:5924 [31merror[39m: [31mRedis connection error: [39m
+2026-05-02 20:59:24:5924 [31merror[39m: [31mRedis connection error: [39m
+2026-05-02 20:59:25:5925 [31merror[39m: [31mRedis connection error: [39m
+2026-05-02 20:59:26:5926 [31merror[39m: [31mRedis connection error: [39m
+2026-05-02 20:59:27:5927 [31merror[39m: [31mRedis connection error: [39m
+2026-05-02 20:59:28:5928 [31merror[39m: [31mRedis connection error: [39m
+2026-05-02 20:59:29:5929 [31merror[39m: [31mRedis connection error: [39m
+2026-05-02 20:59:29:5929 [31merror[39m: [31m[GET] /api/admin/tenants >> 403 - Access forbidden: insufficient permissions[39m
+2026-05-02 20:59:29:5929 [31merror[39m: [31m[GET] /api/admin/tenants >> 403 - Access forbidden: insufficient permissions[39m
+2026-05-02 20:59:29:5929 [31merror[39m: [31m[GET] /api/admin/organizations >> 403 - Access forbidden: insufficient permissions[39m
+2026-05-02 20:59:29:5929 [31merror[39m: [31m[GET] /api/admin/organizations >> 403 - Access forbidden: insufficient permissions[39m
+2026-05-02 20:59:29:5929 [31merror[39m: [31m[GET] /api/admin/regions >> 403 - Access forbidden: insufficient permissions[39m
+2026-05-02 20:59:29:5929 [31merror[39m: [31m[GET] /api/admin/regions >> 403 - Access forbidden: insufficient permissions[39m
+2026-05-02 20:59:30:5930 [31merror[39m: [31mRedis connection error: [39m
+2026-05-02 20:59:31:5931 [31merror[39m: [31mRedis connection error: [39m
+2026-05-02 20:59:32:5932 [31merror[39m: [31mRedis connection error: [39m
+2026-05-02 20:59:33:5933 [31merror[39m: [31mRedis connection error: [39m
+2026-05-02 20:59:34:5934 [31merror[39m: [31mRedis connection error: [39m
+2026-05-02 20:59:35:5935 [31merror[39m: [31mRedis connection error: [39m
+2026-05-02 20:59:37:5937 [31merror[39m: [31mRedis connection error: [39m
+2026-05-02 20:59:37:5937 [31merror[39m: [31m[GET] /api/admin/tenants >> 403 - Access forbidden: insufficient permissions[39m
+2026-05-02 20:59:37:5937 [31merror[39m: [31m[GET] /api/admin/organizations >> 403 - Access forbidden: insufficient permissions[39m
+2026-05-02 20:59:37:5937 [31merror[39m: [31m[GET] /api/admin/regions >> 403 - Access forbidden: insufficient permissions[39m
+2026-05-02 20:59:37:5937 [31merror[39m: [31m[GET] /api/admin/tenants >> 403 - Access forbidden: insufficient permissions[39m
+2026-05-02 20:59:37:5937 [31merror[39m: [31m[GET] /api/admin/organizations >> 403 - Access forbidden: insufficient permissions[39m
+2026-05-02 20:59:37:5937 [31merror[39m: [31m[GET] /api/admin/regions >> 403 - Access forbidden: insufficient permissions[39m
+2026-05-02 20:59:38:5938 [31merror[39m: [31mRedis connection error: [39m
+2026-05-02 20:59:39:5939 [31merror[39m: [31mRedis connection error: [39m
+2026-05-02 20:59:41:5941 [31merror[39m: [31mRedis connection error: [39m
+2026-05-02 20:59:42:5942 [31merror[39m: [31mRedis connection error: [39m
+2026-05-02 20:59:44:5944 [31merror[39m: [31mRedis connection error: [39m
+2026-05-02 20:59:45:5945 [31merror[39m: [31mRedis connection error: [39m
+2026-05-02 20:59:46:5946 [31merror[39m: [31m[GET] /api/admin/tenants >> 403 - Access forbidden: insufficient permissions[39m
+2026-05-02 20:59:46:5946 [31merror[39m: [31m[GET] /api/admin/tenants >> 403 - Access forbidden: insufficient permissions[39m
+2026-05-02 20:59:46:5946 [31merror[39m: [31m[GET] /api/admin/organizations >> 403 - Access forbidden: insufficient permissions[39m
+2026-05-02 20:59:46:5946 [31merror[39m: [31m[GET] /api/admin/regions >> 403 - Access forbidden: insufficient permissions[39m
+2026-05-02 20:59:46:5946 [31merror[39m: [31m[GET] /api/admin/organizations >> 403 - Access forbidden: insufficient permissions[39m
+2026-05-02 20:59:46:5946 [31merror[39m: [31m[GET] /api/admin/regions >> 403 - Access forbidden: insufficient permissions[39m
+2026-05-02 20:59:46:5946 [31merror[39m: [31m[GET] /api/admin/regions >> 403 - Access forbidden: insufficient permissions[39m
+2026-05-02 20:59:47:5947 [31merror[39m: [31m[GET] /api/admin/organizations >> 403 - Access forbidden: insufficient permissions[39m
+2026-05-02 20:59:47:5947 [31merror[39m: [31m[GET] /api/admin/regions >> 403 - Access forbidden: insufficient permissions[39m
+2026-05-02 20:59:47:5947 [31merror[39m: [31m[GET] /api/admin/organizations >> 403 - Access forbidden: insufficient permissions[39m
+2026-05-02 20:59:47:5947 [31merror[39m: [31mRedis connection error: [39m
+2026-05-02 20:59:48:5948 [31merror[39m: [31m[GET] /api/admin/tenants >> 403 - Access forbidden: insufficient permissions[39m
+2026-05-02 20:59:48:5948 [31merror[39m: [31m[GET] /api/admin/organizations >> 403 - Access forbidden: insufficient permissions[39m
+2026-05-02 20:59:48:5948 [31merror[39m: [31m[GET] /api/admin/regions >> 403 - Access forbidden: insufficient permissions[39m
+2026-05-02 20:59:48:5948 [31merror[39m: [31m[GET] /api/admin/tenants >> 403 - Access forbidden: insufficient permissions[39m
+2026-05-02 20:59:48:5948 [31merror[39m: [31m[GET] /api/admin/organizations >> 403 - Access forbidden: insufficient permissions[39m
+2026-05-02 20:59:48:5948 [31merror[39m: [31m[GET] /api/admin/regions >> 403 - Access forbidden: insufficient permissions[39m
+2026-05-02 20:59:48:5948 [31merror[39m: [31mRedis connection error: [39m
+2026-05-02 20:59:50:5950 [31merror[39m: [31mRedis connection error: [39m
+2026-05-02 20:59:52:5952 [31merror[39m: [31mRedis connection error: [39m
+2026-05-02 20:59:54:5954 [31merror[39m: [31mRedis connection error: [39m
+2026-05-02 20:59:56:5956 [31merror[39m: [31mRedis connection error: [39m
+2026-05-02 20:59:57:5957 [31merror[39m: [31mRedis connection error: [39m
+2026-05-02 20:59:59:5959 [31merror[39m: [31mRedis connection error: [39m
+2026-05-02 21:00:01:01 [31merror[39m: [31mRedis connection error: [39m
+2026-05-02 21:00:04:04 [31merror[39m: [31mRedis connection error: [39m
+2026-05-02 21:00:06:06 [31merror[39m: [31mRedis connection error: [39m
+2026-05-02 21:00:08:08 [31merror[39m: [31mRedis connection error: [39m
+2026-05-02 21:00:10:010 [31merror[39m: [31mRedis connection error: [39m
+2026-05-02 21:00:12:012 [31merror[39m: [31mRedis connection error: [39m
+2026-05-02 21:00:14:014 [31merror[39m: [31mRedis connection error: [39m
+2026-05-02 21:00:16:016 [31merror[39m: [31mRedis connection error: [39m
+2026-05-02 21:00:18:018 [31merror[39m: [31mRedis connection error: [39m
+2026-05-02 21:00:20:020 [31merror[39m: [31mRedis connection error: [39m
+2026-05-02 21:00:22:022 [31merror[39m: [31mRedis connection error: [39m
+2026-05-02 21:00:24:024 [31merror[39m: [31mRedis connection error: [39m
+2026-05-02 21:00:26:026 [31merror[39m: [31mRedis connection error: [39m
+2026-05-02 21:00:28:028 [31merror[39m: [31mRedis connection error: [39m
+2026-05-02 21:00:30:030 [31merror[39m: [31mRedis connection error: [39m
+2026-05-02 21:00:32:032 [31merror[39m: [31m[GET] /api/admin/tenants >> 403 - Access forbidden: insufficient permissions[39m
+2026-05-02 21:00:32:032 [31merror[39m: [31m[GET] /api/admin/organizations >> 403 - Access forbidden: insufficient permissions[39m
+2026-05-02 21:00:32:032 [31merror[39m: [31m[GET] /api/admin/regions >> 403 - Access forbidden: insufficient permissions[39m
+2026-05-02 21:00:32:032 [31merror[39m: [31m[GET] /api/admin/tenants >> 403 - Access forbidden: insufficient permissions[39m
+2026-05-02 21:00:32:032 [31merror[39m: [31m[GET] /api/admin/organizations >> 403 - Access forbidden: insufficient permissions[39m
+2026-05-02 21:00:32:032 [31merror[39m: [31m[GET] /api/admin/regions >> 403 - Access forbidden: insufficient permissions[39m
+2026-05-02 21:00:32:032 [31merror[39m: [31mRedis connection error: [39m
+2026-05-02 21:00:34:034 [31merror[39m: [31mRedis connection error: [39m
+2026-05-02 21:00:36:036 [31merror[39m: [31mRedis connection error: [39m
+2026-05-02 21:00:38:038 [31merror[39m: [31mRedis connection error: [39m
+2026-05-02 21:00:40:040 [31merror[39m: [31mRedis connection error: [39m
+2026-05-02 21:00:42:042 [31merror[39m: [31mRedis connection error: [39m
+2026-05-02 21:00:44:044 [31merror[39m: [31mRedis connection error: [39m
+2026-05-02 21:00:46:046 [31merror[39m: [31mRedis connection error: [39m
+2026-05-02 21:00:48:048 [31merror[39m: [31mRedis connection error: [39m
+2026-05-02 21:00:50:050 [31merror[39m: [31mRedis connection error: [39m
+2026-05-02 21:00:52:052 [31merror[39m: [31mRedis connection error: [39m
+2026-05-02 21:00:54:054 [31merror[39m: [31mRedis connection error: [39m
+2026-05-02 21:00:56:056 [31merror[39m: [31mRedis connection error: [39m
+2026-05-02 21:00:58:058 [31merror[39m: [31mRedis connection error: [39m
+2026-05-02 21:01:00:10 [31merror[39m: [31mRedis connection error: [39m
+2026-05-02 21:01:02:12 [31merror[39m: [31m[GET] /api/admin/regions >> 403 - Access forbidden: insufficient permissions[39m
+2026-05-02 21:01:02:12 [31merror[39m: [31m[GET] /api/admin/organizations >> 403 - Access forbidden: insufficient permissions[39m
+2026-05-02 21:01:02:12 [31merror[39m: [31m[GET] /api/admin/regions >> 403 - Access forbidden: insufficient permissions[39m
+2026-05-02 21:01:02:12 [31merror[39m: [31m[GET] /api/admin/organizations >> 403 - Access forbidden: insufficient permissions[39m
+2026-05-02 21:01:02:12 [31merror[39m: [31mRedis connection error: [39m
+2026-05-02 21:01:03:13 [31merror[39m: [31m[GET] /api/admin/organizations >> 403 - Access forbidden: insufficient permissions[39m
+2026-05-02 21:01:03:13 [31merror[39m: [31m[GET] /api/admin/regions >> 403 - Access forbidden: insufficient permissions[39m
+2026-05-02 21:01:03:13 [31merror[39m: [31m[GET] /api/admin/tenants >> 403 - Access forbidden: insufficient permissions[39m
+2026-05-02 21:01:03:13 [31merror[39m: [31m[GET] /api/admin/regions >> 403 - Access forbidden: insufficient permissions[39m
+2026-05-02 21:01:03:13 [31merror[39m: [31m[GET] /api/admin/organizations >> 403 - Access forbidden: insufficient permissions[39m
+2026-05-02 21:01:03:13 [31merror[39m: [31m[GET] /api/admin/tenants >> 403 - Access forbidden: insufficient permissions[39m
+2026-05-02 21:01:04:14 [31merror[39m: [31mRedis connection error: [39m
+2026-05-02 21:01:06:16 [31merror[39m: [31mRedis connection error: [39m
+2026-05-02 21:01:08:18 [31merror[39m: [31mRedis connection error: [39m
+2026-05-02 21:01:10:110 [31merror[39m: [31mRedis connection error: [39m
+2026-05-02 21:01:12:112 [31merror[39m: [31mRedis connection error: [39m
+2026-05-02 21:01:14:114 [31merror[39m: [31mRedis connection error: [39m
+2026-05-02 21:01:15:115 [31merror[39m: [31m[GET] /api/admin/regions >> 403 - Access forbidden: insufficient permissions[39m
+2026-05-02 21:01:15:115 [31merror[39m: [31m[GET] /api/admin/organizations >> 403 - Access forbidden: insufficient permissions[39m
+2026-05-02 21:01:15:115 [31merror[39m: [31m[GET] /api/admin/organizations >> 403 - Access forbidden: insufficient permissions[39m
+2026-05-02 21:01:15:115 [31merror[39m: [31m[GET] /api/admin/regions >> 403 - Access forbidden: insufficient permissions[39m
+2026-05-02 21:01:16:116 [31merror[39m: [31mRedis connection error: [39m
+2026-05-02 21:01:18:118 [31merror[39m: [31mRedis connection error: [39m
+2026-05-02 21:01:20:120 [31merror[39m: [31mRedis connection error: [39m
+2026-05-02 21:01:22:122 [31merror[39m: [31mRedis connection error: [39m
+2026-05-02 21:01:24:124 [31merror[39m: [31mRedis connection error: [39m
+2026-05-02 21:01:26:126 [31merror[39m: [31mRedis connection error: [39m
+2026-05-02 21:01:28:128 [31merror[39m: [31mRedis connection error: [39m
+2026-05-02 21:01:30:130 [31merror[39m: [31mRedis connection error: [39m
+2026-05-02 21:01:32:132 [31merror[39m: [31mRedis connection error: [39m
+2026-05-02 21:01:34:134 [31merror[39m: [31mRedis connection error: [39m
+2026-05-02 21:01:36:136 [31merror[39m: [31mRedis connection error: [39m
+2026-05-02 21:01:38:138 [31merror[39m: [31mRedis connection error: [39m
+2026-05-02 21:01:40:140 [31merror[39m: [31mRedis connection error: [39m
+2026-05-02 21:01:42:142 [31merror[39m: [31mRedis connection error: [39m
+2026-05-02 21:01:44:144 [31merror[39m: [31mRedis connection error: [39m
+2026-05-02 21:01:46:146 [31merror[39m: [31mRedis connection error: [39m
+2026-05-02 21:01:48:148 [31merror[39m: [31mRedis connection error: [39m
+2026-05-02 21:01:50:150 [31merror[39m: [31mRedis connection error: [39m
+2026-05-02 21:01:52:152 [31merror[39m: [31mRedis connection error: [39m
+2026-05-02 21:01:54:154 [31merror[39m: [31mRedis connection error: [39m
+2026-05-02 21:01:56:156 [31merror[39m: [31mRedis connection error: [39m
+2026-05-02 21:01:59:159 [31merror[39m: [31mRedis connection error: [39m
+2026-05-02 21:02:01:21 [31merror[39m: [31mRedis connection error: [39m
+2026-05-02 21:02:03:23 [31merror[39m: [31mRedis connection error: [39m
+2026-05-02 21:02:05:25 [31merror[39m: [31mRedis connection error: [39m
+2026-05-02 21:02:07:27 [31merror[39m: [31mRedis connection error: [39m
+2026-05-02 21:02:09:29 [31merror[39m: [31mRedis connection error: [39m
+2026-05-02 21:02:11:211 [31merror[39m: [31mRedis connection error: [39m
+2026-05-02 21:02:13:213 [31merror[39m: [31mRedis connection error: [39m
+2026-05-02 21:02:15:215 [31merror[39m: [31mRedis connection error: [39m
+2026-05-02 21:02:17:217 [31merror[39m: [31mRedis connection error: [39m
+2026-05-02 21:02:19:219 [31merror[39m: [31mRedis connection error: [39m
+2026-05-02 21:02:21:221 [31merror[39m: [31mRedis connection error: [39m
+2026-05-02 21:02:23:223 [31merror[39m: [31mRedis connection error: [39m
+2026-05-02 21:02:25:225 [31merror[39m: [31mRedis connection error: [39m
+2026-05-02 21:02:27:227 [31merror[39m: [31mRedis connection error: [39m
+2026-05-02 21:02:29:229 [31merror[39m: [31mRedis connection error: [39m
+2026-05-02 21:02:31:231 [31merror[39m: [31mRedis connection error: [39m
+2026-05-02 21:02:33:233 [31merror[39m: [31mRedis connection error: [39m
+2026-05-02 21:02:35:235 [31merror[39m: [31mRedis connection error: [39m
+2026-05-02 21:02:37:237 [31merror[39m: [31mRedis connection error: [39m
+2026-05-02 21:02:39:239 [31merror[39m: [31mRedis connection error: [39m
+2026-05-02 21:02:41:241 [31merror[39m: [31mRedis connection error: [39m
+2026-05-02 21:02:43:243 [31merror[39m: [31mRedis connection error: [39m
+2026-05-02 21:02:45:245 [31merror[39m: [31mRedis connection error: [39m
+2026-05-02 21:02:47:247 [31merror[39m: [31mRedis connection error: [39m
+2026-05-02 21:02:49:249 [31merror[39m: [31mRedis connection error: [39m
+2026-05-02 21:02:51:251 [31merror[39m: [31mRedis connection error: [39m
+2026-05-02 21:02:53:253 [31merror[39m: [31mRedis connection error: [39m
+2026-05-02 21:02:55:255 [31merror[39m: [31mRedis connection error: [39m
+2026-05-02 21:02:57:257 [31merror[39m: [31mRedis connection error: [39m
+2026-05-02 21:02:59:259 [31merror[39m: [31mRedis connection error: [39m
+2026-05-02 21:03:01:31 [31merror[39m: [31mRedis connection error: [39m
+2026-05-02 21:03:03:33 [31merror[39m: [31mRedis connection error: [39m
+2026-05-02 21:03:05:35 [31merror[39m: [31mRedis connection error: [39m
+2026-05-02 21:03:07:37 [31merror[39m: [31mRedis connection error: [39m
+2026-05-02 21:03:09:39 [31merror[39m: [31mRedis connection error: [39m
+2026-05-02 21:03:11:311 [31merror[39m: [31mRedis connection error: [39m
+2026-05-02 21:03:13:313 [31merror[39m: [31mRedis connection error: [39m
+2026-05-02 21:03:15:315 [31merror[39m: [31mRedis connection error: [39m
+2026-05-02 21:03:17:317 [31merror[39m: [31mRedis connection error: [39m
+2026-05-02 21:03:19:319 [31merror[39m: [31mRedis connection error: [39m
+2026-05-02 21:03:21:321 [31merror[39m: [31mRedis connection error: [39m
+2026-05-02 21:03:23:323 [31merror[39m: [31mRedis connection error: [39m
+2026-05-02 21:03:25:325 [31merror[39m: [31mRedis connection error: [39m
+2026-05-02 21:03:27:327 [31merror[39m: [31mRedis connection error: [39m
+2026-05-02 21:03:29:329 [31merror[39m: [31mRedis connection error: [39m
+2026-05-02 21:03:31:331 [31merror[39m: [31mRedis connection error: [39m
+2026-05-02 21:03:33:333 [31merror[39m: [31mRedis connection error: [39m
+2026-05-02 21:03:35:335 [31merror[39m: [31mRedis connection error: [39m
+2026-05-02 21:03:37:337 [31merror[39m: [31mRedis connection error: [39m
+2026-05-02 21:03:39:339 [31merror[39m: [31mRedis connection error: [39m
+2026-05-02 21:03:41:341 [31merror[39m: [31mRedis connection error: [39m
+2026-05-02 21:03:43:343 [31merror[39m: [31mRedis connection error: [39m
+2026-05-02 21:03:45:345 [31merror[39m: [31mRedis connection error: [39m
+2026-05-02 21:03:47:347 [31merror[39m: [31mRedis connection error: [39m
+2026-05-02 21:03:49:349 [31merror[39m: [31mRedis connection error: [39m
+2026-05-02 21:03:51:351 [31merror[39m: [31mRedis connection error: [39m
+2026-05-02 21:03:53:353 [31merror[39m: [31mRedis connection error: [39m
+2026-05-02 21:03:56:356 [31merror[39m: [31mRedis connection error: [39m
+2026-05-02 21:03:58:358 [31merror[39m: [31mRedis connection error: [39m
+2026-05-02 21:04:00:40 [31merror[39m: [31mRedis connection error: [39m
+2026-05-02 21:04:02:42 [31merror[39m: [31mRedis connection error: [39m
+2026-05-02 21:04:04:44 [31merror[39m: [31mRedis connection error: [39m
+2026-05-02 21:04:06:46 [31merror[39m: [31mRedis connection error: [39m
+2026-05-02 21:04:08:48 [31merror[39m: [31mRedis connection error: [39m
+2026-05-02 21:04:10:410 [31merror[39m: [31mRedis connection error: [39m
+2026-05-02 21:04:12:412 [31merror[39m: [31mRedis connection error: [39m
+2026-05-02 21:04:14:414 [31merror[39m: [31mRedis connection error: [39m
+2026-05-02 21:04:16:416 [31merror[39m: [31mRedis connection error: [39m
+2026-05-02 21:04:18:418 [31merror[39m: [31mRedis connection error: [39m
+2026-05-02 21:04:20:420 [31merror[39m: [31mRedis connection error: [39m
+2026-05-02 21:04:22:422 [31merror[39m: [31mRedis connection error: [39m
+2026-05-02 21:04:24:424 [31merror[39m: [31mRedis connection error: [39m
+2026-05-02 21:04:26:426 [31merror[39m: [31mRedis connection error: [39m
+2026-05-02 21:04:28:428 [31merror[39m: [31mRedis connection error: [39m
+2026-05-02 21:04:30:430 [31merror[39m: [31mRedis connection error: [39m
+2026-05-02 21:09:14:914 [31merror[39m: [31mRedis connection error: [39m
+2026-05-02 21:09:16:916 [31merror[39m: [31mRedis connection error: [39m
+2026-05-02 21:09:18:918 [31merror[39m: [31mRedis connection error: [39m
+2026-05-02 21:09:20:920 [31merror[39m: [31mRedis connection error: [39m
+2026-05-02 21:09:22:922 [31merror[39m: [31mRedis connection error: [39m
+2026-05-02 21:09:24:924 [31merror[39m: [31mRedis connection error: [39m
+2026-05-02 21:09:26:926 [31merror[39m: [31mRedis connection error: [39m
+2026-05-02 21:09:28:928 [31merror[39m: [31mRedis connection error: [39m
+2026-05-02 21:09:30:930 [31merror[39m: [31mRedis connection error: [39m
+2026-05-02 21:09:32:932 [31merror[39m: [31mRedis connection error: [39m
+2026-05-02 21:09:34:934 [31merror[39m: [31mRedis connection error: [39m
+2026-05-02 21:09:36:936 [31merror[39m: [31mRedis connection error: [39m
+2026-05-02 21:09:38:938 [31merror[39m: [31mRedis connection error: [39m
+2026-05-02 21:09:40:940 [31merror[39m: [31mRedis connection error: [39m
+2026-05-02 21:09:42:942 [31merror[39m: [31mRedis connection error: [39m
+2026-05-02 21:09:44:944 [31merror[39m: [31mRedis connection error: [39m
+2026-05-02 21:09:46:946 [31merror[39m: [31mRedis connection error: [39m
+2026-05-02 21:09:48:948 [31merror[39m: [31mRedis connection error: [39m
+2026-05-02 21:09:50:950 [31merror[39m: [31mRedis connection error: [39m
+2026-05-02 21:09:52:952 [31merror[39m: [31mRedis connection error: [39m
+2026-05-02 21:09:54:954 [31merror[39m: [31mRedis connection error: [39m
+2026-05-02 21:09:56:956 [31merror[39m: [31mRedis connection error: [39m
+2026-05-02 21:09:58:958 [31merror[39m: [31mRedis connection error: [39m
+2026-05-02 21:10:01:101 [31merror[39m: [31mRedis connection error: [39m
+2026-05-02 21:10:03:103 [31merror[39m: [31mRedis connection error: [39m
+2026-05-02 21:10:05:105 [31merror[39m: [31mRedis connection error: [39m
+2026-05-02 21:10:07:107 [31merror[39m: [31mRedis connection error: [39m
+2026-05-02 21:10:09:109 [31merror[39m: [31mRedis connection error: [39m
+2026-05-02 21:10:11:1011 [31merror[39m: [31mRedis connection error: [39m
+2026-05-02 21:10:13:1013 [31merror[39m: [31mRedis connection error: [39m
+2026-05-02 21:10:15:1015 [31merror[39m: [31mRedis connection error: [39m
+2026-05-02 21:10:17:1017 [31merror[39m: [31mRedis connection error: [39m
+2026-05-02 21:10:18:1018 [31merror[39m: [31m[GET] /api/admin/regions >> 403 - Access forbidden: insufficient permissions[39m
+2026-05-02 21:10:18:1018 [31merror[39m: [31m[GET] /api/admin/organizations >> 403 - Access forbidden: insufficient permissions[39m
+2026-05-02 21:10:18:1018 [31merror[39m: [31m[GET] /api/admin/regions >> 403 - Access forbidden: insufficient permissions[39m
+2026-05-02 21:10:18:1018 [31merror[39m: [31m[GET] /api/admin/organizations >> 403 - Access forbidden: insufficient permissions[39m
+2026-05-02 21:10:19:1019 [31merror[39m: [31mRedis connection error: [39m
+2026-05-02 21:10:21:1021 [31merror[39m: [31mRedis connection error: [39m
+2026-05-02 21:10:23:1023 [31merror[39m: [31mRedis connection error: [39m
+2026-05-02 21:10:25:1025 [31merror[39m: [31mRedis connection error: [39m
+2026-05-02 21:10:27:1027 [31merror[39m: [31mRedis connection error: [39m
+2026-05-02 21:10:29:1029 [31merror[39m: [31mRedis connection error: [39m
+2026-05-02 21:10:31:1031 [31merror[39m: [31mRedis connection error: [39m
+2026-05-02 21:10:33:1033 [31merror[39m: [31mRedis connection error: [39m
+2026-05-02 21:10:35:1035 [31merror[39m: [31mRedis connection error: [39m
+2026-05-02 21:10:37:1037 [31merror[39m: [31mRedis connection error: [39m
+2026-05-02 21:10:39:1039 [31merror[39m: [31mRedis connection error: [39m
+2026-05-02 21:10:41:1041 [31merror[39m: [31mRedis connection error: [39m
+2026-05-02 21:10:41:1041 [31merror[39m: [31m[GET] /api/admin/organizations >> 403 - Access forbidden: insufficient permissions[39m
+2026-05-02 21:10:41:1041 [31merror[39m: [31m[GET] /api/admin/tenants >> 403 - Access forbidden: insufficient permissions[39m
+2026-05-02 21:10:41:1041 [31merror[39m: [31m[GET] /api/admin/organizations >> 403 - Access forbidden: insufficient permissions[39m
+2026-05-02 21:10:41:1041 [31merror[39m: [31m[GET] /api/admin/regions >> 403 - Access forbidden: insufficient permissions[39m
+2026-05-02 21:10:41:1041 [31merror[39m: [31m[GET] /api/admin/tenants >> 403 - Access forbidden: insufficient permissions[39m
+2026-05-02 21:10:41:1041 [31merror[39m: [31m[GET] /api/admin/regions >> 403 - Access forbidden: insufficient permissions[39m
+2026-05-02 21:10:43:1043 [31merror[39m: [31mRedis connection error: [39m
+2026-05-02 21:10:45:1045 [31merror[39m: [31mRedis connection error: [39m
+2026-05-02 21:10:47:1047 [31merror[39m: [31mRedis connection error: [39m
+2026-05-02 21:10:49:1049 [31merror[39m: [31mRedis connection error: [39m
+2026-05-02 21:10:51:1051 [31merror[39m: [31mRedis connection error: [39m
+2026-05-02 21:10:53:1053 [31merror[39m: [31mRedis connection error: [39m
+2026-05-02 21:10:55:1055 [31merror[39m: [31mRedis connection error: [39m
+2026-05-02 21:10:57:1057 [31merror[39m: [31mRedis connection error: [39m
+2026-05-02 21:10:59:1059 [31merror[39m: [31mRedis connection error: [39m
+2026-05-02 21:11:01:111 [31merror[39m: [31mRedis connection error: [39m
+2026-05-02 21:11:03:113 [31merror[39m: [31mRedis connection error: [39m
+2026-05-02 21:11:05:115 [31merror[39m: [31mRedis connection error: [39m
+2026-05-02 21:11:07:117 [31merror[39m: [31mRedis connection error: [39m
+2026-05-02 21:11:09:119 [31merror[39m: [31mRedis connection error: [39m
+2026-05-02 21:11:11:1111 [31merror[39m: [31mRedis connection error: [39m
+2026-05-02 21:11:13:1113 [31merror[39m: [31mRedis connection error: [39m
+2026-05-02 21:11:15:1115 [31merror[39m: [31mRedis connection error: [39m
+2026-05-02 21:11:17:1117 [31merror[39m: [31mRedis connection error: [39m
+2026-05-02 21:11:19:1119 [31merror[39m: [31mRedis connection error: [39m
+2026-05-02 21:11:21:1121 [31merror[39m: [31mRedis connection error: [39m
+2026-05-02 21:11:23:1123 [31merror[39m: [31mRedis connection error: [39m
+2026-05-02 21:11:25:1125 [31merror[39m: [31mRedis connection error: [39m
+2026-05-02 21:11:27:1127 [31merror[39m: [31mRedis connection error: [39m
+2026-05-02 21:11:29:1129 [31merror[39m: [31mRedis connection error: [39m
+2026-05-02 21:11:31:1131 [31merror[39m: [31mRedis connection error: [39m
+2026-05-02 21:11:33:1133 [31merror[39m: [31mRedis connection error: [39m
+2026-05-02 21:11:35:1135 [31merror[39m: [31mRedis connection error: [39m
+2026-05-02 21:11:37:1137 [31merror[39m: [31mRedis connection error: [39m
+2026-05-02 21:11:39:1139 [31merror[39m: [31mRedis connection error: [39m
+2026-05-02 21:11:41:1141 [31merror[39m: [31mRedis connection error: [39m
+2026-05-02 21:11:41:1141 [31merror[39m: [31m[GET] /api/admin/tenants >> 403 - Access forbidden: insufficient permissions[39m
+2026-05-02 21:11:41:1141 [31merror[39m: [31m[GET] /api/admin/organizations >> 403 - Access forbidden: insufficient permissions[39m
+2026-05-02 21:11:41:1141 [31merror[39m: [31m[GET] /api/admin/regions >> 403 - Access forbidden: insufficient permissions[39m
+2026-05-02 21:11:43:1143 [31merror[39m: [31mRedis connection error: [39m
+2026-05-02 21:11:45:1145 [31merror[39m: [31mRedis connection error: [39m
+2026-05-02 21:11:47:1147 [31merror[39m: [31mRedis connection error: [39m
+2026-05-02 21:11:49:1149 [31merror[39m: [31mRedis connection error: [39m
+2026-05-02 21:11:52:1152 [31merror[39m: [31mRedis connection error: [39m
+2026-05-02 21:11:52:1152 [31merror[39m: [31m[GET] /api/admin/regions >> 403 - Access forbidden: insufficient permissions[39m
+2026-05-02 21:11:52:1152 [31merror[39m: [31m[GET] /api/admin/organizations >> 403 - Access forbidden: insufficient permissions[39m
+2026-05-02 21:11:52:1152 [31merror[39m: [31m[GET] /api/admin/organizations >> 403 - Access forbidden: insufficient permissions[39m
+2026-05-02 21:11:52:1152 [31merror[39m: [31m[GET] /api/admin/regions >> 403 - Access forbidden: insufficient permissions[39m
+2026-05-02 21:11:53:1153 [31merror[39m: [31m[GET] /api/admin/organizations >> 403 - Access forbidden: insufficient permissions[39m
+2026-05-02 21:11:53:1153 [31merror[39m: [31m[GET] /api/admin/organizations >> 403 - Access forbidden: insufficient permissions[39m
+2026-05-02 21:11:53:1153 [31merror[39m: [31m[GET] /api/admin/regions >> 403 - Access forbidden: insufficient permissions[39m
+2026-05-02 21:11:53:1153 [31merror[39m: [31m[GET] /api/admin/tenants >> 403 - Access forbidden: insufficient permissions[39m
+2026-05-02 21:11:53:1153 [31merror[39m: [31m[GET] /api/admin/regions >> 403 - Access forbidden: insufficient permissions[39m
+2026-05-02 21:11:53:1153 [31merror[39m: [31m[GET] /api/admin/tenants >> 403 - Access forbidden: insufficient permissions[39m
+2026-05-02 21:11:54:1154 [31merror[39m: [31mRedis connection error: [39m
+2026-05-02 21:11:54:1154 [31merror[39m: [31m[GET] /api/admin/regions >> 403 - Access forbidden: insufficient permissions[39m
+2026-05-02 21:11:54:1154 [31merror[39m: [31m[GET] /api/admin/regions >> 403 - Access forbidden: insufficient permissions[39m
+2026-05-02 21:11:54:1154 [31merror[39m: [31m[GET] /api/admin/organizations >> 403 - Access forbidden: insufficient permissions[39m
+2026-05-02 21:11:54:1154 [31merror[39m: [31m[GET] /api/admin/organizations >> 403 - Access forbidden: insufficient permissions[39m
+2026-05-02 21:11:56:1156 [31merror[39m: [31mRedis connection error: [39m
+2026-05-02 21:11:56:1156 [31merror[39m: [31m[GET] /api/admin/tenants >> 403 - Access forbidden: insufficient permissions[39m
+2026-05-02 21:11:56:1156 [31merror[39m: [31m[GET] /api/admin/organizations >> 403 - Access forbidden: insufficient permissions[39m
+2026-05-02 21:11:56:1156 [31merror[39m: [31m[GET] /api/admin/regions >> 403 - Access forbidden: insufficient permissions[39m
+2026-05-02 21:11:56:1156 [31merror[39m: [31m[GET] /api/admin/tenants >> 403 - Access forbidden: insufficient permissions[39m
+2026-05-02 21:11:56:1156 [31merror[39m: [31m[GET] /api/admin/organizations >> 403 - Access forbidden: insufficient permissions[39m
+2026-05-02 21:11:56:1156 [31merror[39m: [31m[GET] /api/admin/regions >> 403 - Access forbidden: insufficient permissions[39m
+2026-05-02 21:11:58:1158 [31merror[39m: [31mRedis connection error: [39m
+2026-05-02 21:12:00:120 [31merror[39m: [31mRedis connection error: [39m
+2026-05-02 21:12:02:122 [31merror[39m: [31mRedis connection error: [39m
+2026-05-02 21:12:03:123 [31merror[39m: [31m[GET] /api/admin/regions >> 403 - Access forbidden: insufficient permissions[39m
+2026-05-02 21:12:03:123 [31merror[39m: [31m[GET] /api/admin/organizations >> 403 - Access forbidden: insufficient permissions[39m
+2026-05-02 21:12:03:123 [31merror[39m: [31m[GET] /api/admin/regions >> 403 - Access forbidden: insufficient permissions[39m
+2026-05-02 21:12:03:123 [31merror[39m: [31m[GET] /api/admin/organizations >> 403 - Access forbidden: insufficient permissions[39m
+2026-05-02 21:12:04:124 [31merror[39m: [31mRedis connection error: [39m
+2026-05-02 21:12:04:124 [31merror[39m: [31m[GET] /api/admin/organizations >> 403 - Access forbidden: insufficient permissions[39m
+2026-05-02 21:12:04:124 [31merror[39m: [31m[GET] /api/admin/regions >> 403 - Access forbidden: insufficient permissions[39m
+2026-05-02 21:12:04:124 [31merror[39m: [31m[GET] /api/admin/organizations >> 403 - Access forbidden: insufficient permissions[39m
+2026-05-02 21:12:04:124 [31merror[39m: [31m[GET] /api/admin/tenants >> 403 - Access forbidden: insufficient permissions[39m
+2026-05-02 21:12:04:124 [31merror[39m: [31m[GET] /api/admin/regions >> 403 - Access forbidden: insufficient permissions[39m
+2026-05-02 21:12:04:124 [31merror[39m: [31m[GET] /api/admin/tenants >> 403 - Access forbidden: insufficient permissions[39m
+2026-05-02 21:12:06:126 [31merror[39m: [31mRedis connection error: [39m
+2026-05-02 21:12:08:128 [31merror[39m: [31mRedis connection error: [39m
+2026-05-02 21:12:10:1210 [31merror[39m: [31mRedis connection error: [39m
+2026-05-02 21:12:12:1212 [31merror[39m: [31mRedis connection error: [39m
+2026-05-02 21:12:14:1214 [31merror[39m: [31mRedis connection error: [39m
+2026-05-02 21:12:16:1216 [31merror[39m: [31mRedis connection error: [39m
+2026-05-02 21:12:18:1218 [31merror[39m: [31mRedis connection error: [39m
+2026-05-02 21:12:20:1220 [31merror[39m: [31mRedis connection error: [39m
+2026-05-02 21:12:22:1222 [31merror[39m: [31mRedis connection error: [39m
+2026-05-02 21:12:24:1224 [31merror[39m: [31mRedis connection error: [39m
+2026-05-02 21:12:26:1226 [31merror[39m: [31mRedis connection error: [39m
+2026-05-02 21:12:28:1228 [31merror[39m: [31mRedis connection error: [39m
+2026-05-02 21:12:30:1230 [31merror[39m: [31mRedis connection error: [39m
+2026-05-02 21:12:32:1232 [31merror[39m: [31mRedis connection error: [39m
+2026-05-02 21:12:34:1234 [31merror[39m: [31mRedis connection error: [39m
+2026-05-02 21:12:36:1236 [31merror[39m: [31mRedis connection error: [39m
+2026-05-02 21:12:38:1238 [31merror[39m: [31mRedis connection error: [39m
+2026-05-02 21:12:40:1240 [31merror[39m: [31mRedis connection error: [39m
+2026-05-02 21:12:42:1242 [31merror[39m: [31mRedis connection error: [39m
+2026-05-02 21:12:44:1244 [31merror[39m: [31mRedis connection error: [39m
+2026-05-02 21:12:46:1246 [31merror[39m: [31mRedis connection error: [39m
+2026-05-02 21:12:48:1248 [31merror[39m: [31mRedis connection error: [39m
+2026-05-02 21:12:50:1250 [31merror[39m: [31mRedis connection error: [39m
+2026-05-02 21:12:52:1252 [31merror[39m: [31mRedis connection error: [39m
+2026-05-02 21:12:54:1254 [31merror[39m: [31mRedis connection error: [39m
+2026-05-02 21:12:56:1256 [31merror[39m: [31mRedis connection error: [39m
+2026-05-02 21:12:58:1258 [31merror[39m: [31mRedis connection error: [39m
+2026-05-02 21:13:00:130 [31merror[39m: [31mRedis connection error: [39m
+2026-05-02 21:13:02:132 [31merror[39m: [31mRedis connection error: [39m
+2026-05-02 21:13:04:134 [31merror[39m: [31mRedis connection error: [39m
+2026-05-02 21:13:06:136 [31merror[39m: [31mRedis connection error: [39m
+2026-05-02 21:13:08:138 [31merror[39m: [31mRedis connection error: [39m
+2026-05-02 21:13:10:1310 [31merror[39m: [31mRedis connection error: [39m
+2026-05-02 21:13:12:1312 [31merror[39m: [31mRedis connection error: [39m
+2026-05-02 21:13:14:1314 [31merror[39m: [31mRedis connection error: [39m
+2026-05-02 21:13:16:1316 [31merror[39m: [31mRedis connection error: [39m
+2026-05-02 21:13:17:1317 [31merror[39m: [31m[GET] /api/admin/regions >> 403 - Access forbidden: insufficient permissions[39m
+2026-05-02 21:13:17:1317 [31merror[39m: [31m[GET] /api/admin/organizations >> 403 - Access forbidden: insufficient permissions[39m
+2026-05-02 21:13:17:1317 [31merror[39m: [31m[GET] /api/admin/regions >> 403 - Access forbidden: insufficient permissions[39m
+2026-05-02 21:13:17:1317 [31merror[39m: [31m[GET] /api/admin/organizations >> 403 - Access forbidden: insufficient permissions[39m
+2026-05-02 21:13:18:1318 [31merror[39m: [31m[GET] /api/admin/organizations >> 403 - Access forbidden: insufficient permissions[39m
+2026-05-02 21:13:18:1318 [31merror[39m: [31m[GET] /api/admin/regions >> 403 - Access forbidden: insufficient permissions[39m
+2026-05-02 21:13:18:1318 [31merror[39m: [31m[GET] /api/admin/regions >> 403 - Access forbidden: insufficient permissions[39m
+2026-05-02 21:13:18:1318 [31merror[39m: [31m[GET] /api/admin/tenants >> 403 - Access forbidden: insufficient permissions[39m
+2026-05-02 21:13:18:1318 [31merror[39m: [31m[GET] /api/admin/organizations >> 403 - Access forbidden: insufficient permissions[39m
+2026-05-02 21:13:18:1318 [31merror[39m: [31m[GET] /api/admin/tenants >> 403 - Access forbidden: insufficient permissions[39m
+2026-05-02 21:13:18:1318 [31merror[39m: [31mRedis connection error: [39m
+2026-05-02 21:13:20:1320 [31merror[39m: [31mRedis connection error: [39m
+2026-05-02 21:13:22:1322 [31merror[39m: [31mRedis connection error: [39m
+2026-05-02 21:13:23:1323 [31merror[39m: [31m[GET] /api/admin/regions >> 403 - Access forbidden: insufficient permissions[39m
+2026-05-02 21:13:23:1323 [31merror[39m: [31m[GET] /api/admin/regions >> 403 - Access forbidden: insufficient permissions[39m
+2026-05-02 21:13:23:1323 [31merror[39m: [31m[GET] /api/admin/organizations >> 403 - Access forbidden: insufficient permissions[39m
+2026-05-02 21:13:23:1323 [31merror[39m: [31m[GET] /api/admin/organizations >> 403 - Access forbidden: insufficient permissions[39m
+2026-05-02 21:13:24:1324 [31merror[39m: [31mRedis connection error: [39m
+2026-05-02 21:13:25:1325 [31merror[39m: [31m[GET] /api/admin/organizations >> 403 - Access forbidden: insufficient permissions[39m
+2026-05-02 21:13:25:1325 [31merror[39m: [31m[GET] /api/admin/regions >> 403 - Access forbidden: insufficient permissions[39m
+2026-05-02 21:13:25:1325 [31merror[39m: [31m[GET] /api/admin/tenants >> 403 - Access forbidden: insufficient permissions[39m
+2026-05-02 21:13:25:1325 [31merror[39m: [31m[GET] /api/admin/regions >> 403 - Access forbidden: insufficient permissions[39m
+2026-05-02 21:13:25:1325 [31merror[39m: [31m[GET] /api/admin/organizations >> 403 - Access forbidden: insufficient permissions[39m
+2026-05-02 21:13:25:1325 [31merror[39m: [31m[GET] /api/admin/tenants >> 403 - Access forbidden: insufficient permissions[39m
+2026-05-02 21:13:26:1326 [31merror[39m: [31mRedis connection error: [39m
+2026-05-02 21:13:28:1328 [31merror[39m: [31mRedis connection error: [39m
+2026-05-02 21:13:31:1331 [31merror[39m: [31mRedis connection error: [39m
+2026-05-02 21:13:33:1333 [31merror[39m: [31mRedis connection error: [39m
+2026-05-02 21:13:35:1335 [31merror[39m: [31mRedis connection error: [39m
+2026-05-02 21:13:37:1337 [31merror[39m: [31mRedis connection error: [39m
+2026-05-02 21:13:37:1337 [31merror[39m: [31m[GET] /api/admin/regions >> 403 - Access forbidden: insufficient permissions[39m
+2026-05-02 21:13:37:1337 [31merror[39m: [31m[GET] /api/admin/organizations >> 403 - Access forbidden: insufficient permissions[39m
+2026-05-02 21:13:37:1337 [31merror[39m: [31m[GET] /api/admin/regions >> 403 - Access forbidden: insufficient permissions[39m
+2026-05-02 21:13:37:1337 [31merror[39m: [31m[GET] /api/admin/organizations >> 403 - Access forbidden: insufficient permissions[39m
+2026-05-02 21:13:39:1339 [31merror[39m: [31mRedis connection error: [39m
+2026-05-02 21:13:40:1340 [31merror[39m: [31m[GET] /api/admin/organizations >> 403 - Access forbidden: insufficient permissions[39m
+2026-05-02 21:13:40:1340 [31merror[39m: [31m[GET] /api/admin/regions >> 403 - Access forbidden: insufficient permissions[39m
+2026-05-02 21:13:40:1340 [31merror[39m: [31m[GET] /api/admin/organizations >> 403 - Access forbidden: insufficient permissions[39m
+2026-05-02 21:13:40:1340 [31merror[39m: [31m[GET] /api/admin/tenants >> 403 - Access forbidden: insufficient permissions[39m
+2026-05-02 21:13:40:1340 [31merror[39m: [31m[GET] /api/admin/regions >> 403 - Access forbidden: insufficient permissions[39m
+2026-05-02 21:13:40:1340 [31merror[39m: [31m[GET] /api/admin/tenants >> 403 - Access forbidden: insufficient permissions[39m
+2026-05-02 21:13:41:1341 [31merror[39m: [31mRedis connection error: [39m
+2026-05-02 21:13:41:1341 [31merror[39m: [31m[GET] /api/admin/regions >> 403 - Access forbidden: insufficient permissions[39m
+2026-05-02 21:13:41:1341 [31merror[39m: [31m[GET] /api/admin/regions >> 403 - Access forbidden: insufficient permissions[39m
+2026-05-02 21:13:41:1341 [31merror[39m: [31m[GET] /api/admin/organizations >> 403 - Access forbidden: insufficient permissions[39m
+2026-05-02 21:13:41:1341 [31merror[39m: [31m[GET] /api/admin/organizations >> 403 - Access forbidden: insufficient permissions[39m
+2026-05-02 21:13:43:1343 [31merror[39m: [31mRedis connection error: [39m
+2026-05-02 21:13:45:1345 [31merror[39m: [31mRedis connection error: [39m
+2026-05-02 21:13:47:1347 [31merror[39m: [31mRedis connection error: [39m
+2026-05-02 21:13:49:1349 [31merror[39m: [31mRedis connection error: [39m
+2026-05-02 21:13:51:1351 [31merror[39m: [31mRedis connection error: [39m
+2026-05-02 21:13:53:1353 [31merror[39m: [31mRedis connection error: [39m
+2026-05-02 21:13:55:1355 [31merror[39m: [31mRedis connection error: [39m
+2026-05-02 21:13:57:1357 [31merror[39m: [31mRedis connection error: [39m
+2026-05-02 21:13:59:1359 [31merror[39m: [31mRedis connection error: [39m
+2026-05-02 21:14:01:141 [31merror[39m: [31mRedis connection error: [39m
+2026-05-02 21:14:03:143 [31merror[39m: [31mRedis connection error: [39m
+2026-05-02 21:14:05:145 [31merror[39m: [31mRedis connection error: [39m
+2026-05-02 21:14:07:147 [31merror[39m: [31mRedis connection error: [39m
+2026-05-02 21:14:09:149 [31merror[39m: [31mRedis connection error: [39m
+2026-05-02 21:14:11:1411 [31merror[39m: [31mRedis connection error: [39m
+2026-05-02 21:14:13:1413 [31merror[39m: [31mRedis connection error: [39m
+2026-05-02 21:14:14:1414 [31merror[39m: [31m[GET] /api/admin/tenants >> 403 - Access forbidden: insufficient permissions[39m
+2026-05-02 21:14:14:1414 [31merror[39m: [31m[GET] /api/admin/organizations >> 403 - Access forbidden: insufficient permissions[39m
+2026-05-02 21:14:14:1414 [31merror[39m: [31m[GET] /api/admin/regions >> 403 - Access forbidden: insufficient permissions[39m
+2026-05-02 21:14:14:1414 [31merror[39m: [31m[GET] /api/admin/tenants >> 403 - Access forbidden: insufficient permissions[39m
+2026-05-02 21:14:14:1414 [31merror[39m: [31m[GET] /api/admin/organizations >> 403 - Access forbidden: insufficient permissions[39m
+2026-05-02 21:14:14:1414 [31merror[39m: [31m[GET] /api/admin/regions >> 403 - Access forbidden: insufficient permissions[39m
+2026-05-02 21:14:15:1415 [31merror[39m: [31mRedis connection error: [39m
+2026-05-02 21:14:17:1417 [31merror[39m: [31mRedis connection error: [39m
+2026-05-02 21:14:19:1419 [31merror[39m: [31mRedis connection error: [39m
+2026-05-02 21:14:21:1421 [31merror[39m: [31mRedis connection error: [39m
+2026-05-02 21:14:23:1423 [31merror[39m: [31mRedis connection error: [39m
+2026-05-02 21:14:25:1425 [31merror[39m: [31mRedis connection error: [39m
+2026-05-02 21:14:27:1427 [31merror[39m: [31mRedis connection error: [39m
+2026-05-02 21:14:29:1429 [31merror[39m: [31mRedis connection error: [39m
+2026-05-02 21:14:31:1431 [31merror[39m: [31mRedis connection error: [39m
+2026-05-02 21:14:33:1433 [31merror[39m: [31mRedis connection error: [39m
+2026-05-02 21:14:35:1435 [31merror[39m: [31mRedis connection error: [39m
+2026-05-02 21:14:37:1437 [31merror[39m: [31mRedis connection error: [39m
+2026-05-02 21:14:39:1439 [31merror[39m: [31mRedis connection error: [39m
+2026-05-02 21:14:41:1441 [31merror[39m: [31mRedis connection error: [39m
+2026-05-02 21:14:43:1443 [31merror[39m: [31mRedis connection error: [39m
+2026-05-02 21:14:45:1445 [31merror[39m: [31mRedis connection error: [39m
+2026-05-02 21:14:47:1447 [31merror[39m: [31mRedis connection error: [39m
+2026-05-02 21:14:49:1449 [31merror[39m: [31mRedis connection error: [39m
+2026-05-02 21:14:51:1451 [31merror[39m: [31mRedis connection error: [39m
+2026-05-02 21:14:53:1453 [31merror[39m: [31mRedis connection error: [39m
+2026-05-02 21:14:55:1455 [31merror[39m: [31mRedis connection error: [39m
+2026-05-02 21:14:57:1457 [31merror[39m: [31mRedis connection error: [39m
+2026-05-02 21:14:59:1459 [31merror[39m: [31mRedis connection error: [39m
+2026-05-02 21:15:01:151 [31merror[39m: [31mRedis connection error: [39m
+2026-05-02 21:15:03:153 [31merror[39m: [31mRedis connection error: [39m
+2026-05-02 21:15:05:155 [31merror[39m: [31mRedis connection error: [39m
+2026-05-02 21:15:07:157 [31merror[39m: [31mRedis connection error: [39m
+2026-05-02 21:15:09:159 [31merror[39m: [31mRedis connection error: [39m
+2026-05-02 21:15:11:1511 [31merror[39m: [31mRedis connection error: [39m
+2026-05-02 21:15:13:1513 [31merror[39m: [31mRedis connection error: [39m
+2026-05-02 21:15:15:1515 [31merror[39m: [31mRedis connection error: [39m
+2026-05-02 21:15:17:1517 [31merror[39m: [31mRedis connection error: [39m
+2026-05-02 21:15:19:1519 [31merror[39m: [31mRedis connection error: [39m
+2026-05-02 21:15:20:1520 [31merror[39m: [31m[GET] /api/admin/organizations >> 403 - Access forbidden: insufficient permissions[39m
+2026-05-02 21:15:20:1520 [31merror[39m: [31m[GET] /api/admin/regions >> 403 - Access forbidden: insufficient permissions[39m
+2026-05-02 21:15:20:1520 [31merror[39m: [31m[GET] /api/admin/tenants >> 403 - Access forbidden: insufficient permissions[39m
+2026-05-02 21:15:20:1520 [31merror[39m: [31m[GET] /api/admin/organizations >> 403 - Access forbidden: insufficient permissions[39m
+2026-05-02 21:15:20:1520 [31merror[39m: [31m[GET] /api/admin/regions >> 403 - Access forbidden: insufficient permissions[39m
+2026-05-02 21:15:20:1520 [31merror[39m: [31m[GET] /api/admin/tenants >> 403 - Access forbidden: insufficient permissions[39m
+2026-05-02 21:15:21:1521 [31merror[39m: [31mRedis connection error: [39m
+2026-05-02 21:15:22:1522 [31merror[39m: [31m[GET] /api/admin/regions >> 403 - Access forbidden: insufficient permissions[39m
+2026-05-02 21:15:22:1522 [31merror[39m: [31m[GET] /api/admin/regions >> 403 - Access forbidden: insufficient permissions[39m
+2026-05-02 21:15:22:1522 [31merror[39m: [31m[GET] /api/admin/organizations >> 403 - Access forbidden: insufficient permissions[39m
+2026-05-02 21:15:22:1522 [31merror[39m: [31m[GET] /api/admin/organizations >> 403 - Access forbidden: insufficient permissions[39m
+2026-05-02 21:15:23:1523 [31merror[39m: [31mRedis connection error: [39m
+2026-05-02 21:15:25:1525 [31merror[39m: [31m[GET] /api/admin/tenants >> 403 - Access forbidden: insufficient permissions[39m
+2026-05-02 21:15:25:1525 [31merror[39m: [31m[GET] /api/admin/tenants >> 403 - Access forbidden: insufficient permissions[39m
+2026-05-02 21:15:25:1525 [31merror[39m: [31m[GET] /api/admin/organizations >> 403 - Access forbidden: insufficient permissions[39m
+2026-05-02 21:15:25:1525 [31merror[39m: [31m[GET] /api/admin/regions >> 403 - Access forbidden: insufficient permissions[39m
+2026-05-02 21:15:25:1525 [31merror[39m: [31m[GET] /api/admin/organizations >> 403 - Access forbidden: insufficient permissions[39m
+2026-05-02 21:15:25:1525 [31merror[39m: [31m[GET] /api/admin/regions >> 403 - Access forbidden: insufficient permissions[39m
+2026-05-02 21:15:25:1525 [31merror[39m: [31mRedis connection error: [39m
+2026-05-02 21:15:27:1527 [31merror[39m: [31mRedis connection error: [39m
+2026-05-02 21:15:29:1529 [31merror[39m: [31mRedis connection error: [39m
+2026-05-02 21:15:31:1531 [31merror[39m: [31mRedis connection error: [39m
+2026-05-02 21:15:33:1533 [31merror[39m: [31mRedis connection error: [39m
+2026-05-02 21:15:35:1535 [31merror[39m: [31mRedis connection error: [39m
+2026-05-02 21:15:38:1538 [31merror[39m: [31mRedis connection error: [39m
+2026-05-02 21:15:40:1540 [31merror[39m: [31mRedis connection error: [39m
+2026-05-02 21:15:42:1542 [31merror[39m: [31mRedis connection error: [39m
+2026-05-02 21:15:44:1544 [31merror[39m: [31mRedis connection error: [39m
+2026-05-02 21:15:46:1546 [31merror[39m: [31mRedis connection error: [39m
+2026-05-02 21:15:47:1547 [31merror[39m: [31m[GET] /api/admin/regions >> 403 - Access forbidden: insufficient permissions[39m
+2026-05-02 21:15:47:1547 [31merror[39m: [31m[GET] /api/admin/organizations >> 403 - Access forbidden: insufficient permissions[39m
+2026-05-02 21:15:47:1547 [31merror[39m: [31m[GET] /api/admin/regions >> 403 - Access forbidden: insufficient permissions[39m
+2026-05-02 21:15:47:1547 [31merror[39m: [31m[GET] /api/admin/organizations >> 403 - Access forbidden: insufficient permissions[39m
+2026-05-02 21:15:48:1548 [31merror[39m: [31mRedis connection error: [39m
+2026-05-02 21:15:50:1550 [31merror[39m: [31mRedis connection error: [39m
+2026-05-02 21:15:52:1552 [31merror[39m: [31mRedis connection error: [39m
+2026-05-02 21:15:54:1554 [31merror[39m: [31mRedis connection error: [39m
+2026-05-02 21:15:56:1556 [31merror[39m: [31mRedis connection error: [39m
+2026-05-02 21:15:58:1558 [31merror[39m: [31mRedis connection error: [39m
+2026-05-02 21:16:00:160 [31merror[39m: [31mRedis connection error: [39m
+2026-05-02 21:16:02:162 [31merror[39m: [31mRedis connection error: [39m
+2026-05-02 21:16:04:164 [31merror[39m: [31mRedis connection error: [39m
+2026-05-02 21:16:06:166 [31merror[39m: [31mRedis connection error: [39m
+2026-05-02 21:16:08:168 [31merror[39m: [31mRedis connection error: [39m
+2026-05-02 21:16:10:1610 [31merror[39m: [31mRedis connection error: [39m
+2026-05-02 21:16:12:1612 [31merror[39m: [31mRedis connection error: [39m
+2026-05-02 21:16:14:1614 [31merror[39m: [31mRedis connection error: [39m
+2026-05-02 21:16:16:1616 [31merror[39m: [31mRedis connection error: [39m
+2026-05-02 21:16:17:1617 [31merror[39m: [31m[GET] /api/admin/tenants >> 403 - Access forbidden: insufficient permissions[39m
+2026-05-02 21:16:17:1617 [31merror[39m: [31m[GET] /api/admin/organizations >> 403 - Access forbidden: insufficient permissions[39m
+2026-05-02 21:16:17:1617 [31merror[39m: [31m[GET] /api/admin/regions >> 403 - Access forbidden: insufficient permissions[39m
+2026-05-02 21:16:17:1617 [31merror[39m: [31m[GET] /api/admin/tenants >> 403 - Access forbidden: insufficient permissions[39m
+2026-05-02 21:16:17:1617 [31merror[39m: [31m[GET] /api/admin/organizations >> 403 - Access forbidden: insufficient permissions[39m
+2026-05-02 21:16:17:1617 [31merror[39m: [31m[GET] /api/admin/regions >> 403 - Access forbidden: insufficient permissions[39m
+2026-05-02 21:16:18:1618 [31merror[39m: [31mRedis connection error: [39m
+2026-05-02 21:16:20:1620 [31merror[39m: [31mRedis connection error: [39m
+2026-05-02 21:16:22:1622 [31merror[39m: [31mRedis connection error: [39m
+2026-05-02 21:16:24:1624 [31merror[39m: [31mRedis connection error: [39m
+2026-05-02 21:16:26:1626 [31merror[39m: [31mRedis connection error: [39m
+2026-05-02 21:16:28:1628 [31merror[39m: [31mRedis connection error: [39m
+2026-05-02 21:16:30:1630 [31merror[39m: [31mRedis connection error: [39m
+2026-05-02 21:16:32:1632 [31merror[39m: [31mRedis connection error: [39m
+2026-05-02 21:16:34:1634 [31merror[39m: [31mRedis connection error: [39m
+2026-05-02 21:16:36:1636 [31merror[39m: [31mRedis connection error: [39m
+2026-05-02 21:16:38:1638 [31merror[39m: [31mRedis connection error: [39m
+2026-05-02 21:16:40:1640 [31merror[39m: [31mRedis connection error: [39m
+2026-05-02 21:16:42:1642 [31merror[39m: [31mRedis connection error: [39m
+2026-05-02 21:16:44:1644 [31merror[39m: [31mRedis connection error: [39m
+2026-05-02 21:16:46:1646 [31merror[39m: [31mRedis connection error: [39m
+2026-05-02 21:16:48:1648 [31merror[39m: [31mRedis connection error: [39m
+2026-05-02 21:16:50:1650 [31merror[39m: [31mRedis connection error: [39m
+2026-05-02 21:16:52:1652 [31merror[39m: [31mRedis connection error: [39m
+2026-05-02 21:16:54:1654 [31merror[39m: [31mRedis connection error: [39m
+2026-05-02 21:16:56:1656 [31merror[39m: [31mRedis connection error: [39m
+2026-05-02 21:16:58:1658 [31merror[39m: [31mRedis connection error: [39m
+2026-05-02 21:17:00:170 [31merror[39m: [31mRedis connection error: [39m
+2026-05-02 21:17:02:172 [31merror[39m: [31mRedis connection error: [39m
+2026-05-02 21:17:04:174 [31merror[39m: [31mRedis connection error: [39m
+2026-05-02 21:17:06:176 [31merror[39m: [31mRedis connection error: [39m
+2026-05-02 21:17:08:178 [31merror[39m: [31mRedis connection error: [39m
+2026-05-02 21:17:10:1710 [31merror[39m: [31mRedis connection error: [39m
+2026-05-02 21:17:12:1712 [31merror[39m: [31mRedis connection error: [39m
+2026-05-02 21:17:14:1714 [31merror[39m: [31mRedis connection error: [39m
+2026-05-02 21:17:16:1716 [31merror[39m: [31mRedis connection error: [39m
+2026-05-02 21:17:18:1718 [31merror[39m: [31mRedis connection error: [39m
+2026-05-02 21:17:20:1720 [31merror[39m: [31mRedis connection error: [39m
+2026-05-02 21:17:22:1722 [31merror[39m: [31mRedis connection error: [39m
+2026-05-02 21:17:24:1724 [31merror[39m: [31mRedis connection error: [39m
+2026-05-02 21:17:26:1726 [31merror[39m: [31mRedis connection error: [39m
+2026-05-02 21:17:28:1728 [31merror[39m: [31mRedis connection error: [39m
+2026-05-02 21:17:30:1730 [31merror[39m: [31mRedis connection error: [39m
+2026-05-02 21:17:32:1732 [31merror[39m: [31mRedis connection error: [39m
+2026-05-02 21:17:34:1734 [31merror[39m: [31mRedis connection error: [39m
+2026-05-02 21:17:36:1736 [31merror[39m: [31mRedis connection error: [39m
+2026-05-02 21:17:38:1738 [31merror[39m: [31mRedis connection error: [39m
+2026-05-02 21:17:40:1740 [31merror[39m: [31mRedis connection error: [39m
+2026-05-02 21:17:42:1742 [31merror[39m: [31mRedis connection error: [39m
+2026-05-02 21:17:44:1744 [31merror[39m: [31mRedis connection error: [39m
+2026-05-02 21:17:47:1747 [31merror[39m: [31mRedis connection error: [39m
+2026-05-02 21:17:49:1749 [31merror[39m: [31mRedis connection error: [39m
+2026-05-02 21:17:51:1751 [31merror[39m: [31mRedis connection error: [39m
+2026-05-02 21:17:53:1753 [31merror[39m: [31mRedis connection error: [39m
+2026-05-02 21:17:53:1753 [31merror[39m: [31m[GET] /api/admin/tenants >> 403 - Access forbidden: insufficient permissions[39m
+2026-05-02 21:17:53:1753 [31merror[39m: [31m[GET] /api/admin/organizations >> 403 - Access forbidden: insufficient permissions[39m
+2026-05-02 21:17:53:1753 [31merror[39m: [31m[GET] /api/admin/regions >> 403 - Access forbidden: insufficient permissions[39m
+2026-05-02 21:17:53:1753 [31merror[39m: [31m[GET] /api/admin/tenants >> 403 - Access forbidden: insufficient permissions[39m
+2026-05-02 21:17:53:1753 [31merror[39m: [31m[GET] /api/admin/organizations >> 403 - Access forbidden: insufficient permissions[39m
+2026-05-02 21:17:53:1753 [31merror[39m: [31m[GET] /api/admin/regions >> 403 - Access forbidden: insufficient permissions[39m
+2026-05-02 21:17:55:1755 [31merror[39m: [31mRedis connection error: [39m
+2026-05-02 21:17:55:1755 [31merror[39m: [31m[GET] /api/admin/regions >> 403 - Access forbidden: insufficient permissions[39m
+2026-05-02 21:17:55:1755 [31merror[39m: [31m[GET] /api/admin/organizations >> 403 - Access forbidden: insufficient permissions[39m
+2026-05-02 21:17:55:1755 [31merror[39m: [31m[GET] /api/admin/regions >> 403 - Access forbidden: insufficient permissions[39m
+2026-05-02 21:17:55:1755 [31merror[39m: [31m[GET] /api/admin/organizations >> 403 - Access forbidden: insufficient permissions[39m
+2026-05-02 21:17:57:1757 [31merror[39m: [31mRedis connection error: [39m
+2026-05-02 21:17:59:1759 [31merror[39m: [31mRedis connection error: [39m
+2026-05-02 21:18:01:181 [31merror[39m: [31mRedis connection error: [39m
+2026-05-02 21:18:03:183 [31merror[39m: [31mRedis connection error: [39m
+2026-05-02 21:18:03:183 [31merror[39m: [31m[GET] /api/admin/tenants >> 403 - Access forbidden: insufficient permissions[39m
+2026-05-02 21:18:03:183 [31merror[39m: [31m[GET] /api/admin/tenants >> 403 - Access forbidden: insufficient permissions[39m
+2026-05-02 21:18:05:185 [31merror[39m: [31mRedis connection error: [39m
+2026-05-02 21:18:05:185 [31merror[39m: [31m[GET] /api/admin/regions >> 403 - Access forbidden: insufficient permissions[39m
+2026-05-02 21:18:05:185 [31merror[39m: [31m[GET] /api/admin/regions >> 403 - Access forbidden: insufficient permissions[39m
+2026-05-02 21:18:07:187 [31merror[39m: [31mRedis connection error: [39m
+2026-05-02 21:18:09:189 [31merror[39m: [31mRedis connection error: [39m
+2026-05-02 21:18:11:1811 [31merror[39m: [31mRedis connection error: [39m
+2026-05-02 21:18:13:1813 [31merror[39m: [31mRedis connection error: [39m
+2026-05-02 21:18:15:1815 [31merror[39m: [31mRedis connection error: [39m
+2026-05-02 21:18:17:1817 [31merror[39m: [31mRedis connection error: [39m
+2026-05-02 21:18:19:1819 [31merror[39m: [31mRedis connection error: [39m
+2026-05-02 21:18:20:1820 [31merror[39m: [31m[GET] /api/admin/tenants >> 403 - Access forbidden: insufficient permissions[39m
+2026-05-02 21:18:20:1820 [31merror[39m: [31m[GET] /api/admin/tenants >> 403 - Access forbidden: insufficient permissions[39m
+2026-05-02 21:18:21:1821 [31merror[39m: [31mRedis connection error: [39m
+2026-05-02 21:18:21:1821 [31merror[39m: [31m[GET] /api/admin/regions >> 403 - Access forbidden: insufficient permissions[39m
+2026-05-02 21:18:21:1821 [31merror[39m: [31m[GET] /api/admin/regions >> 403 - Access forbidden: insufficient permissions[39m
+2026-05-02 21:18:22:1822 [31merror[39m: [31m[GET] /api/admin/tenants >> 403 - Access forbidden: insufficient permissions[39m
+2026-05-02 21:18:23:1823 [31merror[39m: [31m[GET] /api/admin/tenants >> 403 - Access forbidden: insufficient permissions[39m
+2026-05-02 21:18:23:1823 [31merror[39m: [31mRedis connection error: [39m
+2026-05-02 21:18:25:1825 [31merror[39m: [31mRedis connection error: [39m
+2026-05-02 21:18:27:1827 [31merror[39m: [31mRedis connection error: [39m
+2026-05-02 21:18:29:1829 [31merror[39m: [31mRedis connection error: [39m
+2026-05-02 21:18:31:1831 [31merror[39m: [31mRedis connection error: [39m
+2026-05-02 21:18:33:1833 [31merror[39m: [31mRedis connection error: [39m
+2026-05-02 21:18:35:1835 [31merror[39m: [31mRedis connection error: [39m
+2026-05-02 21:18:37:1837 [31merror[39m: [31mRedis connection error: [39m
+2026-05-02 21:18:39:1839 [31merror[39m: [31m[GET] /api/admin/tenants >> 403 - Access forbidden: insufficient permissions[39m
+2026-05-02 21:18:39:1839 [31merror[39m: [31m[GET] /api/admin/tenants >> 403 - Access forbidden: insufficient permissions[39m
+2026-05-02 21:18:39:1839 [31merror[39m: [31mRedis connection error: [39m
+2026-05-02 21:18:40:1840 [31merror[39m: [31m[GET] /api/admin/regions >> 403 - Access forbidden: insufficient permissions[39m
+2026-05-02 21:18:40:1840 [31merror[39m: [31m[GET] /api/admin/regions >> 403 - Access forbidden: insufficient permissions[39m
+2026-05-02 21:18:41:1841 [31merror[39m: [31mRedis connection error: [39m
+2026-05-02 21:18:41:1841 [31merror[39m: [31m[GET] /api/admin/tenants >> 403 - Access forbidden: insufficient permissions[39m
+2026-05-02 21:18:41:1841 [31merror[39m: [31m[GET] /api/admin/tenants >> 403 - Access forbidden: insufficient permissions[39m
+2026-05-02 21:18:43:1843 [31merror[39m: [31mRedis connection error: [39m
+2026-05-02 21:18:45:1845 [31merror[39m: [31mRedis connection error: [39m
+2026-05-02 21:18:46:1846 [31merror[39m: [31m[GET] /api/admin/regions >> 403 - Access forbidden: insufficient permissions[39m
+2026-05-02 21:18:46:1846 [31merror[39m: [31m[GET] /api/admin/regions >> 403 - Access forbidden: insufficient permissions[39m
+2026-05-02 21:18:47:1847 [31merror[39m: [31mRedis connection error: [39m
+2026-05-02 21:18:49:1849 [31merror[39m: [31mRedis connection error: [39m
+2026-05-02 21:18:51:1851 [31merror[39m: [31mRedis connection error: [39m
+2026-05-02 21:18:53:1853 [31merror[39m: [31mRedis connection error: [39m
+2026-05-02 21:18:55:1855 [31merror[39m: [31mRedis connection error: [39m
+2026-05-02 21:18:57:1857 [31merror[39m: [31mRedis connection error: [39m
+2026-05-02 21:18:59:1859 [31merror[39m: [31mRedis connection error: [39m
+2026-05-02 21:19:01:191 [31merror[39m: [31mRedis connection error: [39m
+2026-05-02 21:19:03:193 [31merror[39m: [31mRedis connection error: [39m
+2026-05-02 21:19:05:195 [31merror[39m: [31mRedis connection error: [39m
+2026-05-02 21:19:07:197 [31merror[39m: [31mRedis connection error: [39m
+2026-05-02 21:19:09:199 [31merror[39m: [31mRedis connection error: [39m
+2026-05-02 21:19:11:1911 [31merror[39m: [31mRedis connection error: [39m
+2026-05-02 21:19:13:1913 [31merror[39m: [31mRedis connection error: [39m
+2026-05-02 21:19:15:1915 [31merror[39m: [31mRedis connection error: [39m
+2026-05-02 21:19:17:1917 [31merror[39m: [31mRedis connection error: [39m
+2026-05-02 21:19:19:1919 [31merror[39m: [31mRedis connection error: [39m
+2026-05-02 21:19:21:1921 [31merror[39m: [31mRedis connection error: [39m
+2026-05-02 21:19:23:1923 [31merror[39m: [31mRedis connection error: [39m
+2026-05-02 21:19:25:1925 [31merror[39m: [31mRedis connection error: [39m
+2026-05-02 21:19:27:1927 [31merror[39m: [31mRedis connection error: [39m
+2026-05-02 21:19:29:1929 [31merror[39m: [31mRedis connection error: [39m
+2026-05-02 21:19:30:1930 [31merror[39m: [31m[GET] /api/admin/regions >> 403 - Access forbidden: insufficient permissions[39m
+2026-05-02 21:19:30:1930 [31merror[39m: [31m[GET] /api/admin/regions >> 403 - Access forbidden: insufficient permissions[39m
+2026-05-02 21:19:31:1931 [31merror[39m: [31mRedis connection error: [39m
+2026-05-02 21:19:33:1933 [31merror[39m: [31mRedis connection error: [39m
+2026-05-02 21:19:35:1935 [31merror[39m: [31mRedis connection error: [39m
+2026-05-02 21:19:37:1937 [31merror[39m: [31mRedis connection error: [39m
+2026-05-02 21:19:39:1939 [31merror[39m: [31mRedis connection error: [39m
+2026-05-02 21:19:41:1941 [31merror[39m: [31mRedis connection error: [39m
+2026-05-02 21:19:43:1943 [31merror[39m: [31mRedis connection error: [39m
+2026-05-02 21:19:45:1945 [31merror[39m: [31mRedis connection error: [39m
+2026-05-02 21:19:47:1947 [31merror[39m: [31mRedis connection error: [39m
+2026-05-02 21:19:50:1950 [31merror[39m: [31mRedis connection error: [39m
+2026-05-02 21:19:52:1952 [31merror[39m: [31mRedis connection error: [39m
+2026-05-02 21:19:54:1954 [31merror[39m: [31mRedis connection error: [39m
+2026-05-02 21:19:56:1956 [31merror[39m: [31mRedis connection error: [39m
+2026-05-02 21:19:58:1958 [31merror[39m: [31mRedis connection error: [39m
+2026-05-02 21:20:00:200 [31merror[39m: [31mRedis connection error: [39m
+2026-05-02 21:20:02:202 [31merror[39m: [31mRedis connection error: [39m
+2026-05-02 21:20:04:204 [31merror[39m: [31mRedis connection error: [39m
+2026-05-02 21:20:06:206 [31merror[39m: [31mRedis connection error: [39m
+2026-05-02 21:20:08:208 [31merror[39m: [31mRedis connection error: [39m
+2026-05-02 21:20:10:2010 [31merror[39m: [31mRedis connection error: [39m
+2026-05-02 21:20:12:2012 [31merror[39m: [31mRedis connection error: [39m
+2026-05-02 21:20:14:2014 [31merror[39m: [31mRedis connection error: [39m
+2026-05-02 21:20:16:2016 [31merror[39m: [31mRedis connection error: [39m
+2026-05-02 21:20:18:2018 [31merror[39m: [31mRedis connection error: [39m
+2026-05-02 21:20:20:2020 [31merror[39m: [31mRedis connection error: [39m
+2026-05-02 21:20:22:2022 [31merror[39m: [31mRedis connection error: [39m
+2026-05-02 21:20:24:2024 [31merror[39m: [31mRedis connection error: [39m
+2026-05-02 21:20:26:2026 [31merror[39m: [31mRedis connection error: [39m
+2026-05-02 21:20:28:2028 [31merror[39m: [31mRedis connection error: [39m
+2026-05-02 21:20:30:2030 [31merror[39m: [31mRedis connection error: [39m
+2026-05-02 21:20:32:2032 [31merror[39m: [31mRedis connection error: [39m
+2026-05-02 21:20:34:2034 [31merror[39m: [31mRedis connection error: [39m
+2026-05-02 21:20:36:2036 [31merror[39m: [31mRedis connection error: [39m
+2026-05-02 21:20:36:2036 [31merror[39m: [31m[GET] /api/admin/tenants >> 403 - Access forbidden: insufficient permissions[39m
+2026-05-02 21:20:36:2036 [31merror[39m: [31m[GET] /api/admin/tenants >> 403 - Access forbidden: insufficient permissions[39m
+2026-05-02 21:20:37:2037 [31merror[39m: [31m[GET] /api/admin/regions >> 403 - Access forbidden: insufficient permissions[39m
+2026-05-02 21:20:37:2037 [31merror[39m: [31m[GET] /api/admin/regions >> 403 - Access forbidden: insufficient permissions[39m
+2026-05-02 21:20:38:2038 [31merror[39m: [31mRedis connection error: [39m
+2026-05-02 21:20:39:2039 [31merror[39m: [31m[GET] /api/admin/tenants >> 403 - Access forbidden: insufficient permissions[39m
+2026-05-02 21:20:39:2039 [31merror[39m: [31m[GET] /api/admin/tenants >> 403 - Access forbidden: insufficient permissions[39m
+2026-05-02 21:20:40:2040 [31merror[39m: [31mRedis connection error: [39m
+2026-05-02 21:20:42:2042 [31merror[39m: [31mRedis connection error: [39m
+2026-05-02 21:20:44:2044 [31merror[39m: [31mRedis connection error: [39m
+2026-05-02 21:21:30:2130 [31merror[39m: [31m[GET] /api/admin/regions >> 403 - Access forbidden: insufficient permissions[39m
+2026-05-02 21:21:30:2130 [31merror[39m: [31m[GET] /api/admin/regions >> 403 - Access forbidden: insufficient permissions[39m
+2026-05-02 21:21:33:2133 [31merror[39m: [31m[GET] /api/admin/tenants >> 403 - Access forbidden: insufficient permissions[39m
+2026-05-02 21:21:33:2133 [31merror[39m: [31m[GET] /api/admin/tenants >> 403 - Access forbidden: insufficient permissions[39m
+2026-05-02 21:22:01:221 [31merror[39m: [31m[GET] /api/admin/regions >> 403 - Access forbidden: insufficient permissions[39m
+2026-05-02 21:22:01:221 [31merror[39m: [31m[GET] /api/admin/regions >> 403 - Access forbidden: insufficient permissions[39m
+2026-05-02 21:22:03:223 [31merror[39m: [31m[GET] /api/admin/regions >> 403 - Access forbidden: insufficient permissions[39m
+2026-05-02 21:22:03:223 [31merror[39m: [31m[GET] /api/admin/regions >> 403 - Access forbidden: insufficient permissions[39m
+2026-05-02 21:22:04:224 [31merror[39m: [31m[GET] /api/admin/tenants >> 403 - Access forbidden: insufficient permissions[39m
+2026-05-02 21:22:04:224 [31merror[39m: [31m[GET] /api/admin/tenants >> 403 - Access forbidden: insufficient permissions[39m
+2026-05-02 21:22:59:2259 [31merror[39m: [31m[GET] /api/admin/regions >> 403 - Access forbidden: insufficient permissions[39m
+2026-05-02 21:22:59:2259 [31merror[39m: [31m[GET] /api/admin/regions >> 403 - Access forbidden: insufficient permissions[39m
+2026-05-02 21:23:00:230 [31merror[39m: [31m[GET] /api/admin/tenants >> 403 - Access forbidden: insufficient permissions[39m
+2026-05-02 21:23:00:230 [31merror[39m: [31m[GET] /api/admin/tenants >> 403 - Access forbidden: insufficient permissions[39m
+2026-05-02 21:23:01:231 [31merror[39m: [31m[GET] /api/admin/regions >> 403 - Access forbidden: insufficient permissions[39m
+2026-05-02 21:23:01:231 [31merror[39m: [31m[GET] /api/admin/regions >> 403 - Access forbidden: insufficient permissions[39m
+2026-05-02 21:23:13:2313 [31merror[39m: [31m[GET] /api/admin/tenants >> 403 - Access forbidden: insufficient permissions[39m
+2026-05-02 21:23:13:2313 [31merror[39m: [31m[GET] /api/admin/tenants >> 403 - Access forbidden: insufficient permissions[39m
+2026-05-02 21:24:54:2454 [31merror[39m: [31m[GET] /api/admin/tenants >> 403 - Access forbidden: insufficient permissions[39m
+2026-05-02 21:24:54:2454 [31merror[39m: [31m[GET] /api/admin/tenants >> 403 - Access forbidden: insufficient permissions[39m
+2026-05-02 21:24:55:2455 [31merror[39m: [31m[GET] /api/admin/regions >> 403 - Access forbidden: insufficient permissions[39m
+2026-05-02 21:24:55:2455 [31merror[39m: [31m[GET] /api/admin/regions >> 403 - Access forbidden: insufficient permissions[39m
+2026-05-02 21:24:57:2457 [31merror[39m: [31m[GET] /api/admin/tenants >> 403 - Access forbidden: insufficient permissions[39m
+2026-05-02 21:24:57:2457 [31merror[39m: [31m[GET] /api/admin/tenants >> 403 - Access forbidden: insufficient permissions[39m
+2026-05-02 21:24:58:2458 [31merror[39m: [31m[GET] /api/admin/regions >> 403 - Access forbidden: insufficient permissions[39m
+2026-05-02 21:24:58:2458 [31merror[39m: [31m[GET] /api/admin/regions >> 403 - Access forbidden: insufficient permissions[39m
+2026-05-02 21:25:19:2519 [31merror[39m: [31m[GET] /api/admin/regions >> 403 - Access forbidden: insufficient permissions[39m
+2026-05-02 21:25:19:2519 [31merror[39m: [31m[GET] /api/admin/regions >> 403 - Access forbidden: insufficient permissions[39m
+2026-05-02 21:25:41:2541 [31merror[39m: [31m[GET] /api/admin/tenants >> 403 - Access forbidden: insufficient permissions[39m
+2026-05-02 21:25:41:2541 [31merror[39m: [31m[GET] /api/admin/tenants >> 403 - Access forbidden: insufficient permissions[39m
+2026-05-02 21:35:53:3553 [31merror[39m: [31m[POST] /api/admin/regions >> 400 - Organization context required[39m
+2026-05-02 21:41:08:418 [31merror[39m: [31m[POST] /api/admin/regions >> 400 - Organization context required[39m
+2026-05-02 21:41:13:4113 [31merror[39m: [31m[POST] /api/admin/regions >> 400 - Organization context required[39m
+2026-05-02 22:02:08:28 [31merror[39m: [31m[POST] /api/admin/tenants >> 400 - A society with this slug already exists[39m
+2026-05-02 22:18:29:1829 [31merror[39m: [31m[POST] /api/auth/otp/verify >> 400 - Invalid or expired OTP[39m
+2026-05-02 22:23:42:2342 [31merror[39m: [31mMediaService: Upload error >> Invalid credentials or API key[39m
+2026-05-02 22:23:42:2342 [31merror[39m: [31m[POST] /api/media/upload >> 502 - Failed to process media upload through external provider[39m
+2026-05-02 22:27:36:2736 [31merror[39m: [31mMediaService: Upload error >> Invalid API v1 key.[39m
+2026-05-02 22:27:36:2736 [31merror[39m: [31m[POST] /api/media/upload >> 502 - Failed to process media upload through reliable provider[39m
+2026-05-02 22:45:21:4521 [31merror[39m: [31mRedis connection error: read ECONNRESET[39m
+2026-05-02 22:45:22:4522 [31merror[39m: [31mRedis connection error: connect EHOSTUNREACH 66.33.22.232:46685[39m
+2026-05-02 22:45:22:4522 [31merror[39m: [31mRedis connection error: connect EHOSTUNREACH 66.33.22.232:46685[39m
+2026-05-02 22:45:22:4522 [31merror[39m: [31mRedis connection error: connect EHOSTUNREACH 66.33.22.232:46685[39m
+2026-05-02 22:45:23:4523 [31merror[39m: [31mRedis connection error: connect EHOSTUNREACH 66.33.22.232:46685[39m
+2026-05-02 22:45:23:4523 [31merror[39m: [31mRedis connection error: connect EHOSTUNREACH 66.33.22.232:46685[39m
+2026-05-02 22:46:13:4613 [31merror[39m: [31mMediaService: Provider HTTP Error:[39m
+2026-05-02 22:46:13:4613 [31merror[39m: [31m[POST] /api/media/upload >> 502 - Failed to process media upload through reliable provider[39m
+2026-05-02 22:52:34:5234 [31merror[39m: [31m[POST] /api/entries/request >> 403 - Context missing[39m
+2026-05-02 22:54:37:5437 [31merror[39m: [31m[POST] /api/entries/request >> 500 - [39m
+[31mInvalid `prisma.visitor.create()` invocation in[39m
+[31mD:\klb-gate\backend\src\modules\visitor\visitor.repository.ts:13:27[39m
+
+[31m  10 }[39m
+[31m  11 [39m
+[31m  12 static async create(data: { name: string; phone: string; email?: string; tenantId: string; createdBy?: string }) {[39m
+[31m→ 13   return prisma.visitor.create({[39m
+[31m         data: {[39m
+[31m           name: "Santoshi ",[39m
+[31m           phone: "8798978978",[39m
+[31m           type: "GUEST",[39m
+[31m           tenantId: "d6828be6-d59c-409c-b0b1-9a380fae0be5",[39m
+[31m           photoUrl: undefined,[39m
+[31m           createdBy: "300244cb-a621-4a1b-889a-c5cfcd60f305",[39m
+[31m           ~~~~~~~~~[39m
+[31m       ?   id?: String,[39m
+[31m       ?   createdAt?: DateTime,[39m
+[31m       ?   updatedAt?: DateTime,[39m
+[31m       ?   entries?: EntryUncheckedCreateNestedManyWithoutVisitorInput[39m
+[31m         }[39m
+[31m       })[39m
+
+[31mUnknown argument `createdBy`. Did you mean `createdAt`? Available options are marked with ?.[39m
+2026-05-02 22:56:25:5625 [31merror[39m: [31m[GET] /api/admin/users/search >> 500 - [39m
+[31mInvalid `prisma.user.findMany()` invocation in[39m
+[31mD:\klb-gate\backend\src\modules\admin\unit.controller.ts:18:43[39m
+
+[31m  15 const queryStr = String(q);[39m
+[31m  16 [39m
+[31m  17 // Search for Residents[39m
+[31m→ 18 const residents = await prisma.user.findMany([39m
+[31mCan't reach database server at `66.33.22.232:45008`[39m
+
+[31mPlease make sure your database server is running at `66.33.22.232:45008`.[39m
+2026-05-02 22:56:25:5625 [31merror[39m: [31m[GET] /api/admin/users/search >> 500 - [39m
+[31mInvalid `prisma.user.findMany()` invocation in[39m
+[31mD:\klb-gate\backend\src\modules\admin\unit.controller.ts:18:43[39m
+
+[31m  15 const queryStr = String(q);[39m
+[31m  16 [39m
+[31m  17 // Search for Residents[39m
+[31m→ 18 const residents = await prisma.user.findMany([39m
+[31mCan't reach database server at `66.33.22.232:45008`[39m
+
+[31mPlease make sure your database server is running at `66.33.22.232:45008`.[39m
+2026-05-02 22:56:25:5625 [31merror[39m: [31m[GET] /api/admin/users/search >> 500 - [39m
+[31mInvalid `prisma.user.findMany()` invocation in[39m
+[31mD:\klb-gate\backend\src\modules\admin\unit.controller.ts:18:43[39m
+
+[31m  15 const queryStr = String(q);[39m
+[31m  16 [39m
+[31m  17 // Search for Residents[39m
+[31m→ 18 const residents = await prisma.user.findMany([39m
+[31mCan't reach database server at `66.33.22.232:45008`[39m
+
+[31mPlease make sure your database server is running at `66.33.22.232:45008`.[39m
+2026-05-02 22:57:29:5729 [31merror[39m: [31mRedis connection error: read ECONNRESET[39m
+2026-05-02 23:04:14:414 [31merror[39m: [31m[POST] /api/auth/otp/verify >> 400 - Invalid or expired OTP[39m
+2026-05-02 23:04:20:420 [31merror[39m: [31m[POST] /api/auth/otp/verify >> 400 - Invalid or expired OTP[39m
+2026-05-02 23:04:23:423 [31merror[39m: [31m[POST] /api/auth/otp/verify >> 400 - Invalid or expired OTP[39m
+2026-05-02 23:04:27:427 [31merror[39m: [31m[POST] /api/auth/otp/verify >> 400 - Invalid or expired OTP[39m
+2026-05-02 23:04:29:429 [31merror[39m: [31m[POST] /api/auth/otp/verify >> 400 - Invalid or expired OTP[39m
+2026-05-02 23:23:22:2322 [31merror[39m: [31m[POST] /api/entries/request >> 500 - [39m
+[31mInvalid `prisma.visitor.create()` invocation in[39m
+[31mD:\klb-gate\backend\src\modules\visitor\visitor.repository.ts:15:27[39m
+
+[31m  12 static async create(data: { name: string; phone: string; type?: any; photoId?: string; tenantId: string; createdBy?: string }) {[39m
+[31m  13   // Filter out fields not in the Prisma schema for Visitor (like createdBy)[39m
+[31m  14   const { createdBy, ...validData } = data;[39m
+[31m→ 15   return prisma.visitor.create({[39m
+[31m         data: {[39m
+[31m           name: "Rakhi",[39m
+[31m           phone: "9685239658",[39m
+[31m           type: "GUEST",[39m
+[31m           tenantId: "d6828be6-d59c-409c-b0b1-9a380fae0be5",[39m
+[31m           photoId: "b1acd7c6-1664-4678-ba24-ba82b8e36d44",[39m
+[31m           ~~~~~~~[39m
+[31m       ?   id?: String,[39m
+[31m       ?   photoUrl?: String | Null,[39m
+[31m       ?   createdAt?: DateTime,[39m
+[31m       ?   updatedAt?: DateTime,[39m
+[31m       ?   entries?: EntryUncheckedCreateNestedManyWithoutVisitorInput[39m
+[31m         }[39m
+[31m       })[39m
+
+[31mUnknown argument `photoId`. Did you mean `photoUrl`? Available options are marked with ?.[39m
+2026-05-02 23:24:25:2425 [31merror[39m: [31m[POST] /api/entries/request >> 500 - [39m
+[31mInvalid `prisma.visitor.create()` invocation in[39m
+[31mD:\klb-gate\backend\src\modules\visitor\visitor.repository.ts:15:27[39m
+
+[31m  12 static async create(data: { name: string; phone: string; type?: any; photoId?: string; tenantId: string; createdBy?: string }) {[39m
+[31m  13   // Filter out fields not in the Prisma schema for Visitor (like createdBy)[39m
+[31m  14   const { createdBy, ...validData } = data;[39m
+[31m→ 15   return prisma.visitor.create({[39m
+[31m         data: {[39m
+[31m           name: "Rahul",[39m
+[31m           phone: "9786453128",[39m
+[31m           type: "GUEST",[39m
+[31m           tenantId: "d6828be6-d59c-409c-b0b1-9a380fae0be5",[39m
+[31m           photoId: "be6da906-bc59-4c8c-a4bd-d9e541faf0da",[39m
+[31m           ~~~~~~~[39m
+[31m       ?   id?: String,[39m
+[31m       ?   photoUrl?: String | Null,[39m
+[31m       ?   createdAt?: DateTime,[39m
+[31m       ?   updatedAt?: DateTime,[39m
+[31m       ?   entries?: EntryUncheckedCreateNestedManyWithoutVisitorInput[39m
+[31m         }[39m
+[31m       })[39m
+
+[31mUnknown argument `photoId`. Did you mean `photoUrl`? Available options are marked with ?.[39m
+2026-05-02 23:29:16:2916 [31merror[39m: [31m[POST] /api/media/upload >> 400 - No file provided[39m
+2026-05-02 23:29:20:2920 [31merror[39m: [31m[POST] /api/media/upload >> 400 - No file provided[39m
+2026-05-02 23:31:23:3123 [31merror[39m: [31m[POST] /api/media/upload >> 400 - No file provided[39m
+2026-05-02 23:31:26:3126 [31merror[39m: [31m[POST] /api/media/upload >> 400 - No file provided[39m
+2026-05-02 23:48:09:489 [31merror[39m: [31m[POST] /api/entries/approve >> 500 - [39m
+[31mInvalid `prisma.entry.update()` invocation in[39m
+[31mD:\klb-gate\backend\src\modules\visitor\entry.repository.ts:37:25[39m
+
+[31m  34 }[39m
+[31m  35 [39m
+[31m  36 static async updateStatus(entryId: string, status: EntryStatus, handledById?: string) {[39m
+[31m→ 37   return prisma.entry.update({[39m
+[31m         where: {[39m
+[31m           id: undefined,[39m
+[31m       ?   AND?: EntryWhereInput | EntryWhereInput[],[39m
+[31m       ?   OR?: EntryWhereInput[],[39m
+[31m       ?   NOT?: EntryWhereInput | EntryWhereInput[],[39m
+[31m       ?   visitorId?: UuidFilter | String,[39m
+[31m       ?   tenantId?: UuidFilter | String,[39m
+[31m       ?   handledById?: UuidNullableFilter | String | Null,[39m
+[31m       ?   residentId?: UuidNullableFilter | String | Null,[39m
+[31m       ?   unitNumber?: StringNullableFilter | String | Null,[39m
+[31m       ?   purpose?: StringNullableFilter | String | Null,[39m
+[31m       ?   photoId?: StringNullableFilter | String | Null,[39m
+[31m       ?   status?: EnumEntryStatusFilter | EntryStatus,[39m
+[31m       ?   checkInTime?: DateTimeNullableFilter | DateTime | Null,[39m
+[31m       ?   checkOutTime?: DateTimeNullableFilter | DateTime | Null,[39m
+[31m       ?   createdAt?: DateTimeFilter | DateTime,[39m
+[31m       ?   updatedAt?: DateTimeFilter | DateTime,[39m
+[31m       ?   visitor?: VisitorRelationFilter | VisitorWhereInput,[39m
+[31m       ?   tenant?: TenantRelationFilter | TenantWhereInput,[39m
+[31m       ?   handledBy?: UserNullableRelationFilter | UserWhereInput | Null[39m
+[31m         },[39m
+[31m         data: {[39m
+[31m           status: "REJECTED",[39m
+[31m           handledById: undefined,[39m
+[31m           checkInTime: undefined,[39m
+[31m           checkOutTime: undefined[39m
+[31m         }[39m
+[31m       })[39m
+
+[31mArgument `where` of type EntryWhereUniqueInput needs at least one of `id` arguments. Available options are marked with ?.[39m
+2026-05-02 23:48:10:4810 [31merror[39m: [31m[POST] /api/entries/approve >> 500 - [39m
+[31mInvalid `prisma.entry.update()` invocation in[39m
+[31mD:\klb-gate\backend\src\modules\visitor\entry.repository.ts:37:25[39m
+
+[31m  34 }[39m
+[31m  35 [39m
+[31m  36 static async updateStatus(entryId: string, status: EntryStatus, handledById?: string) {[39m
+[31m→ 37   return prisma.entry.update({[39m
+[31m         where: {[39m
+[31m           id: undefined,[39m
+[31m       ?   AND?: EntryWhereInput | EntryWhereInput[],[39m
+[31m       ?   OR?: EntryWhereInput[],[39m
+[31m       ?   NOT?: EntryWhereInput | EntryWhereInput[],[39m
+[31m       ?   visitorId?: UuidFilter | String,[39m
+[31m       ?   tenantId?: UuidFilter | String,[39m
+[31m       ?   handledById?: UuidNullableFilter | String | Null,[39m
+[31m       ?   residentId?: UuidNullableFilter | String | Null,[39m
+[31m       ?   unitNumber?: StringNullableFilter | String | Null,[39m
+[31m       ?   purpose?: StringNullableFilter | String | Null,[39m
+[31m       ?   photoId?: StringNullableFilter | String | Null,[39m
+[31m       ?   status?: EnumEntryStatusFilter | EntryStatus,[39m
+[31m       ?   checkInTime?: DateTimeNullableFilter | DateTime | Null,[39m
+[31m       ?   checkOutTime?: DateTimeNullableFilter | DateTime | Null,[39m
+[31m       ?   createdAt?: DateTimeFilter | DateTime,[39m
+[31m       ?   updatedAt?: DateTimeFilter | DateTime,[39m
+[31m       ?   visitor?: VisitorRelationFilter | VisitorWhereInput,[39m
+[31m       ?   tenant?: TenantRelationFilter | TenantWhereInput,[39m
+[31m       ?   handledBy?: UserNullableRelationFilter | UserWhereInput | Null[39m
+[31m         },[39m
+[31m         data: {[39m
+[31m           status: "REJECTED",[39m
+[31m           handledById: undefined,[39m
+[31m           checkInTime: undefined,[39m
+[31m           checkOutTime: undefined[39m
+[31m         }[39m
+[31m       })[39m
+
+[31mArgument `where` of type EntryWhereUniqueInput needs at least one of `id` arguments. Available options are marked with ?.[39m
+2026-05-02 23:48:12:4812 [31merror[39m: [31m[POST] /api/entries/approve >> 500 - [39m
+[31mInvalid `prisma.entry.update()` invocation in[39m
+[31mD:\klb-gate\backend\src\modules\visitor\entry.repository.ts:37:25[39m
+
+[31m  34 }[39m
+[31m  35 [39m
+[31m  36 static async updateStatus(entryId: string, status: EntryStatus, handledById?: string) {[39m
+[31m→ 37   return prisma.entry.update({[39m
+[31m         where: {[39m
+[31m           id: undefined,[39m
+[31m       ?   AND?: EntryWhereInput | EntryWhereInput[],[39m
+[31m       ?   OR?: EntryWhereInput[],[39m
+[31m       ?   NOT?: EntryWhereInput | EntryWhereInput[],[39m
+[31m       ?   visitorId?: UuidFilter | String,[39m
+[31m       ?   tenantId?: UuidFilter | String,[39m
+[31m       ?   handledById?: UuidNullableFilter | String | Null,[39m
+[31m       ?   residentId?: UuidNullableFilter | String | Null,[39m
+[31m       ?   unitNumber?: StringNullableFilter | String | Null,[39m
+[31m       ?   purpose?: StringNullableFilter | String | Null,[39m
+[31m       ?   photoId?: StringNullableFilter | String | Null,[39m
+[31m       ?   status?: EnumEntryStatusFilter | EntryStatus,[39m
+[31m       ?   checkInTime?: DateTimeNullableFilter | DateTime | Null,[39m
+[31m       ?   checkOutTime?: DateTimeNullableFilter | DateTime | Null,[39m
+[31m       ?   createdAt?: DateTimeFilter | DateTime,[39m
+[31m       ?   updatedAt?: DateTimeFilter | DateTime,[39m
+[31m       ?   visitor?: VisitorRelationFilter | VisitorWhereInput,[39m
+[31m       ?   tenant?: TenantRelationFilter | TenantWhereInput,[39m
+[31m       ?   handledBy?: UserNullableRelationFilter | UserWhereInput | Null[39m
+[31m         },[39m
+[31m         data: {[39m
+[31m           status: "APPROVED",[39m
+[31m           handledById: undefined,[39m
+[31m           checkInTime: undefined,[39m
+[31m           checkOutTime: undefined[39m
+[31m         }[39m
+[31m       })[39m
+
+[31mArgument `where` of type EntryWhereUniqueInput needs at least one of `id` arguments. Available options are marked with ?.[39m
+2026-05-02 23:48:17:4817 [31merror[39m: [31m[POST] /api/entries/approve >> 500 - [39m
+[31mInvalid `prisma.entry.update()` invocation in[39m
+[31mD:\klb-gate\backend\src\modules\visitor\entry.repository.ts:37:25[39m
+
+[31m  34 }[39m
+[31m  35 [39m
+[31m  36 static async updateStatus(entryId: string, status: EntryStatus, handledById?: string) {[39m
+[31m→ 37   return prisma.entry.update({[39m
+[31m         where: {[39m
+[31m           id: undefined,[39m
+[31m       ?   AND?: EntryWhereInput | EntryWhereInput[],[39m
+[31m       ?   OR?: EntryWhereInput[],[39m
+[31m       ?   NOT?: EntryWhereInput | EntryWhereInput[],[39m
+[31m       ?   visitorId?: UuidFilter | String,[39m
+[31m       ?   tenantId?: UuidFilter | String,[39m
+[31m       ?   handledById?: UuidNullableFilter | String | Null,[39m
+[31m       ?   residentId?: UuidNullableFilter | String | Null,[39m
+[31m       ?   unitNumber?: StringNullableFilter | String | Null,[39m
+[31m       ?   purpose?: StringNullableFilter | String | Null,[39m
+[31m       ?   photoId?: StringNullableFilter | String | Null,[39m
+[31m       ?   status?: EnumEntryStatusFilter | EntryStatus,[39m
+[31m       ?   checkInTime?: DateTimeNullableFilter | DateTime | Null,[39m
+[31m       ?   checkOutTime?: DateTimeNullableFilter | DateTime | Null,[39m
+[31m       ?   createdAt?: DateTimeFilter | DateTime,[39m
+[31m       ?   updatedAt?: DateTimeFilter | DateTime,[39m
+[31m       ?   visitor?: VisitorRelationFilter | VisitorWhereInput,[39m
+[31m       ?   tenant?: TenantRelationFilter | TenantWhereInput,[39m
+[31m       ?   handledBy?: UserNullableRelationFilter | UserWhereInput | Null[39m
+[31m         },[39m
+[31m         data: {[39m
+[31m           status: "APPROVED",[39m
+[31m           handledById: undefined,[39m
+[31m           checkInTime: undefined,[39m
+[31m           checkOutTime: undefined[39m
+[31m         }[39m
+[31m       })[39m
+
+[31mArgument `where` of type EntryWhereUniqueInput needs at least one of `id` arguments. Available options are marked with ?.[39m
+2026-05-02 23:48:49:4849 [31merror[39m: [31m[POST] /api/entries/approve >> 500 - [39m
+[31mInvalid `prisma.entry.update()` invocation in[39m
+[31mD:\klb-gate\backend\src\modules\visitor\entry.repository.ts:37:25[39m
+
+[31m  34 }[39m
+[31m  35 [39m
+[31m  36 static async updateStatus(entryId: string, status: EntryStatus, handledById?: string) {[39m
+[31m→ 37   return prisma.entry.update({[39m
+[31m         where: {[39m
+[31m           id: undefined,[39m
+[31m       ?   AND?: EntryWhereInput | EntryWhereInput[],[39m
+[31m       ?   OR?: EntryWhereInput[],[39m
+[31m       ?   NOT?: EntryWhereInput | EntryWhereInput[],[39m
+[31m       ?   visitorId?: UuidFilter | String,[39m
+[31m       ?   tenantId?: UuidFilter | String,[39m
+[31m       ?   handledById?: UuidNullableFilter | String | Null,[39m
+[31m       ?   residentId?: UuidNullableFilter | String | Null,[39m
+[31m       ?   unitNumber?: StringNullableFilter | String | Null,[39m
+[31m       ?   purpose?: StringNullableFilter | String | Null,[39m
+[31m       ?   photoId?: StringNullableFilter | String | Null,[39m
+[31m       ?   status?: EnumEntryStatusFilter | EntryStatus,[39m
+[31m       ?   checkInTime?: DateTimeNullableFilter | DateTime | Null,[39m
+[31m       ?   checkOutTime?: DateTimeNullableFilter | DateTime | Null,[39m
+[31m       ?   createdAt?: DateTimeFilter | DateTime,[39m
+[31m       ?   updatedAt?: DateTimeFilter | DateTime,[39m
+[31m       ?   visitor?: VisitorRelationFilter | VisitorWhereInput,[39m
+[31m       ?   tenant?: TenantRelationFilter | TenantWhereInput,[39m
+[31m       ?   handledBy?: UserNullableRelationFilter | UserWhereInput | Null[39m
+[31m         },[39m
+[31m         data: {[39m
+[31m           status: "APPROVED",[39m
+[31m           handledById: undefined,[39m
+[31m           checkInTime: undefined,[39m
+[31m           checkOutTime: undefined[39m
+[31m         }[39m
+[31m       })[39m
+
+[31mArgument `where` of type EntryWhereUniqueInput needs at least one of `id` arguments. Available options are marked with ?.[39m
+2026-05-03 08:22:05:225 [31merror[39m: [31m[POST] /api/admin/users >> 500 - [39m
+[31mInvalid `prisma.user.create()` invocation in[39m
+[31mD:\klb-gate\backend\src\modules\admin\admin.controller.ts:221:38[39m
+
+[31m  218 [39m
+[31m  219 const hashedPassword = await bcrypt.hash(password, 10);[39m
+[31m  220 [39m
+[31m→ 221 const user = await prisma.user.create({[39m
+[31m        data: {[39m
+[31m          email: "rah@gmail.com",[39m
+[31m          password: "$2b$10$ZMnkXaPCxV2rISEFFDMDtO4tQJoNVk2vawcZDwfF/hb./jPOCuGuG",[39m
+[31m          firstName: "Rahul",[39m
+[31m          lastName: "Balbatti",[39m
+[31m          role: "GUARD",[39m
+[31m          phoneNumber: "9108080167",[39m
+[31m          idProofUrl: "",[39m
+[31m          ~~~~~~~~~~[39m
+[31m          unitId: null,[39m
+[31m          tenantId: "d6828be6-d59c-409c-b0b1-9a380fae0be5",[39m
+[31m          organizationId: "1ee92c46-4850-48f9-b6e5-279f86d8df6e",[39m
+[31m      ?   id?: String,[39m
+[31m      ?   idProofId?: String | Null,[39m
+[31m      ?   unitNumber?: String | Null,[39m
+[31m      ?   createdAt?: DateTime,[39m
+[31m      ?   updatedAt?: DateTime,[39m
+[31m      ?   tenant?: TenantCreateNestedOneWithoutUsersInput,[39m
+[31m      ?   unit?: UnitCreateNestedOneWithoutResidentsInput,[39m
+[31m      ?   organization?: OrganizationCreateNestedOneWithoutUsersInput,[39m
+[31m      ?   entriesHandled?: EntryCreateNestedManyWithoutHandledByInput,[39m
+[31m      ?   bookings?: BookingCreateNestedManyWithoutUserInput[39m
+[31m        }[39m
+[31m      })[39m
+
+[31mUnknown argument `idProofUrl`. Did you mean `idProofId`? Available options are marked with ?.[39m
+2026-05-03 08:22:21:2221 [31merror[39m: [31m[POST] /api/admin/users >> 500 - [39m
+[31mInvalid `prisma.user.create()` invocation in[39m
+[31mD:\klb-gate\backend\src\modules\admin\admin.controller.ts:221:38[39m
+
+[31m  218 [39m
+[31m  219 const hashedPassword = await bcrypt.hash(password, 10);[39m
+[31m  220 [39m
+[31m→ 221 const user = await prisma.user.create({[39m
+[31m        data: {[39m
+[31m          email: "rah@gmail.com",[39m
+[31m          password: "$2b$10$QFvRmgIqLnKGoWHFH6fumebLF4us0efp.H6d/yyimtlL3mL2xhINa",[39m
+[31m          firstName: "Rahul",[39m
+[31m          lastName: "Balbatti",[39m
+[31m          role: "GUARD",[39m
+[31m          phoneNumber: "9108080167",[39m
+[31m          idProofUrl: "",[39m
+[31m          ~~~~~~~~~~[39m
+[31m          unitId: null,[39m
+[31m          tenantId: "d6828be6-d59c-409c-b0b1-9a380fae0be5",[39m
+[31m          organizationId: "1ee92c46-4850-48f9-b6e5-279f86d8df6e",[39m
+[31m      ?   id?: String,[39m
+[31m      ?   idProofId?: String | Null,[39m
+[31m      ?   unitNumber?: String | Null,[39m
+[31m      ?   createdAt?: DateTime,[39m
+[31m      ?   updatedAt?: DateTime,[39m
+[31m      ?   tenant?: TenantCreateNestedOneWithoutUsersInput,[39m
+[31m      ?   unit?: UnitCreateNestedOneWithoutResidentsInput,[39m
+[31m      ?   organization?: OrganizationCreateNestedOneWithoutUsersInput,[39m
+[31m      ?   entriesHandled?: EntryCreateNestedManyWithoutHandledByInput,[39m
+[31m      ?   bookings?: BookingCreateNestedManyWithoutUserInput[39m
+[31m        }[39m
+[31m      })[39m
+
+[31mUnknown argument `idProofUrl`. Did you mean `idProofId`? Available options are marked with ?.[39m
+2026-05-03 08:22:47:2247 [31merror[39m: [31m[POST] /api/admin/users >> 500 - [39m
+[31mInvalid `prisma.user.create()` invocation in[39m
+[31mD:\klb-gate\backend\src\modules\admin\admin.controller.ts:221:38[39m
+
+[31m  218 [39m
+[31m  219 const hashedPassword = await bcrypt.hash(password, 10);[39m
+[31m  220 [39m
+[31m→ 221 const user = await prisma.user.create({[39m
+[31m        data: {[39m
+[31m          email: "rah@gmail.com",[39m
+[31m          password: "$2b$10$SklBIJ7qCfw02.12d.xrLObva7DI5DGLpKxlLXKZAtnXnOc90ikrG",[39m
+[31m          firstName: "Rahul",[39m
+[31m          lastName: "Balbatti",[39m
+[31m          role: "GUARD",[39m
+[31m          phoneNumber: "9108080167",[39m
+[31m          idProofUrl: "",[39m
+[31m          ~~~~~~~~~~[39m
+[31m          unitId: null,[39m
+[31m          tenantId: "d6828be6-d59c-409c-b0b1-9a380fae0be5",[39m
+[31m          organizationId: "1ee92c46-4850-48f9-b6e5-279f86d8df6e",[39m
+[31m      ?   id?: String,[39m
+[31m      ?   idProofId?: String | Null,[39m
+[31m      ?   unitNumber?: String | Null,[39m
+[31m      ?   createdAt?: DateTime,[39m
+[31m      ?   updatedAt?: DateTime,[39m
+[31m      ?   tenant?: TenantCreateNestedOneWithoutUsersInput,[39m
+[31m      ?   unit?: UnitCreateNestedOneWithoutResidentsInput,[39m
+[31m      ?   organization?: OrganizationCreateNestedOneWithoutUsersInput,[39m
+[31m      ?   entriesHandled?: EntryCreateNestedManyWithoutHandledByInput,[39m
+[31m      ?   bookings?: BookingCreateNestedManyWithoutUserInput[39m
+[31m        }[39m
+[31m      })[39m
+
+[31mUnknown argument `idProofUrl`. Did you mean `idProofId`? Available options are marked with ?.[39m
+2026-05-03 08:23:02:232 [31merror[39m: [31m[GET] /api/admin/stats >> 403 - Access forbidden: insufficient permissions[39m
+2026-05-03 08:23:02:232 [31merror[39m: [31m[GET] /api/admin/stats >> 403 - Access forbidden: insufficient permissions[39m
+2026-05-03 08:24:08:248 [31merror[39m: [31m[POST] /api/admin/users >> 500 - [39m
+[31mInvalid `prisma.user.create()` invocation in[39m
+[31mD:\klb-gate\backend\src\modules\admin\admin.controller.ts:221:38[39m
+
+[31m  218 [39m
+[31m  219 const hashedPassword = await bcrypt.hash(password, 10);[39m
+[31m  220 [39m
+[31m→ 221 const user = await prisma.user.create({[39m
+[31m        data: {[39m
+[31m          email: "rag@gmail.com",[39m
+[31m          password: "$2b$10$yCl6QOxgbqPIJLqx6qQOTOvpRAZXnznLZds7NdnGyd5cDlZgVYzyC",[39m
+[31m          firstName: "Rahul",[39m
+[31m          lastName: "Balbatti",[39m
+[31m          role: "GUARD",[39m
+[31m          phoneNumber: "9108080167",[39m
+[31m          idProofUrl: "",[39m
+[31m          ~~~~~~~~~~[39m
+[31m          unitId: null,[39m
+[31m          tenantId: "d6828be6-d59c-409c-b0b1-9a380fae0be5",[39m
+[31m          organizationId: "1ee92c46-4850-48f9-b6e5-279f86d8df6e",[39m
+[31m      ?   id?: String,[39m
+[31m      ?   idProofId?: String | Null,[39m
+[31m      ?   unitNumber?: String | Null,[39m
+[31m      ?   createdAt?: DateTime,[39m
+[31m      ?   updatedAt?: DateTime,[39m
+[31m      ?   tenant?: TenantCreateNestedOneWithoutUsersInput,[39m
+[31m      ?   unit?: UnitCreateNestedOneWithoutResidentsInput,[39m
+[31m      ?   organization?: OrganizationCreateNestedOneWithoutUsersInput,[39m
+[31m      ?   entriesHandled?: EntryCreateNestedManyWithoutHandledByInput,[39m
+[31m      ?   bookings?: BookingCreateNestedManyWithoutUserInput[39m
+[31m        }[39m
+[31m      })[39m
+
+[31mUnknown argument `idProofUrl`. Did you mean `idProofId`? Available options are marked with ?.[39m
+2026-05-03 08:24:34:2434 [31merror[39m: [31m[POST] /api/admin/users >> 500 - [39m
+[31mInvalid `prisma.user.create()` invocation in[39m
+[31mD:\klb-gate\backend\src\modules\admin\admin.controller.ts:221:38[39m
+
+[31m  218 [39m
+[31m  219 const hashedPassword = await bcrypt.hash(password, 10);[39m
+[31m  220 [39m
+[31m→ 221 const user = await prisma.user.create({[39m
+[31m        data: {[39m
+[31m          email: "rag@gmail.com",[39m
+[31m          password: "$2b$10$FQFbRueRdeckiPWpYyXrZ.gh/ThMo01uQkYiRQqdZgQtuL.97dOQG",[39m
+[31m          firstName: "Rahul",[39m
+[31m          lastName: "Balbatti",[39m
+[31m          role: "GUARD",[39m
+[31m          phoneNumber: "9108080167",[39m
+[31m          idProofUrl: "41d08b50-c315-4d6e-973e-cbf4919e9f7d",[39m
+[31m          ~~~~~~~~~~[39m
+[31m          unitId: null,[39m
+[31m          tenantId: "d6828be6-d59c-409c-b0b1-9a380fae0be5",[39m
+[31m          organizationId: "1ee92c46-4850-48f9-b6e5-279f86d8df6e",[39m
+[31m      ?   id?: String,[39m
+[31m      ?   idProofId?: String | Null,[39m
+[31m      ?   unitNumber?: String | Null,[39m
+[31m      ?   createdAt?: DateTime,[39m
+[31m      ?   updatedAt?: DateTime,[39m
+[31m      ?   tenant?: TenantCreateNestedOneWithoutUsersInput,[39m
+[31m      ?   unit?: UnitCreateNestedOneWithoutResidentsInput,[39m
+[31m      ?   organization?: OrganizationCreateNestedOneWithoutUsersInput,[39m
+[31m      ?   entriesHandled?: EntryCreateNestedManyWithoutHandledByInput,[39m
+[31m      ?   bookings?: BookingCreateNestedManyWithoutUserInput[39m
+[31m        }[39m
+[31m      })[39m
+
+[31mUnknown argument `idProofUrl`. Did you mean `idProofId`? Available options are marked with ?.[39m
+2026-05-03 08:24:58:2458 [31merror[39m: [31m[POST] /api/admin/users >> 500 - [39m
+[31mInvalid `prisma.user.create()` invocation in[39m
+[31mD:\klb-gate\backend\src\modules\admin\admin.controller.ts:221:38[39m
+
+[31m  218 [39m
+[31m  219 const hashedPassword = await bcrypt.hash(password, 10);[39m
+[31m  220 [39m
+[31m→ 221 const user = await prisma.user.create({[39m
+[31m        data: {[39m
+[31m          email: "rag@gmail.com",[39m
+[31m          password: "$2b$10$SqayUY.1gASqygkYZWo1EeG4lzz4ZtiaxLjixVkh2LHdi61LCQeoK",[39m
+[31m          firstName: "Rahul",[39m
+[31m          lastName: "Balbatti",[39m
+[31m          role: "GUARD",[39m
+[31m          phoneNumber: "9108080167",[39m
+[31m          idProofUrl: "41d08b50-c315-4d6e-973e-cbf4919e9f7d",[39m
+[31m          ~~~~~~~~~~[39m
+[31m          unitId: null,[39m
+[31m          tenantId: "d6828be6-d59c-409c-b0b1-9a380fae0be5",[39m
+[31m          organizationId: "1ee92c46-4850-48f9-b6e5-279f86d8df6e",[39m
+[31m      ?   id?: String,[39m
+[31m      ?   idProofId?: String | Null,[39m
+[31m      ?   unitNumber?: String | Null,[39m
+[31m      ?   createdAt?: DateTime,[39m
+[31m      ?   updatedAt?: DateTime,[39m
+[31m      ?   tenant?: TenantCreateNestedOneWithoutUsersInput,[39m
+[31m      ?   unit?: UnitCreateNestedOneWithoutResidentsInput,[39m
+[31m      ?   organization?: OrganizationCreateNestedOneWithoutUsersInput,[39m
+[31m      ?   entriesHandled?: EntryCreateNestedManyWithoutHandledByInput,[39m
+[31m      ?   bookings?: BookingCreateNestedManyWithoutUserInput[39m
+[31m        }[39m
+[31m      })[39m
+
+[31mUnknown argument `idProofUrl`. Did you mean `idProofId`? Available options are marked with ?.[39m
+2026-05-03 08:25:14:2514 [31merror[39m: [31m[POST] /api/admin/users >> 500 - [39m
+[31mInvalid `prisma.user.create()` invocation in[39m
+[31mD:\klb-gate\backend\src\modules\admin\admin.controller.ts:221:38[39m
+
+[31m  218 [39m
+[31m  219 const hashedPassword = await bcrypt.hash(password, 10);[39m
+[31m  220 [39m
+[31m→ 221 const user = await prisma.user.create({[39m
+[31m        data: {[39m
+[31m          email: "rag@gmail.com",[39m
+[31m          password: "$2b$10$hvO0rsVx5jizsLYxZvW8OupKOd2FN.U4wVQJWKBWf.zWV7RLQUWN2",[39m
+[31m          firstName: "Rahul",[39m
+[31m          lastName: "Balbatti",[39m
+[31m          role: "GUARD",[39m
+[31m          phoneNumber: "9108080167",[39m
+[31m          idProofUrl: "41d08b50-c315-4d6e-973e-cbf4919e9f7d",[39m
+[31m          ~~~~~~~~~~[39m
+[31m          unitId: "887c1bd8-9f95-4e58-8e47-8edeb033aa94",[39m
+[31m          tenantId: "d6828be6-d59c-409c-b0b1-9a380fae0be5",[39m
+[31m          organizationId: "1ee92c46-4850-48f9-b6e5-279f86d8df6e",[39m
+[31m      ?   id?: String,[39m
+[31m      ?   idProofId?: String | Null,[39m
+[31m      ?   unitNumber?: String | Null,[39m
+[31m      ?   createdAt?: DateTime,[39m
+[31m      ?   updatedAt?: DateTime,[39m
+[31m      ?   tenant?: TenantCreateNestedOneWithoutUsersInput,[39m
+[31m      ?   unit?: UnitCreateNestedOneWithoutResidentsInput,[39m
+[31m      ?   organization?: OrganizationCreateNestedOneWithoutUsersInput,[39m
+[31m      ?   entriesHandled?: EntryCreateNestedManyWithoutHandledByInput,[39m
+[31m      ?   bookings?: BookingCreateNestedManyWithoutUserInput[39m
+[31m        }[39m
+[31m      })[39m
+
+[31mUnknown argument `idProofUrl`. Did you mean `idProofId`? Available options are marked with ?.[39m
+2026-05-03 08:26:34:2634 [31merror[39m: [31m[POST] /api/admin/users >> 500 - [39m
+[31mInvalid `prisma.user.create()` invocation in[39m
+[31mD:\klb-gate\backend\src\modules\admin\admin.controller.ts:221:38[39m
+
+[31m  218 [39m
+[31m  219 const hashedPassword = await bcrypt.hash(password, 10);[39m
+[31m  220 [39m
+[31m→ 221 const user = await prisma.user.create({[39m
+[31m        data: {[39m
+[31m          email: "rag@klbconnect.com",[39m
+[31m          password: "$2b$10$JPHYiLuts3SQweCTIfzGmutbZYMC5TpKc83G8PInEgFNZW7wOUj9.",[39m
+[31m          firstName: "Rahul",[39m
+[31m          lastName: "Balbatti",[39m
+[31m          role: "GUARD",[39m
+[31m          phoneNumber: "9108080167",[39m
+[31m          idProofUrl: "04a0ef46-be3d-423a-9824-da2d255611f8",[39m
+[31m          ~~~~~~~~~~[39m
+[31m          unitId: null,[39m
+[31m          tenantId: "4201d287-e3e3-4e8d-80c6-52160e88e089",[39m
+[31m          organizationId: "1ee92c46-4850-48f9-b6e5-279f86d8df6e",[39m
+[31m      ?   id?: String,[39m
+[31m      ?   idProofId?: String | Null,[39m
+[31m      ?   unitNumber?: String | Null,[39m
+[31m      ?   createdAt?: DateTime,[39m
+[31m      ?   updatedAt?: DateTime,[39m
+[31m      ?   tenant?: TenantCreateNestedOneWithoutUsersInput,[39m
+[31m      ?   unit?: UnitCreateNestedOneWithoutResidentsInput,[39m
+[31m      ?   organization?: OrganizationCreateNestedOneWithoutUsersInput,[39m
+[31m      ?   entriesHandled?: EntryCreateNestedManyWithoutHandledByInput,[39m
+[31m      ?   bookings?: BookingCreateNestedManyWithoutUserInput[39m
+[31m        }[39m
+[31m      })[39m
+
+[31mUnknown argument `idProofUrl`. Did you mean `idProofId`? Available options are marked with ?.[39m
+2026-05-03 08:29:17:2917 [31merror[39m: [31m[GET] /api/admin/users >> 500 - [39m
+[31mInvalid `prisma.user.findMany()` invocation in[39m
+[31mD:\klb-gate\backend\src\modules\admin\admin.controller.ts:426:39[39m
+
+[31m  423 const tenantId = req.user?.tenantId;[39m
+[31m  424 const role = req.user?.role;[39m
+[31m  425 [39m
+[31m→ 426 const users = await prisma.user.findMany([39m
+[31mCan't reach database server at `66.33.22.232:45008`[39m
+
+[31mPlease make sure your database server is running at `66.33.22.232:45008`.[39m
+2026-05-03 08:30:48:3048 [31merror[39m: [31m[DELETE] /api/admin/organizations/ea12ea49-5737-4c0a-ad90-c21ec19a314d >> 500 - [39m
+[31mInvalid `prisma.organization.delete()` invocation in[39m
+[31mD:\klb-gate\backend\src\modules\admin\admin.controller.ts:79:39[39m
+
+[31m  76   throw new AppError('Cannot delete organization with active regions', 400);[39m
+[31m  77 }[39m
+[31m  78 [39m
+[31m→ 79 await prisma.organization.delete([39m
+[31mError occurred during query execution:[39m
+[31mConnectorError(ConnectorError { user_facing_error: None, kind: QueryError(PostgresError { code: "23001", message: "update or delete on table \"organizations\" violates RESTRICT setting of foreign key constraint \"tenants_organization_id_fkey\" on table \"tenants\"", severity: "ERROR", detail: Some("Key (id)=(ea12ea49-5737-4c0a-ad90-c21ec19a314d) is referenced from table \"tenants\"."), column: None, hint: None }), transient: false })[39m
+2026-05-03 08:31:16:3116 [31merror[39m: [31m[DELETE] /api/admin/organizations/ea12ea49-5737-4c0a-ad90-c21ec19a314d >> 500 - [39m
+[31mInvalid `prisma.organization.delete()` invocation in[39m
+[31mD:\klb-gate\backend\src\modules\admin\admin.controller.ts:79:39[39m
+
+[31m  76   throw new AppError('Cannot delete organization with active regions', 400);[39m
+[31m  77 }[39m
+[31m  78 [39m
+[31m→ 79 await prisma.organization.delete([39m
+[31mError occurred during query execution:[39m
+[31mConnectorError(ConnectorError { user_facing_error: None, kind: QueryError(PostgresError { code: "23001", message: "update or delete on table \"organizations\" violates RESTRICT setting of foreign key constraint \"tenants_organization_id_fkey\" on table \"tenants\"", severity: "ERROR", detail: Some("Key (id)=(ea12ea49-5737-4c0a-ad90-c21ec19a314d) is referenced from table \"tenants\"."), column: None, hint: None }), transient: false })[39m
+2026-05-03 08:31:27:3127 [31merror[39m: [31m[DELETE] /api/admin/organizations/ea12ea49-5737-4c0a-ad90-c21ec19a314d >> 500 - [39m
+[31mInvalid `prisma.organization.delete()` invocation in[39m
+[31mD:\klb-gate\backend\src\modules\admin\admin.controller.ts:79:39[39m
+
+[31m  76   throw new AppError('Cannot delete organization with active regions', 400);[39m
+[31m  77 }[39m
+[31m  78 [39m
+[31m→ 79 await prisma.organization.delete([39m
+[31mError occurred during query execution:[39m
+[31mConnectorError(ConnectorError { user_facing_error: None, kind: QueryError(PostgresError { code: "23001", message: "update or delete on table \"organizations\" violates RESTRICT setting of foreign key constraint \"tenants_organization_id_fkey\" on table \"tenants\"", severity: "ERROR", detail: Some("Key (id)=(ea12ea49-5737-4c0a-ad90-c21ec19a314d) is referenced from table \"tenants\"."), column: None, hint: None }), transient: false })[39m
+2026-05-03 08:31:53:3153 [31merror[39m: [31m[DELETE] /api/admin/regions/41a65bda-a284-4e2a-a905-427337f4e506 >> 400 - Cannot delete region with active societies[39m
+2026-05-03 08:32:03:323 [31merror[39m: [31m[DELETE] /api/admin/regions/41a65bda-a284-4e2a-a905-427337f4e506 >> 400 - Cannot delete region with active societies[39m
+2026-05-03 08:32:26:3226 [31merror[39m: [31m[DELETE] /api/admin/regions/41a65bda-a284-4e2a-a905-427337f4e506 >> 400 - Cannot delete region with active societies[39m
+2026-05-03 08:32:36:3236 [31merror[39m: [31m[DELETE] /api/admin/regions/41a65bda-a284-4e2a-a905-427337f4e506 >> 400 - Cannot delete region with active societies[39m
+2026-05-03 08:32:43:3243 [31merror[39m: [31m[DELETE] /api/admin/regions/41a65bda-a284-4e2a-a905-427337f4e506 >> 400 - Cannot delete region with active societies[39m
+2026-05-03 08:32:57:3257 [31merror[39m: [31m[DELETE] /api/admin/tenants/2d144a6f-2bbc-4741-b5f2-8dee9c21fc3f >> 400 - Cannot delete society with registered residents/staff[39m
+2026-05-03 08:33:10:3310 [31merror[39m: [31m[DELETE] /api/admin/tenants/2d144a6f-2bbc-4741-b5f2-8dee9c21fc3f >> 400 - Cannot delete society with registered residents/staff[39m
+2026-05-03 08:34:00:340 [31merror[39m: [31m[DELETE] /api/admin/tenants/69fb7ea8-724f-4520-9306-263ad6f52d2d >> 500 - [39m
+[31mInvalid `prisma.tenant.delete()` invocation in[39m
+[31mD:\klb-gate\backend\src\modules\admin\admin.controller.ts:371:33[39m
+
+[31m  368 [39m
+[31m  369 // Delete units first[39m
+[31m  370 await prisma.unit.deleteMany({ where: { tenantId: id } });[39m
+[31m→ 371 await prisma.tenant.delete([39m
+[31mError occurred during query execution:[39m
+[31mConnectorError(ConnectorError { user_facing_error: None, kind: QueryError(PostgresError { code: "23001", message: "update or delete on table \"tenants\" violates RESTRICT setting of foreign key constraint \"amenities_tenant_id_fkey\" on table \"amenities\"", severity: "ERROR", detail: Some("Key (id)=(69fb7ea8-724f-4520-9306-263ad6f52d2d) is referenced from table \"amenities\"."), column: None, hint: None }), transient: false })[39m
+2026-05-03 08:34:21:3421 [31merror[39m: [31m[DELETE] /api/admin/tenants/69fb7ea8-724f-4520-9306-263ad6f52d2d >> 500 - [39m
+[31mInvalid `prisma.tenant.delete()` invocation in[39m
+[31mD:\klb-gate\backend\src\modules\admin\admin.controller.ts:371:33[39m
+
+[31m  368 [39m
+[31m  369 // Delete units first[39m
+[31m  370 await prisma.unit.deleteMany({ where: { tenantId: id } });[39m
+[31m→ 371 await prisma.tenant.delete([39m
+[31mError occurred during query execution:[39m
+[31mConnectorError(ConnectorError { user_facing_error: None, kind: QueryError(PostgresError { code: "23001", message: "update or delete on table \"tenants\" violates RESTRICT setting of foreign key constraint \"amenities_tenant_id_fkey\" on table \"amenities\"", severity: "ERROR", detail: Some("Key (id)=(69fb7ea8-724f-4520-9306-263ad6f52d2d) is referenced from table \"amenities\"."), column: None, hint: None }), transient: false })[39m
+2026-05-03 08:34:43:3443 [31merror[39m: [31m[DELETE] /api/admin/tenants/030b46ba-9e36-4f46-8487-a5fdf58e5d62 >> 400 - Cannot delete society with registered residents/staff[39m
+2026-05-03 08:35:18:3518 [31merror[39m: [31m[DELETE] /api/admin/tenants/69fb7ea8-724f-4520-9306-263ad6f52d2d >> 500 - [39m
+[31mInvalid `prisma.tenant.delete()` invocation in[39m
+[31mD:\klb-gate\backend\src\modules\admin\admin.controller.ts:371:33[39m
+
+[31m  368 [39m
+[31m  369 // Delete units first[39m
+[31m  370 await prisma.unit.deleteMany({ where: { tenantId: id } });[39m
+[31m→ 371 await prisma.tenant.delete([39m
+[31mError occurred during query execution:[39m
+[31mConnectorError(ConnectorError { user_facing_error: None, kind: QueryError(PostgresError { code: "23001", message: "update or delete on table \"tenants\" violates RESTRICT setting of foreign key constraint \"amenities_tenant_id_fkey\" on table \"amenities\"", severity: "ERROR", detail: Some("Key (id)=(69fb7ea8-724f-4520-9306-263ad6f52d2d) is referenced from table \"amenities\"."), column: None, hint: None }), transient: false })[39m
+2026-05-03 08:35:34:3534 [31merror[39m: [31m[DELETE] /api/admin/tenants/69fb7ea8-724f-4520-9306-263ad6f52d2d >> 500 - [39m
+[31mInvalid `prisma.tenant.delete()` invocation in[39m
+[31mD:\klb-gate\backend\src\modules\admin\admin.controller.ts:371:33[39m
+
+[31m  368 [39m
+[31m  369 // Delete units first[39m
+[31m  370 await prisma.unit.deleteMany({ where: { tenantId: id } });[39m
+[31m→ 371 await prisma.tenant.delete([39m
+[31mError occurred during query execution:[39m
+[31mConnectorError(ConnectorError { user_facing_error: None, kind: QueryError(PostgresError { code: "23001", message: "update or delete on table \"tenants\" violates RESTRICT setting of foreign key constraint \"amenities_tenant_id_fkey\" on table \"amenities\"", severity: "ERROR", detail: Some("Key (id)=(69fb7ea8-724f-4520-9306-263ad6f52d2d) is referenced from table \"amenities\"."), column: None, hint: None }), transient: false })[39m
+2026-05-03 08:40:04:404 [31merror[39m: [31m[DELETE] /api/admin/tenants/69fb7ea8-724f-4520-9306-263ad6f52d2d >> 500 - [39m
+[31mInvalid `prisma.tenant.delete()` invocation in[39m
+[31mD:\klb-gate\backend\src\modules\admin\admin.controller.ts:371:33[39m
+
+[31m  368 [39m
+[31m  369 // Delete units first[39m
+[31m  370 await prisma.unit.deleteMany({ where: { tenantId: id } });[39m
+[31m→ 371 await prisma.tenant.delete([39m
+[31mError occurred during query execution:[39m
+[31mConnectorError(ConnectorError { user_facing_error: None, kind: QueryError(PostgresError { code: "23001", message: "update or delete on table \"tenants\" violates RESTRICT setting of foreign key constraint \"amenities_tenant_id_fkey\" on table \"amenities\"", severity: "ERROR", detail: Some("Key (id)=(69fb7ea8-724f-4520-9306-263ad6f52d2d) is referenced from table \"amenities\"."), column: None, hint: None }), transient: false })[39m
+2026-05-03 08:42:03:423 [31merror[39m: [31m[DELETE] /api/admin/tenants/69fb7ea8-724f-4520-9306-263ad6f52d2d >> 500 - [39m
+[31mInvalid `prisma.tenant.delete()` invocation in[39m
+[31mD:\klb-gate\backend\src\modules\admin\admin.controller.ts:371:33[39m
+
+[31m  368 [39m
+[31m  369 // Delete units first[39m
+[31m  370 await prisma.unit.deleteMany({ where: { tenantId: id } });[39m
+[31m→ 371 await prisma.tenant.delete([39m
+[31mError occurred during query execution:[39m
+[31mConnectorError(ConnectorError { user_facing_error: None, kind: QueryError(PostgresError { code: "23001", message: "update or delete on table \"tenants\" violates RESTRICT setting of foreign key constraint \"amenities_tenant_id_fkey\" on table \"amenities\"", severity: "ERROR", detail: Some("Key (id)=(69fb7ea8-724f-4520-9306-263ad6f52d2d) is referenced from table \"amenities\"."), column: None, hint: None }), transient: false })[39m
+2026-05-03 08:45:38:4538 [31merror[39m: [31m[DELETE] /api/admin/tenants/030b46ba-9e36-4f46-8487-a5fdf58e5d62 >> 500 - [39m
+[31mInvalid `prisma.tenant.delete()` invocation in[39m
+[31mD:\klb-gate\backend\src\modules\admin\admin.controller.ts:371:33[39m
+
+[31m  368 [39m
+[31m  369 // Delete units first[39m
+[31m  370 await prisma.unit.deleteMany({ where: { tenantId: id } });[39m
+[31m→ 371 await prisma.tenant.delete([39m
+[31mAn operation failed because it depends on one or more records that were required but not found. Record to delete does not exist.[39m
+2026-05-03 08:45:45:4545 [31merror[39m: [31m[DELETE] /api/admin/tenants/d6828be6-d59c-409c-b0b1-9a380fae0be5 >> 500 - [39m
+[31mInvalid `prisma.tenant.delete()` invocation in[39m
+[31mD:\klb-gate\backend\src\modules\admin\admin.controller.ts:371:33[39m
+
+[31m  368 [39m
+[31m  369 // Delete units first[39m
+[31m  370 await prisma.unit.deleteMany({ where: { tenantId: id } });[39m
+[31m→ 371 await prisma.tenant.delete([39m
+[31mError occurred during query execution:[39m
+[31mConnectorError(ConnectorError { user_facing_error: None, kind: QueryError(PostgresError { code: "23001", message: "update or delete on table \"tenants\" violates RESTRICT setting of foreign key constraint \"visitors_tenant_id_fkey\" on table \"visitors\"", severity: "ERROR", detail: Some("Key (id)=(d6828be6-d59c-409c-b0b1-9a380fae0be5) is referenced from table \"visitors\"."), column: None, hint: None }), transient: false })[39m
+2026-05-03 08:45:56:4556 [31merror[39m: [31m[DELETE] /api/admin/tenants/d6828be6-d59c-409c-b0b1-9a380fae0be5 >> 500 - [39m
+[31mInvalid `prisma.tenant.delete()` invocation in[39m
+[31mD:\klb-gate\backend\src\modules\admin\admin.controller.ts:371:33[39m
+
+[31m  368 [39m
+[31m  369 // Delete units first[39m
+[31m  370 await prisma.unit.deleteMany({ where: { tenantId: id } });[39m
+[31m→ 371 await prisma.tenant.delete([39m
+[31mError occurred during query execution:[39m
+[31mConnectorError(ConnectorError { user_facing_error: None, kind: QueryError(PostgresError { code: "23001", message: "update or delete on table \"tenants\" violates RESTRICT setting of foreign key constraint \"visitors_tenant_id_fkey\" on table \"visitors\"", severity: "ERROR", detail: Some("Key (id)=(d6828be6-d59c-409c-b0b1-9a380fae0be5) is referenced from table \"visitors\"."), column: None, hint: None }), transient: false })[39m
+2026-05-03 08:46:25:4625 [31merror[39m: [31m[DELETE] /api/admin/tenants/d6828be6-d59c-409c-b0b1-9a380fae0be5 >> 500 - [39m
+[31mInvalid `prisma.tenant.delete()` invocation in[39m
+[31mD:\klb-gate\backend\src\modules\admin\admin.controller.ts:371:33[39m
+
+[31m  368 [39m
+[31m  369 // Delete units first[39m
+[31m  370 await prisma.unit.deleteMany({ where: { tenantId: id } });[39m
+[31m→ 371 await prisma.tenant.delete([39m
+[31mError occurred during query execution:[39m
+[31mConnectorError(ConnectorError { user_facing_error: None, kind: QueryError(PostgresError { code: "23001", message: "update or delete on table \"tenants\" violates RESTRICT setting of foreign key constraint \"visitors_tenant_id_fkey\" on table \"visitors\"", severity: "ERROR", detail: Some("Key (id)=(d6828be6-d59c-409c-b0b1-9a380fae0be5) is referenced from table \"visitors\"."), column: None, hint: None }), transient: false })[39m
+2026-05-03 08:47:09:479 [31merror[39m: [31m[DELETE] /api/admin/tenants/d6828be6-d59c-409c-b0b1-9a380fae0be5 >> 500 - [39m
+[31mInvalid `prisma.tenant.delete()` invocation in[39m
+[31mD:\klb-gate\backend\src\modules\admin\admin.controller.ts:371:33[39m
+
+[31m  368 [39m
+[31m  369 // Delete units first[39m
+[31m  370 await prisma.unit.deleteMany({ where: { tenantId: id } });[39m
+[31m→ 371 await prisma.tenant.delete([39m
+[31mAn operation failed because it depends on one or more records that were required but not found. Record to delete does not exist.[39m
+2026-05-03 12:21:34:2134 [31merror[39m: [31m[DELETE] /api/admin/users/4a45d524-e68f-4e11-8cba-b6e6aa2c3db0 >> 404 - User not found[39m
+2026-05-03 12:24:05:245 [31merror[39m: [31m[POST] /api/auth/login >> 401 - Invalid credentials[39m
+2026-05-03 12:24:39:2439 [31merror[39m: [31m[POST] /api/auth/login >> 401 - Invalid credentials[39m
+2026-05-03 12:25:17:2517 [31merror[39m: [31m[DELETE] /api/admin/users/071e28c3-fd49-471a-adcb-7de6257fccf0 >> 404 - User not found[39m
+2026-05-03 12:25:18:2518 [31merror[39m: [31m[DELETE] /api/admin/users/071e28c3-fd49-471a-adcb-7de6257fccf0 >> 500 - [39m
+[31mInvalid `prisma.user.delete()` invocation in[39m
+[31mD:\klb-gate\backend\src\modules\admin\admin.controller.ts:243:31[39m
+
+[31m  240   });[39m
+[31m  241 }[39m
+[31m  242 [39m
+[31m→ 243 await prisma.user.delete([39m
+[31mAn operation failed because it depends on one or more records that were required but not found. Record to delete does not exist.[39m
+2026-05-03 12:27:10:2710 [31merror[39m: [31m[GET] /api/admin/users >> 401 - Unauthorized[39m
+2026-05-03 12:30:15:3015 [31merror[39m: [31m[GET] /api/admin/users >> 401 - Unauthorized[39m
+2026-05-03 12:37:02:372 [31merror[39m: [31m[POST] /api/auth/otp/send >> 404 - Phone number not registered. Please contact your society admin.[39m
+2026-05-03 12:38:36:3836 [31merror[39m: [31m[POST] /api/auth/otp/send >> 404 - Phone number not registered. Please contact your society admin.[39m
+2026-05-03 12:50:12:5012 [31merror[39m: [31mRedis connection error: read ECONNRESET[39m
+2026-05-03 13:47:32:4732 [31merror[39m: [31mRedis connection error: read ECONNRESET[39m
+2026-05-03 13:47:33:4733 [31merror[39m: [31mRedis connection error: connect ENETUNREACH 66.33.22.232:46685[39m
+2026-05-03 13:47:33:4733 [31merror[39m: [31mRedis connection error: connect ENETUNREACH 66.33.22.232:46685[39m
+2026-05-03 13:47:33:4733 [31merror[39m: [31mRedis connection error: connect ENETUNREACH 66.33.22.232:46685[39m
+2026-05-03 13:47:34:4734 [31merror[39m: [31mRedis connection error: connect ENETUNREACH 66.33.22.232:46685[39m
+2026-05-03 13:47:34:4734 [31merror[39m: [31mRedis connection error: connect ENETUNREACH 66.33.22.232:46685[39m
+2026-05-03 13:47:35:4735 [31merror[39m: [31mRedis connection error: connect ENETUNREACH 66.33.22.232:46685[39m
+2026-05-03 13:47:36:4736 [31merror[39m: [31mRedis connection error: connect ENETUNREACH 66.33.22.232:46685[39m
+2026-05-03 13:47:36:4736 [31merror[39m: [31mRedis connection error: connect ENETUNREACH 66.33.22.232:46685[39m
+2026-05-03 13:47:37:4737 [31merror[39m: [31mRedis connection error: connect ENETUNREACH 66.33.22.232:46685[39m
+2026-05-03 16:18:31:1831 [31merror[39m: [31mRedis connection error: connect ENETUNREACH 66.33.22.232:46685[39m
+2026-05-03 16:18:32:1832 [31merror[39m: [31mRedis connection error: connect EHOSTUNREACH 66.33.22.232:46685[39m
+2026-05-03 16:26:15:2615 [31merror[39m: [31mRedis connection error: read ECONNRESET[39m
+2026-05-03 16:30:50:3050 [31merror[39m: [31mRedis connection error: read ECONNRESET[39m
+2026-05-03 16:58:02:582 [31merror[39m: [31mRedis connection error: read ECONNRESET[39m
+2026-05-03 16:58:07:587 [31merror[39m: [31m[GET] /api/entries/my-unit >> 500 - [39m
+[31mInvalid `prisma.entry.findMany()` invocation in[39m
+[31mD:\klb-gate\backend\src\modules\visitor\visitor.controller.ts:119:42[39m
+
+[31m  116   return res.status(200).json({ success: true, data: [] });[39m
+[31m  117 }[39m
+[31m  118 [39m
+[31m→ 119 const entries = await prisma.entry.findMany([39m
+[31mCan't reach database server at `66.33.22.232:45008`[39m
+
+[31mPlease make sure your database server is running at `66.33.22.232:45008`.[39m
+2026-05-03 17:36:03:363 [31merror[39m: [31mRedis connection error: read ECONNRESET[39m
+2026-05-03 17:41:19:4119 [31merror[39m: [31m[POST] /api/auth/otp/send >> 404 - Phone number not registered. Please contact your society admin.[39m
+2026-05-03 18:27:08:278 [31merror[39m: [31mRedis connection error: read ECONNRESET[39m

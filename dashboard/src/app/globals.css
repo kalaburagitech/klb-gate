@@ -1,0 +1,87 @@
+@import "tailwindcss";
+
+@theme {
+  --color-nature-50: #F1F8E9;
+  --color-nature-100: #DCEDC8;
+  --color-nature-200: #C5E1A5;
+  --color-nature-300: #AED581;
+  --color-nature-400: #9CCC65;
+  --color-nature-500: #8BC34A;
+  --color-nature-600: #7CB342;
+  --color-nature-700: #689F38;
+  --color-nature-800: #558B2F;
+  --color-nature-900: #33691E;
+  --color-nature-forest: #2E7D32;
+  
+  --color-dark-bg: #121212;
+  --color-dark-card: #1E1E1E;
+  --color-dark-text: #E0E0E0;
+  
+  --shadow-soft: 0 4px 20px -2px rgba(0, 0, 0, 0.05);
+  
+  --radius-3xl: 20px;
+  --radius-2xl: 16px;
+}
+
+/* Custom Nature Theme Variables */
+:root {
+  --background: #F1F8E9;
+  --foreground: #263238;
+}
+
+.dark {
+  --background: #121212;
+  --foreground: #E0E0E0;
+}
+
+body {
+  background-color: var(--background);
+  color: var(--foreground);
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+@layer components {
+  .card-base {
+    background-color: white;
+    border-radius: var(--radius-3xl);
+    box-shadow: var(--shadow-soft);
+    border: 1px solid rgba(0, 0, 0, 0.05);
+    transition-property: all;
+    transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+    transition-duration: 150ms;
+  }
+  
+  .neon-text {
+    color: var(--color-nature-forest);
+    text-shadow: 0 0 10px rgba(46, 125, 50, 0.4);
+  }
+  
+  .neon-border {
+    border: 1px solid rgba(46, 125, 50, 0.2);
+    box-shadow: 0 0 15px rgba(46, 125, 50, 0.1);
+  }
+  
+  .dark .card-base {
+    background-color: var(--color-dark-card);
+    border-color: rgba(255, 255, 255, 0.05);
+  }
+  
+  .btn-primary {
+    background-color: var(--color-nature-forest);
+    color: white;
+    font-weight: 500;
+    padding: 0.75rem 1.5rem;
+    border-radius: var(--radius-2xl);
+    transition-property: all;
+    transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+    transition-duration: 150ms;
+  }
+  
+  .btn-primary:hover {
+    background-color: var(--color-nature-700);
+  }
+  
+  .btn-primary:active {
+    transform: scale(0.95);
+  }
+}
