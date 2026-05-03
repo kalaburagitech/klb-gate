@@ -52,7 +52,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     if (savedToken && savedUser) {
       setToken(savedToken);
       setUser(JSON.parse(savedUser));
-      axios.defaults.headers.common['Authorization'] = `Bearer ${savedToken}`;
+
       refreshProfile(savedToken);
     } else if (!pathname.includes('/login')) {
       router.push('/login');
@@ -66,7 +66,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     setUser(newUser);
     localStorage.setItem('klb_token', newToken);
     localStorage.setItem('klb_user', JSON.stringify(newUser));
-    axios.defaults.headers.common['Authorization'] = `Bearer ${newToken}`;
+
     router.push('/dashboard');
   };
 
@@ -75,7 +75,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     setUser(null);
     localStorage.removeItem('klb_token');
     localStorage.removeItem('klb_user');
-    delete axios.defaults.headers.common['Authorization'];
+
     router.push('/login');
   };
 
