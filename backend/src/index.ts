@@ -59,14 +59,24 @@ app.use('/api/admin', adminRoutes);
 // Error Handling
 app.use(errorHandler);
 
-// Background Worker Management
-notificationWorker.on('ready', () => {
-  logger.info('Notification worker is ready and listening for jobs');
-});
+// Background Worker Management (Deferred to avoid blocking startup)
+const startWorkers = () => {
+  try {
+    notificationWorker.on('ready', () => {
+      logger.info('Notification worker is ready and listening for jobs');
+    });
+    notificationWorker.on('error', (err) => {
+      logger.error('Notification worker error:', err);
+    });
+  } catch (err) {
+    logger.error('Failed to initialize notification worker:', err);
+  }
+};
 
 const server = app.listen(Number(PORT), '0.0.0.0', () => {
   logger.info(`🚀 KLB Connect Backend running on port ${PORT} (Bound to 0.0.0.0)`);
   logger.info(`Environment: ${process.env.NODE_ENV}`);
+  startWorkers();
 });
 
 process.on('unhandledRejection', (reason, promise) => {
