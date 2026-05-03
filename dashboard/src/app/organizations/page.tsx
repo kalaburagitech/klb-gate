@@ -1,7 +1,7 @@
 'use client';
 import React, { useState, useEffect } from 'react';
 import { Plus, Search, Building2, MoreVertical, X, CheckCircle, ArrowRight } from 'lucide-react';
-import axios from 'axios';
+import api from '@/utils/api';
 
 export default function OrganizationsPage() {
   const [organizations, setOrganizations] = useState<any[]>([]);
@@ -14,10 +14,7 @@ export default function OrganizationsPage() {
 
   const fetchOrgs = async () => {
     try {
-      const token = localStorage.getItem('klb_token');
-      const res = await axios.get('http://127.0.0.1:5001/api/admin/organizations', {
-        headers: { 'Authorization': `Bearer ${token}` }
-      });
+      const res = await api.get('/admin/organizations');
       setOrganizations(res.data.data);
     } catch (error) {
       console.error(error);
@@ -33,15 +30,10 @@ export default function OrganizationsPage() {
   const handleCreateOrUpdate = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
-      const token = localStorage.getItem('klb_token');
       if (editingOrg) {
-        await axios.put(`http://127.0.0.1:5001/api/admin/organizations/${editingOrg.id}`, newOrg, {
-          headers: { 'Authorization': `Bearer ${token}` }
-        });
+        await api.put(`/admin/organizations/${editingOrg.id}`, newOrg);
       } else {
-        await axios.post('http://127.0.0.1:5001/api/admin/organizations', newOrg, {
-          headers: { 'Authorization': `Bearer ${token}` }
-        });
+        await api.post('/admin/organizations', newOrg);
       }
       setIsModalOpen(false);
       setNewOrg({ name: '', slug: '' });
@@ -56,10 +48,7 @@ export default function OrganizationsPage() {
   const handleDelete = async (id: string) => {
     if (!confirm('Are you sure? All data for this org will be affected.')) return;
     try {
-      const token = localStorage.getItem('klb_token');
-      await axios.delete(`http://127.0.0.1:5001/api/admin/organizations/${id}`, {
-        headers: { 'Authorization': `Bearer ${token}` }
-      });
+      await api.delete(`/admin/organizations/${id}`);
       fetchOrgs();
     } catch (error: any) {
       alert(error.response?.data?.message || 'Failed to delete');

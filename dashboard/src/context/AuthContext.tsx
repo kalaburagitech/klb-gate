@@ -1,9 +1,7 @@
 'use client';
 import React, { createContext, useContext, useState, useEffect } from 'react';
 import { useRouter, usePathname } from 'next/navigation';
-import axios from 'axios';
-
-const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://127.0.0.1:5001/api';
+import api from '@/utils/api';
 
 interface User {
   id: string;
@@ -37,7 +35,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   useEffect(() => {
     const refreshProfile = async (savedToken: string) => {
       try {
-        const res = await axios.get(`${API_URL}/auth/profile`, {
+        const res = await api.get('/auth/profile', {
           headers: { 'Authorization': `Bearer ${savedToken}` }
         });
         const fullUser = res.data.data;

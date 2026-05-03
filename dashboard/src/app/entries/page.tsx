@@ -1,7 +1,7 @@
 'use client';
 import React, { useState, useEffect } from 'react';
 import { Search, ClipboardList, Filter, Download, Clock, User, Home, ArrowRight, ShieldCheck, ShieldAlert } from 'lucide-react';
-import axios from 'axios';
+import api from '@/utils/api';
 import { useAuth } from '@/context/AuthContext';
 
 export default function EntryLogsPage() {
@@ -12,13 +12,9 @@ export default function EntryLogsPage() {
 
   const fetchEntries = async () => {
     try {
-      const token = localStorage.getItem('klb_token');
-      const tenantId = user?.tenantId;
-      
-      const res = await axios.get('http://127.0.0.1:5001/api/entries/all', {
+      const res = await api.get('/entries/all', {
         headers: { 
-          'Authorization': `Bearer ${token}`,
-          'x-tenant-id': tenantId
+          'x-tenant-id': user?.tenantId
         }
       });
       setEntries(res.data.data);

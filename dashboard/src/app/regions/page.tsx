@@ -1,7 +1,7 @@
 'use client';
 import React, { useState, useEffect } from 'react';
 import { Plus, Search, MapPin, Building2, X, CheckCircle, ArrowRight, Globe } from 'lucide-react';
-import axios from 'axios';
+import api from '@/utils/api';
 
 import { useAuth } from '@/context/AuthContext';
 
@@ -16,14 +16,11 @@ export default function RegionsPage() {
 
   const fetchData = async () => {
     try {
-      const token = localStorage.getItem('klb_token');
-      const headers = { 'Authorization': `Bearer ${token}` };
-      
-      const regionsRes = await axios.get('http://127.0.0.1:5001/api/admin/regions', { headers });
+      const regionsRes = await api.get('/admin/regions');
       setRegions(regionsRes.data.data);
 
       if (currentUser?.role === 'SUPER_ADMIN') {
-        const orgsRes = await axios.get('http://127.0.0.1:5001/api/admin/organizations', { headers });
+        const orgsRes = await api.get('/admin/organizations');
         setOrganizations(orgsRes.data.data);
       }
     } catch (error) {
@@ -46,20 +43,15 @@ export default function RegionsPage() {
   const handleCreateOrUpdate = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
-      const token = localStorage.getItem('klb_token');
       const payload = {
         ...newRegion,
         organizationId: (currentUser?.role === 'ORG_ADMIN' || currentUser?.role === 'TENANT_ADMIN') ? currentUser.organizationId : newRegion.organizationId
       };
 
       if (editingRegion) {
-        await axios.put(`http://127.0.0.1:5001/api/admin/regions/${editingRegion.id}`, payload, {
-          headers: { 'Authorization': `Bearer ${token}` }
-        });
+        await api.put(`/admin/regions/${editingRegion.id}`, payload);
       } else {
-        await axios.post('http://127.0.0.1:5001/api/admin/regions', payload, {
-          headers: { 'Authorization': `Bearer ${token}` }
-        });
+        await api.post('/admin/regions', payload);
       }
       setIsModalOpen(false);
       setEditingRegion(null);
@@ -74,10 +66,7 @@ export default function RegionsPage() {
   const handleDelete = async (id: string) => {
     if (!confirm('Are you sure? All societies in this region will be affected.')) return;
     try {
-      const token = localStorage.getItem('klb_token');
-      await axios.delete(`http://127.0.0.1:5001/api/admin/regions/${id}`, {
-        headers: { 'Authorization': `Bearer ${token}` }
-      });
+      await api.delete(`/admin/regions/${id}`);
       fetchData();
     } catch (error: any) {
       alert(error.response?.data?.message || 'Failed to delete');

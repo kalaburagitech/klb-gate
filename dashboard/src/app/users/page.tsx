@@ -2,7 +2,7 @@
 import React, { useState, useEffect } from 'react';
 import { Plus, Search, User, Shield, Home, MoreVertical, Smartphone, Calendar, Mail, Edit, Trash, X, CheckCircle, Building, Globe } from 'lucide-react';
 import Link from 'next/link';
-import axios from 'axios';
+import api from '@/utils/api';
 import { useAuth } from '@/context/AuthContext';
 
 export default function UsersPage() {
@@ -18,10 +18,7 @@ export default function UsersPage() {
 
   const fetchUsers = async () => {
     try {
-      const token = localStorage.getItem('klb_token');
-      const res = await axios.get('http://127.0.0.1:5001/api/admin/users', {
-        headers: { 'Authorization': `Bearer ${token}` }
-      });
+      const res = await api.get('/admin/users');
       setUsers(res.data.data);
     } catch (error) {
       console.error(error);
@@ -32,10 +29,7 @@ export default function UsersPage() {
 
   const fetchTenants = async () => {
     try {
-      const token = localStorage.getItem('klb_token');
-      const res = await axios.get('http://127.0.0.1:5001/api/admin/tenants', {
-        headers: { 'Authorization': `Bearer ${token}` }
-      });
+      const res = await api.get('/admin/tenants');
       setTenants(res.data.data);
     } catch (error) {
       console.error('Failed to fetch societies');
@@ -44,10 +38,7 @@ export default function UsersPage() {
 
   const fetchUnits = async (tenantId: string) => {
     try {
-      const token = localStorage.getItem('klb_token');
-      const res = await axios.get(`http://127.0.0.1:5001/api/admin/units?tenantId=${tenantId}`, {
-        headers: { 'Authorization': `Bearer ${token}` }
-      });
+      const res = await api.get(`/admin/units?tenantId=${tenantId}`);
       setUnits(res.data.data);
     } catch (error) {
       console.error('Failed to fetch units');
@@ -75,10 +66,7 @@ export default function UsersPage() {
 
   const handleDelete = async (id: string) => {
     try {
-      const token = localStorage.getItem('klb_token');
-      await axios.delete(`http://127.0.0.1:5001/api/admin/users/${id}`, {
-        headers: { 'Authorization': `Bearer ${token}` }
-      });
+      await api.delete(`/admin/users/${id}`);
       setUsers(users.filter(u => u.id !== id));
       setShowDeleteConfirm(null);
     } catch (error) {
@@ -89,10 +77,7 @@ export default function UsersPage() {
   const handleUpdate = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
-      const token = localStorage.getItem('klb_token');
-      await axios.put(`http://127.0.0.1:5001/api/admin/users/${editingUser.id}`, editingUser, {
-        headers: { 'Authorization': `Bearer ${token}` }
-      });
+      await api.put(`/admin/users/${editingUser.id}`, editingUser);
       fetchUsers(); // Reload to get updated names/relations
       setEditingUser(null);
     } catch (error) {

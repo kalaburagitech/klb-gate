@@ -2,7 +2,7 @@
 import React, { useState } from 'react';
 import { Shield, Mail, Lock, ArrowRight, TreeDeciduous } from 'lucide-react';
 import { useAuth } from '@/context/AuthContext';
-import axios from 'axios';
+import api from '@/utils/api';
 
 export default function LoginPage() {
   const [email, setEmail] = useState('');
@@ -17,7 +17,7 @@ export default function LoginPage() {
     setError('');
     
     try {
-      const res = await axios.post('http://127.0.0.1:5001/api/auth/login', { email, password });
+      const res = await api.post('/auth/login', { email, password });
       const { token, user } = res.data.data;
       login(token, user);
     } catch (err: any) {

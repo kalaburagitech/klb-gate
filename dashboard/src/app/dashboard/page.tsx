@@ -10,7 +10,7 @@ import {
   Activity,
   UserCheck
 } from 'lucide-react';
-import axios from 'axios';
+import api from '@/utils/api';
 import { useAuth } from '@/context/AuthContext';
 
 const StatCard = ({ title, value, icon: Icon, trend, color }: any) => (
@@ -39,10 +39,7 @@ export default function DashboardPage() {
   useEffect(() => {
     const fetchStats = async () => {
       try {
-        const token = localStorage.getItem('klb_token');
-        const res = await axios.get('http://127.0.0.1:5001/api/admin/stats', {
-          headers: { 'Authorization': `Bearer ${token}` }
-        });
+        const res = await api.get('/admin/stats');
         setStats(res.data.data);
       } catch (error) {
         console.error('Failed to fetch stats', error);

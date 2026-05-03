@@ -4,8 +4,8 @@ import { Platform } from 'react-native';
 
 const api = axios.create({
   baseURL: Platform.OS === 'web' 
-    ? 'http://127.0.0.1:5001/api/' 
-    : 'http://192.168.0.101:5001/api/',
+    ? (process.env.EXPO_PUBLIC_WEB_API_URL || 'http://127.0.0.1:5001/api/')
+    : (process.env.EXPO_PUBLIC_API_URL || 'http://192.168.0.101:5001/api/'),
   timeout: 30000,
 });
 

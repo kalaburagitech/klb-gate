@@ -1,7 +1,7 @@
 'use client';
 import React, { useState, useRef, useEffect } from 'react';
 import { User, Mail, Phone, Shield, Building2, Upload, CheckCircle, Lock, X } from 'lucide-react';
-import axios from 'axios';
+import api from '@/utils/api';
 import { useRouter } from 'next/navigation';
 import { useAuth } from '@/context/AuthContext';
 
@@ -30,10 +30,7 @@ export default function CreateUserPage() {
   useEffect(() => {
     const fetchOrgs = async () => {
       try {
-        const token = localStorage.getItem('klb_token');
-        const res = await axios.get('http://127.0.0.1:5001/api/admin/organizations', {
-          headers: { 'Authorization': `Bearer ${token}` }
-        });
+        const res = await api.get('/admin/organizations');
         setOrganizations(res.data.data);
       } catch (error) {
         console.error('Failed to fetch organizations');
@@ -45,10 +42,7 @@ export default function CreateUserPage() {
   useEffect(() => {
     const fetchTenants = async () => {
       try {
-        const token = localStorage.getItem('klb_token');
-        const res = await axios.get('http://127.0.0.1:5001/api/admin/tenants', {
-          headers: { 'Authorization': `Bearer ${token}` }
-        });
+        const res = await api.get('/admin/tenants');
         setTenants(res.data.data);
       } catch (error) {
         console.error('Failed to fetch societies');
@@ -66,10 +60,7 @@ export default function CreateUserPage() {
     const fetchUnits = async () => {
       if (!form.tenantId) return;
       try {
-        const token = localStorage.getItem('klb_token');
-        const res = await axios.get(`http://127.0.0.1:5001/api/admin/units?tenantId=${form.tenantId}`, {
-          headers: { 'Authorization': `Bearer ${token}` }
-        });
+        const res = await api.get(`/admin/units?tenantId=${form.tenantId}`);
         setUnits(res.data.data);
       } catch (error) {
         console.error('Failed to fetch units');
@@ -87,11 +78,9 @@ export default function CreateUserPage() {
     formData.append('file', file);
 
     try {
-      const token = localStorage.getItem('klb_token');
-      const res = await axios.post('http://127.0.0.1:5001/api/media/upload', formData, {
+      const res = await api.post('/media/upload', formData, {
         headers: {
           'Content-Type': 'multipart/form-data',
-          'Authorization': `Bearer ${token}`,
           'x-tenant-id': currentUser?.tenantId || form.tenantId
         }
       });
@@ -123,10 +112,7 @@ export default function CreateUserPage() {
 
     setLoading(true);
     try {
-      const token = localStorage.getItem('klb_token');
-      await axios.post('http://127.0.0.1:5001/api/admin/users', form, {
-        headers: { 'Authorization': `Bearer ${token}` }
-      });
+      await api.post('/admin/users', form);
       alert('User created successfully');
       router.push('/users');
     } catch (error: any) {
