@@ -13,9 +13,10 @@
   --color-nature-900: #33691E;
   --color-nature-forest: #2E7D32;
   
-  --color-dark-bg: #121212;
-  --color-dark-card: #1E1E1E;
-  --color-dark-text: #E0E0E0;
+  --color-dark-bg: #0A0A0A;
+  --color-dark-card: #141414;
+  --color-dark-text: #F5F5F5;
+  --color-dark-muted: #A0A0A0;
   
   --shadow-soft: 0 4px 20px -2px rgba(0, 0, 0, 0.05);
   
@@ -25,13 +26,19 @@
 
 /* Custom Nature Theme Variables */
 :root {
-  --background: #F1F8E9;
-  --foreground: #263238;
+  --background: #F8FAF7;
+  --foreground: #1A1C19;
+  --card: #FFFFFF;
+  --border: rgba(46, 125, 50, 0.1);
+  --muted: #6B7280;
 }
 
 .dark {
-  --background: #121212;
-  --foreground: #E0E0E0;
+  --background: #0A0A0A;
+  --foreground: #F5F5F5;
+  --card: #141414;
+  --border: rgba(255, 255, 255, 0.08);
+  --muted: #9CA3AF;
 }
 
 body {
@@ -42,10 +49,10 @@ body {
 
 @layer components {
   .card-base {
-    background-color: white;
+    background-color: var(--card);
     border-radius: var(--radius-3xl);
     box-shadow: var(--shadow-soft);
-    border: 1px solid rgba(0, 0, 0, 0.05);
+    border: 1px solid var(--border);
     transition-property: all;
     transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
     transition-duration: 150ms;
@@ -56,14 +63,19 @@ body {
     text-shadow: 0 0 10px rgba(46, 125, 50, 0.4);
   }
   
-  .neon-border {
-    border: 1px solid rgba(46, 125, 50, 0.2);
-    box-shadow: 0 0 15px rgba(46, 125, 50, 0.1);
+  .dark .neon-text {
+    color: #4CAF50;
+    text-shadow: 0 0 15px rgba(76, 175, 80, 0.5);
   }
   
-  .dark .card-base {
-    background-color: var(--color-dark-card);
-    border-color: rgba(255, 255, 255, 0.05);
+  .neon-border {
+    border: 1px solid var(--border);
+    box-shadow: 0 0 15px rgba(46, 125, 50, 0.05);
+  }
+  
+  .dark .neon-border {
+    border-color: rgba(76, 175, 80, 0.2);
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.4);
   }
   
   .btn-primary {

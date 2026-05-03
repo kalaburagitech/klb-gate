@@ -19,11 +19,11 @@ export default function DashboardWrapper({ children }: { children: React.ReactNo
   );
 
   return (
-    <div className="flex min-h-screen bg-background">
+    <div className="flex min-h-screen bg-[var(--background)] transition-colors duration-300">
       {!isLoginPage && user && <Sidebar />}
       <main className={`flex-1 transition-all duration-300 ${!isLoginPage && user ? 'ml-64 flex flex-col' : ''}`}>
         {!isLoginPage && user && (
-          <header className="h-20 bg-white dark:bg-nature-950/50 border-b border-nature-forest/10 dark:border-white/5 flex items-center justify-between px-8 backdrop-blur-md sticky top-0 z-40">
+          <header className="h-20 bg-[var(--card)] border-b border-[var(--border)] flex items-center justify-between px-8 backdrop-blur-md sticky top-0 z-40 transition-colors duration-300">
             <div className="flex items-center gap-6">
               <div className="flex items-center gap-2 px-3 py-1 bg-nature-light dark:bg-nature-900/30 rounded-full border border-nature-forest/10">
                 <Shield size={14} className="text-nature-forest" />

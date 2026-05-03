@@ -109,13 +109,13 @@ export default function UsersPage() {
       </div>
 
       {/* Filters */}
-      <div className="flex flex-col md:flex-row items-center gap-4 bg-white dark:bg-dark-card p-4 rounded-3xl shadow-soft neon-border">
+      <div className="flex flex-col md:flex-row items-center gap-4 bg-[var(--card)] p-4 rounded-3xl shadow-soft border border-[var(--border)]">
         <div className="flex-1 relative w-full">
           <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400" size={18} />
           <input 
             type="text" 
             placeholder="Search by name, phone, or email..."
-            className="w-full pl-12 pr-4 py-3 bg-nature-light dark:bg-nature-900/10 rounded-2xl focus:outline-none focus:ring-2 focus:ring-nature-forest/20 transition-all"
+            className="w-full pl-12 pr-4 py-3 bg-[var(--background)] dark:bg-white/5 rounded-2xl focus:outline-none focus:ring-2 focus:ring-nature-forest/20 transition-all text-gray-800 dark:text-white"
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
           />

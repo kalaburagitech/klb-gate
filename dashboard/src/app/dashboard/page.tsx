@@ -98,13 +98,13 @@ export default function DashboardPage() {
           </div>
           <div className="space-y-6">
             {[1, 2, 3].map((i) => (
-              <div key={i} className="flex items-center gap-4 p-4 bg-nature-light dark:bg-nature-900/10 rounded-2xl border border-transparent hover:border-nature-forest/20 transition-all cursor-pointer">
-                <div className="w-12 h-12 rounded-xl bg-white dark:bg-dark-card flex items-center justify-center font-bold text-nature-forest shadow-sm">
+              <div key={i} className="flex items-center gap-4 p-4 bg-[var(--background)] dark:bg-white/5 rounded-2xl border border-transparent hover:border-nature-forest/20 transition-all cursor-pointer group">
+                <div className="w-12 h-12 rounded-xl bg-[var(--card)] dark:bg-white/10 flex items-center justify-center font-black text-nature-forest shadow-sm group-hover:scale-110 transition-transform">
                   0{i}
                 </div>
                 <div className="flex-1">
                   <h4 className="font-bold text-gray-800 dark:text-white">System Synchronisation Activity</h4>
-                  <p className="text-sm text-gray-500">Security node {i} successfully verified and linked to infrastructure.</p>
+                  <p className="text-sm text-gray-500 dark:text-gray-400">Security node {i} successfully verified and linked to infrastructure.</p>
                 </div>
                 <div className="w-2 h-2 rounded-full bg-nature-forest shadow-[0_0_8px_rgba(46,125,50,1)] animate-pulse" />
               </div>

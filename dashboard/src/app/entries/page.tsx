@@ -58,25 +58,25 @@ export default function EntryLogsPage() {
           <p className="text-gray-500 dark:text-gray-400 mt-1">Audit trail of all entries, approvals, and exits.</p>
         </div>
         <div className="flex gap-3">
-          <button className="h-12 px-6 bg-white dark:bg-dark-card border border-nature-forest/10 dark:border-white/5 rounded-2xl text-gray-600 dark:text-gray-300 font-bold text-sm flex items-center gap-2 hover:bg-gray-50 transition-all">
+          <button className="h-12 px-6 bg-[var(--card)] border border-[var(--border)] rounded-2xl text-gray-600 dark:text-gray-300 font-bold text-sm flex items-center gap-2 hover:bg-gray-50 dark:hover:bg-white/5 transition-all">
             <Download size={18} />
             Export Audit
           </button>
         </div>
       </div>
 
-      <div className="flex items-center gap-4 bg-white dark:bg-dark-card p-4 rounded-3xl shadow-soft neon-border">
+      <div className="flex items-center gap-4 bg-[var(--card)] p-4 rounded-3xl shadow-soft border border-[var(--border)]">
         <div className="flex-1 relative">
           <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400" size={18} />
           <input 
             type="text" 
             placeholder="Search by visitor name, unit, or purpose..."
-            className="w-full pl-12 pr-4 py-3 bg-nature-light dark:bg-nature-900/10 rounded-2xl focus:outline-none transition-all"
+            className="w-full pl-12 pr-4 py-3 bg-[var(--background)] dark:bg-white/5 rounded-2xl focus:outline-none transition-all text-gray-800 dark:text-white"
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
           />
         </div>
-        <button className="p-3 bg-nature-light dark:bg-nature-900/20 rounded-2xl text-nature-forest">
+        <button className="p-3 bg-[var(--background)] dark:bg-white/5 rounded-2xl text-nature-forest">
           <Filter size={20} />
         </button>
       </div>

@@ -36,41 +36,41 @@ export default function Sidebar() {
   );
 
   return (
-    <aside className="w-64 bg-white dark:bg-dark-bg border-r border-nature-forest/10 dark:border-white/5 h-screen flex flex-col fixed left-0 top-0 z-50">
-      <div className="p-6 flex items-center gap-3">
+    <aside className="w-64 bg-[var(--card)] border-r border-[var(--border)] h-screen flex flex-col fixed left-0 top-0 z-50 transition-all duration-300 shadow-2xl dark:shadow-none">
+      <div className="p-8 flex items-center gap-3">
         <div className="w-10 h-10 bg-nature-forest rounded-xl flex items-center justify-center shadow-lg shadow-nature-forest/20">
           <span className="text-white font-bold text-xl">K</span>
         </div>
-        <span className="font-bold text-xl text-nature-forest tracking-tight">KLB Connect</span>
+        <span className="font-bold text-xl text-nature-forest tracking-tighter">KLB <span className="opacity-50">Shield</span></span>
       </div>
 
-      <nav className="flex-1 px-4 py-6 space-y-1">
+      <nav className="flex-1 px-4 py-4 space-y-1.5">
         {filteredNav.map((item) => {
           const isActive = pathname === item.href;
           return (
             <Link
               key={item.name}
               href={item.href}
-              className={`flex items-center gap-3 px-4 py-3 rounded-xl transition-all duration-200 ${
+              className={`flex items-center gap-3 px-5 py-3.5 rounded-2xl transition-all duration-300 group ${
                 isActive 
-                  ? 'bg-nature-forest text-white shadow-md shadow-nature-forest/20' 
-                  : 'text-gray-500 dark:text-gray-400 hover:bg-nature-light dark:hover:bg-nature-900/30 hover:text-nature-forest'
+                  ? 'bg-nature-forest text-white shadow-xl shadow-nature-forest/20' 
+                  : 'text-gray-500 dark:text-white/60 hover:bg-nature-light/50 dark:hover:bg-white/5 hover:text-nature-forest dark:hover:text-white'
               }`}
             >
-              <item.icon size={20} />
-              <span className="font-medium">{item.name}</span>
+              <item.icon size={20} className={isActive ? 'text-white' : 'group-hover:scale-110 transition-transform'} />
+              <span className="font-bold text-sm tracking-tight">{item.name}</span>
             </Link>
           );
         })}
       </nav>
 
-      <div className="p-4 border-t border-nature-light dark:border-white/5">
+      <div className="p-6 border-t border-[var(--border)]">
         <button 
           onClick={logout}
-          className="w-full flex items-center gap-3 px-4 py-3 rounded-xl text-red-500 hover:bg-red-50 dark:hover:bg-red-900/10 transition-colors"
+          className="w-full flex items-center gap-3 px-5 py-3.5 rounded-2xl text-red-500 hover:bg-red-50 dark:hover:bg-red-500/10 transition-all duration-300 group"
         >
-          <LogOut size={20} />
-          <span className="font-medium">Logout</span>
+          <LogOut size={20} className="group-hover:-translate-x-1 transition-transform" />
+          <span className="font-bold text-sm tracking-tight">System Exit</span>
         </button>
       </div>
     </aside>
