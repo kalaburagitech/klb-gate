@@ -10,6 +10,7 @@ export interface JWTPayload {
   tenantId: string;
   organizationId: string;
   unitNumber?: string;
+  unitId?: string;
 }
 
 export interface AuthRequest extends Request {

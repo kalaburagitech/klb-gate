@@ -4,6 +4,7 @@ import { EntryRepository } from './entry.repository';
 import { AppError } from '../../middleware/error.middleware';
 import prisma from '../../utils/prisma';
 import { MediaService } from '../media/media.service';
+import { EntryStatus } from '@prisma/client';
 
 export class VisitorController {
   // Guard creates entry

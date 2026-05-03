@@ -48,7 +48,7 @@ export class EntryController {
 
       if (!tenantId) throw new AppError('Tenant context missing', 400);
 
-      const entry = await EntryService.checkOut(id, tenantId);
+      const entry = await EntryService.checkOut(id as string, tenantId);
 
       res.status(200).json({
         success: true,

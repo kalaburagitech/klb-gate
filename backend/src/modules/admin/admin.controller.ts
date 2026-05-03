@@ -54,7 +54,7 @@ export class AdminController {
       const { id } = req.params;
       const { name, slug, logoId } = req.body;
       const org = await prisma.organization.update({
-        where: { id },
+        where: { id: id as string },
         data: { name, slug, logoId }
       });
       res.status(200).json({ success: true, data: org });
@@ -448,7 +448,7 @@ export class AdminController {
       }
 
       // Delete units first
-      await prisma.unit.deleteMany({ where: { tenantId: id } });
+      await prisma.unit.deleteMany({ where: { tenantId: id as string } });
       await prisma.tenant.delete({ where: { id: id as string } });
       
       res.status(200).json({ success: true, message: 'Society deleted' });

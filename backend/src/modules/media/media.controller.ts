@@ -27,7 +27,7 @@ export class MediaController {
       const { id } = req.params;
       const { width, quality } = req.query;
 
-      const url = await MediaService.getMediaUrl(id, {
+      const url = await MediaService.getMediaUrl(id as string, {
         width: width ? parseInt(width as string) : undefined,
         quality: quality ? parseInt(quality as string) : undefined,
       });
