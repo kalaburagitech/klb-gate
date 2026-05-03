@@ -12,24 +12,25 @@ import mediaRoutes from './modules/media/media.routes';
 import { notificationWorker } from './modules/notification/notification.queue';
 
 const app = express();
-const PORT = process.env.PORT || 4000;
+const PORT = process.env.PORT || 5001;
 
-// Security Middleware
-app.use(helmet({
-  crossOriginResourcePolicy: false,
-}));
-app.use(cors({
-  origin: '*',
-  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
-  allowedHeaders: ['Content-Type', 'Authorization', 'x-tenant-id', 'Accept'],
-  credentials: true,
-}));
+// 1. Health Check (Top Priority for Railway)
+app.get('/health', (req, res) => {
+  res.status(200).send('OK');
+});
 
-// Rate Limiting
+// 2. Logging & Security
+app.use(morgan('dev'));
+app.use(helmet({ crossOriginResourcePolicy: false }));
+
+// 3. Simple & Permissive CORS
+app.use(cors());
+
+// 4. Rate Limiting (Moved down)
 const limiter = rateLimit({
-  windowMs: 15 * 60 * 1000, // 15 minutes
-  max: 1000, // Increased for development testing
-  message: 'Too many requests from this IP, please try again after 15 minutes',
+  windowMs: 15 * 60 * 1000,
+  max: 2000,
+  message: 'Rate limit exceeded',
 });
 app.use('/api/', limiter);
 
