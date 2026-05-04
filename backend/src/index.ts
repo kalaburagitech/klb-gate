@@ -21,7 +21,7 @@ app.get('/health', (req, res) => {
 
 // 2. Logging & Security
 app.use(morgan('dev'));
-app.use(helmet({ 
+app.use(helmet({
   crossOriginResourcePolicy: false,
   referrerPolicy: { policy: 'strict-origin-when-cross-origin' }
 }));
