@@ -16,15 +16,37 @@ const PORT = process.env.PORT || 5001;
 
 // 1. Health Check (Top Priority for Railway)
 app.get('/health', (req, res) => {
-  res.status(200).send('OK');
+  res.status(200).json({ status: 'UP', timestamp: new Date().toISOString() });
 });
 
 // 2. Logging & Security
 app.use(morgan('dev'));
-app.use(helmet({ crossOriginResourcePolicy: false }));
+app.use(helmet({ 
+  crossOriginResourcePolicy: false,
+  referrerPolicy: { policy: 'strict-origin-when-cross-origin' }
+}));
 
-// 3. Simple & Permissive CORS
-app.use(cors());
+// 3. Robust CORS Configuration
+const allowedOrigins = [
+  'https://klb-gate.vercel.app',
+  'http://localhost:3000',
+  'http://127.0.0.1:3000'
+];
+
+app.use(cors({
+  origin: (origin, callback) => {
+    // Allow requests with no origin (like mobile apps or curl)
+    if (!origin) return callback(null, true);
+    if (allowedOrigins.indexOf(origin) !== -1 || process.env.NODE_ENV === 'development') {
+      callback(null, true);
+    } else {
+      callback(new Error('Not allowed by CORS'));
+    }
+  },
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization', 'x-tenant-id', 'Accept'],
+  credentials: true,
+}));
 
 // 4. Rate Limiting (Moved down)
 const limiter = rateLimit({
@@ -41,10 +63,7 @@ app.use(morgan('combined', { stream: { write: (message) => logger.info(message.t
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-// Health Check
-app.get('/health', (req, res) => {
-  res.status(200).json({ status: 'UP', timestamp: new Date().toISOString() });
-});
+
 
 // API Routes
 import adminRoutes from './modules/admin/admin.routes';
