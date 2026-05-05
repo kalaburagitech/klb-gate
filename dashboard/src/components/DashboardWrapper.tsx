@@ -8,7 +8,7 @@ import { useTheme } from "@/context/ThemeContext";
 
 export default function DashboardWrapper({ children }: { children: React.ReactNode }) {
   const { user, isLoading } = useAuth();
-  const { theme, setTheme, resolvedTheme } = useTheme();
+  const { themeMode, setThemeMode, resolvedTheme } = useTheme();
   const pathname = usePathname();
   const isLoginPage = pathname === '/login';
 
@@ -52,20 +52,20 @@ export default function DashboardWrapper({ children }: { children: React.ReactNo
             <div className="flex items-center gap-4">
               <div className="flex items-center bg-gray-100 dark:bg-white/5 p-1 rounded-xl border border-gray-200 dark:border-white/10 mr-2">
                 <button 
-                  onClick={() => setTheme('light')}
-                  className={`p-2 rounded-lg transition-all ${theme === 'light' ? 'bg-white text-nature-forest shadow-sm' : 'text-gray-400 hover:text-gray-600'}`}
+                  onClick={() => setThemeMode('LIGHT')}
+                  className={`p-2 rounded-lg transition-all ${themeMode === 'LIGHT' ? 'bg-white text-nature-forest shadow-sm' : 'text-gray-400 hover:text-gray-600'}`}
                 >
                   <Sun size={16} />
                 </button>
                 <button 
-                  onClick={() => setTheme('system')}
-                  className={`p-2 rounded-lg transition-all ${theme === 'system' ? 'bg-white dark:bg-white/10 text-nature-forest dark:text-nature-400 shadow-sm' : 'text-gray-400 hover:text-gray-600'}`}
+                  onClick={() => setThemeMode('SYSTEM')}
+                  className={`p-2 rounded-lg transition-all ${themeMode === 'SYSTEM' ? 'bg-white dark:bg-white/10 text-nature-forest dark:text-nature-400 shadow-sm' : 'text-gray-400 hover:text-gray-600'}`}
                 >
                   <Laptop size={16} />
                 </button>
                 <button 
-                  onClick={() => setTheme('dark')}
-                  className={`p-2 rounded-lg transition-all ${theme === 'dark' ? 'bg-nature-forest text-white shadow-sm' : 'text-gray-400 hover:text-gray-600'}`}
+                  onClick={() => setThemeMode('DARK')}
+                  className={`p-2 rounded-lg transition-all ${themeMode === 'DARK' ? 'bg-nature-forest text-white shadow-sm' : 'text-gray-400 hover:text-gray-600'}`}
                 >
                   <Moon size={16} />
                 </button>

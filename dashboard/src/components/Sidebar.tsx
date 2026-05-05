@@ -23,6 +23,7 @@ const NAV_ITEMS = [
   { name: 'Users', icon: Users, href: '/users', roles: ['SUPER_ADMIN', 'ORG_ADMIN', 'TENANT_ADMIN'] },
   { name: 'Entry Logs', icon: ClipboardList, href: '/entries', roles: ['TENANT_ADMIN', 'OFFICER', 'GUARD'] },
   { name: 'Security', icon: ShieldAlert, href: '/security', roles: ['SUPER_ADMIN', 'ORG_ADMIN', 'TENANT_ADMIN'] },
+  { name: 'Profile', icon: Settings, href: '/dashboard/profile' },
 ];
 
 export default function Sidebar() {

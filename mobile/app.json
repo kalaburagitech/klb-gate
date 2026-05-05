@@ -10,17 +10,28 @@
     "splash": {
       "image": "./assets/splash.png",
       "resizeMode": "contain",
-      "backgroundColor": "#000000"
+      "backgroundColor": "#FFFFFF"
     },
     "ios": {
       "supportsTablet": true,
-      "bundleIdentifier": "com.klbgate.app"
+      "bundleIdentifier": "com.klbgate.app",
+      "infoPlist": {
+        "NSCameraUsageDescription": "This app uses the camera to take visitor photos for security verification.",
+        "NSMicrophoneUsageDescription": "This app uses the microphone for recording audio during video capture.",
+        "NSPhotoLibraryUsageDescription": "This app uses the photo library to save or select visitor photos."
+      }
     },
     "android": {
       "package": "com.klbgate.app",
+      "permissions": [
+        "android.permission.CAMERA",
+        "android.permission.RECORD_AUDIO",
+        "android.permission.WRITE_EXTERNAL_STORAGE",
+        "android.permission.READ_EXTERNAL_STORAGE"
+      ],
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
-        "backgroundColor": "#000000"
+        "backgroundColor": "#FFFFFF"
       },
       "edgeToEdgeEnabled": true,
       "predictiveBackGestureEnabled": false
@@ -29,7 +40,8 @@
       [
         "expo-camera",
         {
-          "cameraPermission": "Allow KLB Gate to access your camera to capture visitor photos."
+          "cameraPermission": "Allow KLB Gate to access your camera to capture visitor photos.",
+          "microphonePermission": "Allow KLB Gate to access your microphone."
         }
       ]
     ],

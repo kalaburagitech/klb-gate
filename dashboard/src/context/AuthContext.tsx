@@ -41,8 +41,11 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         const fullUser = res.data.data;
         setUser(fullUser);
         localStorage.setItem('klb_user', JSON.stringify(fullUser));
-      } catch (error) {
-        console.error('Failed to refresh profile');
+      } catch (error: any) {
+        console.error('Failed to refresh profile:', error);
+        if (error.response?.status === 401) {
+          logout();
+        }
       }
     };
 

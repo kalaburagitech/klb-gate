@@ -13,11 +13,13 @@ import {
   Dimensions,
   FlatList,
   KeyboardAvoidingView,
-  Platform
+  Platform,
+  Linking
 } from 'react-native';
 import { SafeAreaView, useSafeAreaInsets } from 'react-native-safe-area-context';
+import { useIsFocused } from '@react-navigation/native';
 import { Camera as CameraIcon, User, Phone, Clipboard, CheckCircle, X, RotateCcw, Home as HomeIcon, Search } from 'lucide-react-native';
-import { CameraView, useCameraPermissions } from 'expo-camera';
+import CameraScreen from '../../components/CameraModule';
 import api, { visitorApi, mediaApi, unitApi } from '../../services/api';
 import { useTheme } from '../../context/ThemeContext';
 
@@ -29,8 +31,7 @@ export default function AddVisitorScreen({ navigation, route }: any) {
   const [loading, setLoading] = useState(false);
   const [photo, setPhoto] = useState<string | null>(null);
   const [cameraVisible, setCameraVisible] = useState(false);
-  const [permission, requestPermission] = useCameraPermissions();
-  const cameraRef = useRef<any>(null);
+  const isFocused = useIsFocused();
 
   // Search States
   const [searchQuery, setSearchQuery] = useState('');
@@ -113,31 +114,13 @@ export default function AddVisitorScreen({ navigation, route }: any) {
     setShowResults(false);
   };
 
-  const handleOpenCamera = async () => {
-    if (!permission) return;
-    if (!permission.granted) {
-      const { granted } = await requestPermission();
-      if (!granted) {
-        Alert.alert('Permission Denied', 'Camera permission required');
-        return;
-      }
-    }
+  const handleOpenCamera = () => {
     setCameraVisible(true);
   };
 
-  const takePicture = async () => {
-    if (cameraRef.current) {
-      try {
-        const photoData = await cameraRef.current.takePictureAsync({
-          quality: 0.5,
-          skipProcessing: true,
-        });
-        setPhoto(photoData.uri);
-        setCameraVisible(false);
-      } catch (e) {
-        Alert.alert('Error', 'Failed to take picture');
-      }
-    }
+  const handleCapture = (uri: string) => {
+    setPhoto(uri);
+    setCameraVisible(false);
   };
 
   const handleCheckIn = async () => {
@@ -221,7 +204,7 @@ export default function AddVisitorScreen({ navigation, route }: any) {
                 </TouchableOpacity>
               </View>
             ) : (
-              <TouchableOpacity style={[styles.photoPlaceholder, { backgroundColor: colors.card }]} onPress={() => setCameraVisible(true)}>
+              <TouchableOpacity style={[styles.photoPlaceholder, { backgroundColor: colors.card }]} onPress={handleOpenCamera}>
                 <View style={styles.iconCircle}>
                   <CameraIcon size={32} color="#fff" />
                 </View>
@@ -370,22 +353,11 @@ export default function AddVisitorScreen({ navigation, route }: any) {
       </ScrollView>
     </KeyboardAvoidingView>
 
-      <Modal visible={cameraVisible} animationType="slide">
-        <View style={styles.cameraContainer}>
-          <CameraView style={styles.camera} ref={cameraRef} facing="back">
-            <View style={styles.cameraOverlay}>
-              <TouchableOpacity style={styles.closeCameraButton} onPress={() => setCameraVisible(false)}>
-                <X size={28} color="#fff" />
-              </TouchableOpacity>
-              <View style={styles.captureBoundary} />
-              <View style={styles.cameraFooter}>
-                <TouchableOpacity style={styles.captureButton} onPress={takePicture}>
-                  <View style={styles.captureInner} />
-                </TouchableOpacity>
-              </View>
-            </View>
-          </CameraView>
-        </View>
+      <Modal visible={cameraVisible && isFocused} animationType="slide">
+        <CameraScreen 
+          onCapture={handleCapture} 
+          onClose={() => setCameraVisible(false)} 
+        />
       </Modal>
     </View>
   );

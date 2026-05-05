@@ -20,6 +20,8 @@ export class AuthService {
         role: user.role,
         tenantId: user.tenantId,
         organizationId: user.organizationId,
+        unitId: user.unitId,
+        unitNumber: user.unitNumber,
       },
       process.env.JWT_SECRET || 'secret',
       { expiresIn: '24h' }

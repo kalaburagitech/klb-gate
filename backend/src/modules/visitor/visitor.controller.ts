@@ -105,18 +105,18 @@ export class VisitorController {
 
       if (!tenantId) throw new AppError('Context missing', 403);
 
-      // Security: Residents can only view their own unit
-      let unitId = role === 'RESIDENT' ? userUnitId : paramUnit;
+      // Residents view their own unit; Guards/Admins can view by param
+      let unitNumber = role === 'RESIDENT' ? req.user?.unitNumber : paramUnit;
 
-      if (!unitId) {
-        console.warn(`⚠️ [VisitorController] No unitId found for resident ${req.user?.userId}`);
+      if (!unitNumber) {
+        console.warn(`⚠️ [VisitorController] No unitNumber found for user ${req.user?.userId}`);
         return res.status(200).json({ success: true, data: [] });
       }
 
       const entries = await prisma.entry.findMany({
         where: { 
           tenantId: tenantId as string, 
-          unitId: unitId as string 
+          unitNumber: unitNumber as string 
         },
         include: { visitor: true },
         orderBy: { createdAt: 'desc' }

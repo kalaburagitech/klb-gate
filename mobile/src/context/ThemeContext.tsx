@@ -1,5 +1,5 @@
 import React, { createContext, useContext, useEffect, useState } from 'react';
-import { Appearance, ColorSchemeName } from 'react-native';
+import { useColorScheme } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 type ThemeMode = 'LIGHT' | 'DARK' | 'SYSTEM';
@@ -17,17 +17,17 @@ const LightTheme: ThemeColors = {
   primary: '#2E7D32',
   background: '#F1F8E9',
   card: '#FFFFFF',
-  text: '#263238',
-  border: 'rgba(0,0,0,0.05)',
+  text: '#1B262C',
+  border: 'rgba(46, 125, 50, 0.08)',
   notification: '#4CAF50',
 };
 
 const DarkTheme: ThemeColors = {
   primary: '#4CAF50',
-  background: '#121212',
-  card: '#1E1E1E',
-  text: '#E0E0E0',
-  border: 'rgba(255,255,255,0.1)',
+  background: '#0F120F',
+  card: '#1A1F1A',
+  text: '#F5F5F5',
+  border: 'rgba(255, 255, 255, 0.1)',
   notification: '#2E7D32',
 };
 
@@ -41,25 +41,19 @@ interface ThemeContextType {
 const ThemeContext = createContext<ThemeContextType | undefined>(undefined);
 
 export const ThemeProvider = ({ children }: { children: React.ReactNode }) => {
-  const [themeMode, setThemeMode] = useState<ThemeMode>('SYSTEM');
-  const [systemScheme, setSystemScheme] = useState<ColorSchemeName>(Appearance.getColorScheme());
+  const [themeMode, setThemeModeState] = useState<ThemeMode>('SYSTEM');
+  const systemScheme = useColorScheme();
 
   useEffect(() => {
     const loadTheme = async () => {
       const saved = await AsyncStorage.getItem('klb_theme_mode');
-      if (saved) setThemeMode(saved as ThemeMode);
+      if (saved) setThemeModeState(saved as ThemeMode);
     };
     loadTheme();
-
-    const subscription = Appearance.addChangeListener(({ colorScheme }) => {
-      setSystemScheme(colorScheme);
-    });
-
-    return () => subscription.remove();
   }, []);
 
-  const saveTheme = async (mode: ThemeMode) => {
-    setThemeMode(mode);
+  const setThemeMode = async (mode: ThemeMode) => {
+    setThemeModeState(mode);
     await AsyncStorage.setItem('klb_theme_mode', mode);
   };
 
@@ -67,7 +61,7 @@ export const ThemeProvider = ({ children }: { children: React.ReactNode }) => {
   const colors = isDark ? DarkTheme : LightTheme;
 
   return (
-    <ThemeContext.Provider value={{ themeMode, setThemeMode: saveTheme, colors, isDark }}>
+    <ThemeContext.Provider value={{ themeMode, setThemeMode, colors, isDark }}>
       {children}
     </ThemeContext.Provider>
   );

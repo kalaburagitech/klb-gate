@@ -2,46 +2,46 @@
 
 import React, { createContext, useContext, useEffect, useState } from 'react';
 
-type Theme = 'light' | 'dark' | 'system';
+type ThemeMode = 'LIGHT' | 'DARK' | 'SYSTEM';
 
 interface ThemeContextType {
-  theme: Theme;
-  setTheme: (theme: Theme) => void;
-  resolvedTheme: 'light' | 'dark';
+  themeMode: ThemeMode;
+  setThemeMode: (mode: ThemeMode) => void;
+  resolvedTheme: 'LIGHT' | 'DARK';
 }
 
 const ThemeContext = createContext<ThemeContextType | undefined>(undefined);
 
 export const ThemeProvider = ({ children }: { children: React.ReactNode }) => {
-  const [theme, setThemeState] = useState<Theme>('system');
-  const [resolvedTheme, setResolvedTheme] = useState<'light' | 'dark'>('light');
+  const [themeMode, setThemeModeState] = useState<ThemeMode>('SYSTEM');
+  const [resolvedTheme, setResolvedTheme] = useState<'LIGHT' | 'DARK'>('LIGHT');
 
-  const setTheme = (newTheme: Theme) => {
-    setThemeState(newTheme);
-    localStorage.setItem('klb_dashboard_theme', newTheme);
+  const setThemeMode = (newMode: ThemeMode) => {
+    setThemeModeState(newMode);
+    localStorage.setItem('klb_theme_mode', newMode);
   };
 
   useEffect(() => {
     // Initial load from localStorage
-    const savedTheme = localStorage.getItem('klb_dashboard_theme') as Theme;
+    const savedTheme = localStorage.getItem('klb_theme_mode') as ThemeMode;
     if (savedTheme) {
-      setThemeState(savedTheme);
+      setThemeModeState(savedTheme);
     }
 
     const mediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
     
     const updateTheme = () => {
-      const currentTheme = localStorage.getItem('klb_dashboard_theme') as Theme || 'system';
-      let resolved: 'light' | 'dark';
+      const currentMode = localStorage.getItem('klb_theme_mode') as ThemeMode || 'SYSTEM';
+      let resolved: 'LIGHT' | 'DARK';
       
-      if (currentTheme === 'system') {
-        resolved = mediaQuery.matches ? 'dark' : 'light';
+      if (currentMode === 'SYSTEM') {
+        resolved = mediaQuery.matches ? 'DARK' : 'LIGHT';
       } else {
-        resolved = currentTheme === 'dark' ? 'dark' : 'light';
+        resolved = currentMode === 'DARK' ? 'DARK' : 'LIGHT';
       }
       
       setResolvedTheme(resolved);
-      if (resolved === 'dark') {
+      if (resolved === 'DARK') {
         document.documentElement.classList.add('dark');
       } else {
         document.documentElement.classList.remove('dark');
@@ -51,10 +51,10 @@ export const ThemeProvider = ({ children }: { children: React.ReactNode }) => {
     updateTheme();
     mediaQuery.addEventListener('change', updateTheme);
     return () => mediaQuery.removeEventListener('change', updateTheme);
-  }, [theme]);
+  }, [themeMode]);
 
   return (
-    <ThemeContext.Provider value={{ theme, setTheme, resolvedTheme }}>
+    <ThemeContext.Provider value={{ themeMode, setThemeMode, resolvedTheme }}>
       {children}
     </ThemeContext.Provider>
   );

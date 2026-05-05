@@ -26,19 +26,19 @@
 
 /* Custom Nature Theme Variables */
 :root {
-  --background: #F8FAF7;
-  --foreground: #1A1C19;
+  --background: #F1F8E9;
+  --foreground: #1B262C;
   --card: #FFFFFF;
-  --border: rgba(46, 125, 50, 0.1);
-  --muted: #6B7280;
+  --border: rgba(46, 125, 50, 0.08);
+  --muted: #607D8B;
 }
 
 .dark {
-  --background: #0A0A0A;
+  --background: #0F120F;
   --foreground: #F5F5F5;
-  --card: #141414;
-  --border: rgba(255, 255, 255, 0.08);
-  --muted: #9CA3AF;
+  --card: #1A1F1A;
+  --border: rgba(255, 255, 255, 0.1);
+  --muted: rgba(255, 255, 255, 0.5);
 }
 
 body {
