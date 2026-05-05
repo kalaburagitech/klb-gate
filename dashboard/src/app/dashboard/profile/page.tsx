@@ -18,7 +18,7 @@ import {
   Lock,
   LogOut
 } from 'lucide-react';
-import Card from '@/components/Card';
+import { Card } from '@/components/Card';
 
 export default function ProfilePage() {
   const { user, logout } = useAuth();
