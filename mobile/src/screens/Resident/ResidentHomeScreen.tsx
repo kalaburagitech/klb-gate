@@ -22,7 +22,7 @@ import {
 import { useAuth } from '../../context/AuthContext';
 import { useTheme } from '../../context/ThemeContext';
 import { visitorApi } from '../../services/api';
-import { Card, Button } from '../../components/UI';
+import { Card, Button, PhotoModal } from '../../components/UI';
 
 export default function ResidentHomeScreen({ navigation }: any) {
   const insets = useSafeAreaInsets();
@@ -32,6 +32,11 @@ export default function ResidentHomeScreen({ navigation }: any) {
   const [todayVisitors, setTodayVisitors] = useState([]);
   const [loading, setLoading] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
+  
+  // Photo Modal State
+  const [modalVisible, setModalVisible] = useState(false);
+  const [selectedPhoto, setSelectedPhoto] = useState<string | undefined>(undefined);
+  const [selectedVisitorName, setSelectedVisitorName] = useState('');
 
   const fetchData = async () => {
     try {
@@ -139,10 +144,16 @@ export default function ResidentHomeScreen({ navigation }: any) {
           todayVisitors.map((item: any) => (
             <Card key={item.id} style={styles.visitorCard}>
               <View style={styles.visitorMain}>
-                <Image source={{ uri: item.photoUrl }} style={styles.visitorImg} />
+                <TouchableOpacity onPress={() => {
+                  setSelectedPhoto(item.photoUrl);
+                  setSelectedVisitorName(item.visitor?.name || 'Visitor');
+                  setModalVisible(true);
+                }}>
+                  <Image source={{ uri: item.photoUrl || undefined }} style={styles.visitorImg} />
+                </TouchableOpacity>
                 <View style={styles.visitorInfo}>
-                  <Text style={[styles.visitorName, { color: colors.text }]}>{item.visitor.name}</Text>
-                  <Text style={[styles.visitorType, { color: mutedColor }]}>{item.type.replace('_', ' ')}</Text>
+                  <Text style={[styles.visitorName, { color: colors.text }]}>{item.visitor?.name || 'Visitor'}</Text>
+                  <Text style={[styles.visitorType, { color: mutedColor }]}>{item.type?.replace('_', ' ') || 'GUEST'}</Text>
                 </View>
               </View>
               <View style={[
@@ -153,7 +164,7 @@ export default function ResidentHomeScreen({ navigation }: any) {
                   styles.statusText,
                   { color: item.status === 'APPROVED' ? (isDark ? '#81C784' : '#2E7D32') : (isDark ? '#FFB74D' : '#E65100') }
                 ]}>
-                  {item.status.split('_')[0]}
+                  {item.status?.split('_')[0] || 'PENDING'}
                 </Text>
               </View>
             </Card>
@@ -172,6 +183,13 @@ export default function ResidentHomeScreen({ navigation }: any) {
           <Text style={styles.bannerSub}>Smart gate management for your peace of mind.</Text>
         </Card>
       </ScrollView>
+
+      <PhotoModal 
+        visible={modalVisible} 
+        onClose={() => setModalVisible(false)} 
+        photoUrl={selectedPhoto} 
+        title={selectedVisitorName} 
+      />
     </View>
   );
 }

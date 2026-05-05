@@ -14,6 +14,7 @@ import { ShieldCheck, ShieldX, Clock, History, Calendar, CheckCircle2, XCircle, 
 import { visitorApi } from '../../services/api';
 import { useAuth } from '../../context/AuthContext';
 import { useTheme } from '../../context/ThemeContext';
+import { PhotoModal } from '../../components/UI';
 
 export default function VisitorManagementScreen() {
   const { user } = useAuth();
@@ -22,6 +23,12 @@ export default function VisitorManagementScreen() {
   const [entries, setEntries] = useState([]);
   const [loading, setLoading] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
+  const [decisionLoading, setDecisionLoading] = useState<string | null>(null);
+
+  // Photo Modal State
+  const [modalVisible, setModalVisible] = useState(false);
+  const [selectedPhoto, setSelectedPhoto] = useState<string | undefined>(undefined);
+  const [selectedVisitorName, setSelectedVisitorName] = useState('');
 
   const fetchEntries = async () => {
     try {
@@ -48,24 +55,33 @@ export default function VisitorManagementScreen() {
   }, [activeTab]);
 
   const handleDecision = async (entryId: string, status: 'APPROVED' | 'REJECTED') => {
+    setDecisionLoading(entryId);
     try {
       await visitorApi.approve({ entryId, status });
       Alert.alert('Status Updated', `Visitor ${status.toLowerCase()}`);
       fetchEntries();
     } catch (error) {
       Alert.alert('Error', 'Action failed');
+    } finally {
+      setDecisionLoading(null);
     }
   };
 
   const renderVisitorItem = ({ item }: any) => (
     <View style={[styles.card, { backgroundColor: colors.card, borderColor: colors.border }]}>
       <View style={styles.cardMain}>
-        <Image source={{ uri: item.photoUrl }} style={styles.visitorImg} />
+        <TouchableOpacity onPress={() => {
+          setSelectedPhoto(item.photoUrl);
+          setSelectedVisitorName(item.visitor?.name || 'Visitor');
+          setModalVisible(true);
+        }}>
+          <Image source={{ uri: item.photoUrl || undefined }} style={styles.visitorImg} />
+        </TouchableOpacity>
         <View style={styles.info}>
           <View style={styles.nameRow}>
-            <Text style={[styles.name, { color: colors.text }]}>{item.visitor.name}</Text>
+            <Text style={[styles.name, { color: colors.text }]}>{item.visitor?.name || 'Visitor'}</Text>
             <View style={[styles.typeBadge, { backgroundColor: item.type === 'DAILY_SERVICE' ? (isDark ? '#E6510033' : '#FFF3E0') : (isDark ? '#2E7D3233' : '#E8F5E9') }]}>
-              <Text style={[styles.typeText, { color: item.type === 'DAILY_SERVICE' ? (isDark ? '#FFB74D' : '#E65100') : (isDark ? '#A5D6A7' : '#2E7D32') }]}>{item.type}</Text>
+              <Text style={[styles.typeText, { color: item.type === 'DAILY_SERVICE' ? (isDark ? '#FFB74D' : '#E65100') : (isDark ? '#A5D6A7' : '#2E7D32') }]}>{item.type || 'GUEST'}</Text>
             </View>
           </View>
           <View style={styles.timeRow}>
@@ -81,16 +97,30 @@ export default function VisitorManagementScreen() {
           <TouchableOpacity 
             style={[styles.btn, styles.rejectBtn]} 
             onPress={() => handleDecision(item.id, 'REJECTED')}
+            disabled={decisionLoading === item.id}
           >
-            <XCircle size={20} color="#dc2626" />
-            <Text style={styles.rejectText}>Reject</Text>
+            {decisionLoading === item.id ? (
+              <ActivityIndicator color="#dc2626" size="small" />
+            ) : (
+              <>
+                <XCircle size={20} color="#dc2626" />
+                <Text style={styles.rejectText}>Reject</Text>
+              </>
+            )}
           </TouchableOpacity>
           <TouchableOpacity 
             style={[styles.btn, styles.approveBtn]} 
             onPress={() => handleDecision(item.id, 'APPROVED')}
+            disabled={decisionLoading === item.id}
           >
-            <CheckCircle2 size={20} color="#fff" />
-            <Text style={styles.approveText}>Approve</Text>
+            {decisionLoading === item.id ? (
+              <ActivityIndicator color="#fff" size="small" />
+            ) : (
+              <>
+                <CheckCircle2 size={20} color="#fff" />
+                <Text style={styles.approveText}>Approve</Text>
+              </>
+            )}
           </TouchableOpacity>
         </View>
       )}
@@ -158,6 +188,13 @@ export default function VisitorManagementScreen() {
           }
         />
       )}
+
+      <PhotoModal 
+        visible={modalVisible} 
+        onClose={() => setModalVisible(false)} 
+        photoUrl={selectedPhoto} 
+        title={selectedVisitorName} 
+      />
     </View>
   );
 }

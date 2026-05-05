@@ -17,6 +17,7 @@ import { Shield, Smartphone, Key, ArrowRight, CheckCircle2 } from 'lucide-react-
 import { useAuth } from '../../context/AuthContext';
 import { authApi } from '../../services/api';
 import { useTheme } from '../../context/ThemeContext';
+import { Card, Button } from '../../components/UI';
 
 const { width, height } = Dimensions.get('window');
 
@@ -148,22 +149,14 @@ export default function LoginScreen() {
               )}
             </View>
 
-            <TouchableOpacity 
-              style={[styles.mainButton, { backgroundColor: colors.primary }, loading && styles.buttonLoading]}
+            <Button 
+              title={isOtpSent ? 'AUTHORIZE NOW' : 'SEND ACCESS CODE'}
+              loadingTitle="AUTHORIZING..."
+              loading={loading}
               onPress={isOtpSent ? () => handleVerifyOtp() : handleSendOtp}
-              disabled={loading}
-            >
-              {loading ? (
-                <ActivityIndicator color="#fff" />
-              ) : (
-                <>
-                  <Text style={styles.buttonText}>
-                    {isOtpSent ? 'AUTHORIZE NOW' : 'SEND ACCESS CODE'}
-                  </Text>
-                  <ArrowRight size={20} color="#fff" />
-                </>
-              )}
-            </TouchableOpacity>
+              icon={<ArrowRight size={20} color="#fff" />}
+              style={styles.mainButton}
+            />
 
             {isOtpSent && (
               <TouchableOpacity onPress={() => setIsOtpSent(false)} style={styles.backButton}>

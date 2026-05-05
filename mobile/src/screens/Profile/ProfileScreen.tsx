@@ -29,7 +29,9 @@ export default function ProfileScreen() {
           <View style={styles.avatarWrapper}>
             <View style={[styles.avatarOuter, { borderColor: '#fff' }]}>
               <View style={[styles.avatar, { backgroundColor: 'rgba(255,255,255,0.2)' }]}>
-                <Text style={styles.avatarText}>{user.firstName[0]}{user.lastName[0]}</Text>
+                <Text style={styles.avatarText}>
+                  {user?.firstName?.[0] || '?'}{user?.lastName?.[0] || ''}
+                </Text>
               </View>
             </View>
             <View style={[styles.statusDot, { borderColor: colors.primary }]} />
@@ -60,14 +62,14 @@ export default function ProfileScreen() {
             </View>
           </View>
 
-          {user.role === 'RESIDENT' && (
+          {user?.role === 'RESIDENT' && (
             <View style={styles.menuItem}>
               <View style={[styles.iconBox, { backgroundColor: isDark ? '#1E88E522' : '#E3F2FD' }]}>
                 <Home size={20} color={isDark ? "#42A5F5" : "#1976D2"} />
               </View>
               <View style={styles.menuInfo}>
                 <Text style={[styles.menuLabel, { color: colors.text + '40' }]}>RESIDENTIAL UNIT</Text>
-                <Text style={[styles.menuValue, { color: colors.text }]}>{user.unitNumber || 'Pending Assignment'}</Text>
+                <Text style={[styles.menuValue, { color: colors.text }]}>{user?.unitNumber || 'Pending Assignment'}</Text>
               </View>
             </View>
           )}

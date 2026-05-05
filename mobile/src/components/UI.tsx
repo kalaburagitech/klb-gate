@@ -9,8 +9,82 @@ import {
   ViewStyle,
   TextStyle,
   Animated,
-  Platform
+  Platform,
+  ActivityIndicator,
+  Modal,
+  Dimensions,
+  Image
 } from 'react-native';
+import { X } from 'lucide-react-native';
+
+const { width: SCREEN_WIDTH, height: SCREEN_HEIGHT } = Dimensions.get('window');
+
+/**
+ * PREMIUM PHOTO MODAL COMPONENT
+ */
+export const PhotoModal = ({ 
+  visible, 
+  onClose, 
+  photoUrl, 
+  title 
+}: { 
+  visible: boolean, 
+  onClose: () => void, 
+  photoUrl: string | undefined,
+  title?: string
+}) => {
+  const { colors, isDark } = useTheme();
+
+  return (
+    <Modal
+      visible={visible}
+      transparent={true}
+      animationType="fade"
+      onRequestClose={onClose}
+    >
+      <View style={styles.modalOverlay}>
+        <TouchableOpacity 
+          style={styles.modalCloseArea} 
+          activeOpacity={1} 
+          onPress={onClose} 
+        />
+        
+        <Animated.View style={[
+          styles.modalContent, 
+          { backgroundColor: colors.card, borderColor: colors.border }
+        ]}>
+          <View style={styles.modalHeader}>
+            <Text style={[styles.modalTitle, { color: colors.text }]}>{title || 'Visitor Photo'}</Text>
+            <TouchableOpacity onPress={onClose} style={[styles.closeBtn, { backgroundColor: isDark ? 'rgba(255,255,255,0.1)' : 'rgba(0,0,0,0.05)' }]}>
+              <X size={20} color={colors.text} />
+            </TouchableOpacity>
+          </View>
+          
+          <View style={styles.imageContainer}>
+            {photoUrl ? (
+              <Image 
+                source={{ uri: photoUrl }} 
+                style={styles.fullImage} 
+                resizeMode="contain" 
+              />
+            ) : (
+              <View style={styles.placeholderImage}>
+                <Text style={{ color: colors.text, opacity: 0.5 }}>No Photo Available</Text>
+              </View>
+            )}
+          </View>
+          
+          <TouchableOpacity 
+            style={[styles.modalFooterBtn, { backgroundColor: colors.primary }]}
+            onPress={onClose}
+          >
+            <Text style={styles.modalFooterText}>CLOSE VIEW</Text>
+          </TouchableOpacity>
+        </Animated.View>
+      </View>
+    </Modal>
+  );
+};
 import { useTheme } from '../context/ThemeContext';
 
 /**
@@ -39,6 +113,7 @@ export const Card = ({ children, style }: { children: React.ReactNode, style?: V
  */
 export const Button = ({ 
   title, 
+  loadingTitle,
   onPress, 
   variant = 'primary', 
   loading = false, 
@@ -46,6 +121,7 @@ export const Button = ({
   style 
 }: { 
   title: string, 
+  loadingTitle?: string,
   onPress: () => void, 
   variant?: 'primary' | 'secondary' | 'outline',
   loading?: boolean,
@@ -81,22 +157,34 @@ export const Button = ({
         onPressIn={handlePressIn}
         onPressOut={handlePressOut}
         activeOpacity={0.9}
-        style={[styles.button, getStyle(), style]}
+        style={[styles.button, getStyle(), style, loading && styles.buttonLoading]}
         disabled={loading}
       >
-        {loading ? (
-          <ActivityIndicator color={variant === 'primary' ? '#fff' : colors.primary} />
-        ) : (
-          <View style={styles.buttonContent}>
-            {icon && <View style={styles.buttonIcon}>{icon}</View>}
-            <Text style={[
-              styles.buttonText, 
-              { color: variant === 'primary' ? '#fff' : colors.primary }
-            ]}>
-              {title}
-            </Text>
-          </View>
-        )}
+        <View style={styles.buttonContent}>
+          {loading ? (
+            <>
+              <ActivityIndicator color={variant === 'primary' ? '#fff' : colors.primary} size="small" />
+              {loadingTitle && (
+                <Text style={[
+                  styles.buttonText, 
+                  { color: variant === 'primary' ? '#fff' : colors.primary, marginLeft: 10 }
+                ]}>
+                  {loadingTitle}
+                </Text>
+              )}
+            </>
+          ) : (
+            <>
+              {icon && <View style={styles.buttonIcon}>{icon}</View>}
+              <Text style={[
+                styles.buttonText, 
+                { color: variant === 'primary' ? '#fff' : colors.primary }
+              ]}>
+                {title}
+              </Text>
+            </>
+          )}
+        </View>
       </TouchableOpacity>
     </Animated.View>
   );
@@ -194,4 +282,73 @@ const styles = StyleSheet.create({
     fontSize: 17,
     fontWeight: '500',
   },
+  // Modal Styles
+  modalOverlay: {
+    flex: 1,
+    backgroundColor: 'rgba(0,0,0,0.8)',
+    justifyContent: 'center',
+    alignItems: 'center',
+    padding: 20
+  },
+  modalCloseArea: {
+    ...StyleSheet.absoluteFillObject
+  },
+  modalContent: {
+    width: '100%',
+    maxWidth: 500,
+    borderRadius: 32,
+    borderWidth: 1,
+    overflow: 'hidden',
+    elevation: 20,
+    shadowColor: '#000',
+    shadowOpacity: 0.5,
+    shadowRadius: 30,
+  },
+  modalHeader: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    padding: 20,
+    borderBottomWidth: 1,
+    borderBottomColor: 'rgba(0,0,0,0.05)'
+  },
+  modalTitle: {
+    fontSize: 18,
+    fontWeight: '800'
+  },
+  closeBtn: {
+    width: 36,
+    height: 36,
+    borderRadius: 18,
+    justifyContent: 'center',
+    alignItems: 'center'
+  },
+  imageContainer: {
+    width: '100%',
+    height: SCREEN_HEIGHT * 0.5,
+    backgroundColor: '#000',
+    justifyContent: 'center',
+    alignItems: 'center'
+  },
+  fullImage: {
+    width: '100%',
+    height: '100%'
+  },
+  placeholderImage: {
+    padding: 40,
+    alignItems: 'center'
+  },
+  modalFooterBtn: {
+    margin: 20,
+    height: 56,
+    borderRadius: 18,
+    justifyContent: 'center',
+    alignItems: 'center'
+  },
+  modalFooterText: {
+    color: '#fff',
+    fontWeight: '900',
+    fontSize: 14,
+    letterSpacing: 2
+  }
 });
