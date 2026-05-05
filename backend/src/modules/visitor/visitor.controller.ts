@@ -122,7 +122,7 @@ export class VisitorController {
         orderBy: { createdAt: 'desc' }
       });
 
-      console.log(`✅ [VisitorController] Found ${entries.length} entries for unit ${unitId}`);
+      console.log(`✅ [VisitorController] Found ${entries.length} entries for unit ${unitNumber}`);
 
       // Transform photoId from ID to full URL
       const formattedEntries = await Promise.all(entries.map(async (e: any) => ({
