@@ -1,5 +1,5 @@
 import React, { createContext, useContext, useEffect, useState } from 'react';
-import { useColorScheme } from 'react-native';
+import { useColorScheme, Appearance } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 type ThemeMode = 'LIGHT' | 'DARK' | 'SYSTEM';
@@ -50,6 +50,13 @@ export const ThemeProvider = ({ children }: { children: React.ReactNode }) => {
       if (saved) setThemeModeState(saved as ThemeMode);
     };
     loadTheme();
+
+    // More robust listener for system theme changes
+    const subscription = Appearance.addChangeListener(({ colorScheme }) => {
+      console.log('🌓 System Appearance Changed:', colorScheme);
+    });
+
+    return () => subscription.remove();
   }, []);
 
   const setThemeMode = async (mode: ThemeMode) => {
