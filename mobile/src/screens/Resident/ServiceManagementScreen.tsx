@@ -44,9 +44,11 @@ export default function ServiceManagementScreen() {
   const [newService, setNewService] = useState({ name: '', type: 'Maid', phone: '', time: '08:00 AM' });
   const [timePickerVisible, setTimePickerVisible] = useState(false);
   const [selectedHour, setSelectedHour] = useState('08');
+  const [selectedMinute, setSelectedMinute] = useState('00');
   const [selectedPeriod, setSelectedPeriod] = useState('AM');
 
   const HOURS = Array.from({ length: 12 }, (_, i) => (i + 1).toString().padStart(2, '0'));
+  const MINUTES = Array.from({ length: 12 }, (_, i) => (i * 5).toString().padStart(2, '0'));
   const PERIODS = ['AM', 'PM'];
 
   const fetchServices = async () => {
@@ -91,8 +93,8 @@ export default function ServiceManagementScreen() {
     }
   };
 
-  const onTimeSelect = (hour: string, period: string) => {
-    setNewService({ ...newService, time: `${hour}:00 ${period}` });
+  const onTimeSelect = (hour: string, minute: string, period: string) => {
+    setNewService({ ...newService, time: `${hour}:${minute} ${period}` });
     setTimePickerVisible(false);
   };
 
@@ -247,6 +249,23 @@ export default function ServiceManagementScreen() {
               </View>
 
               <View style={styles.pickerColumn}>
+                <Text style={[styles.pickerLabel, { color: colors.text + '40' }]}>MINUTE</Text>
+                <FlatList
+                  data={MINUTES}
+                  keyExtractor={item => item}
+                  renderItem={({ item }) => (
+                    <TouchableOpacity 
+                      style={[styles.pickerItem, selectedMinute === item && { backgroundColor: colors.primary + '20' }]}
+                      onPress={() => setSelectedMinute(item)}
+                    >
+                      <Text style={[styles.pickerItemText, { color: colors.text }, selectedMinute === item && { color: colors.primary, fontWeight: 'bold' }]}>{item}</Text>
+                    </TouchableOpacity>
+                  )}
+                  showsVerticalScrollIndicator={false}
+                />
+              </View>
+
+              <View style={styles.pickerColumn}>
                 <Text style={[styles.pickerLabel, { color: colors.text + '40' }]}>PERIOD</Text>
                 {PERIODS.map(p => (
                   <TouchableOpacity 
@@ -265,7 +284,7 @@ export default function ServiceManagementScreen() {
                 <Text style={{ color: colors.text + '60', fontWeight: 'bold' }}>CANCEL</Text>
               </TouchableOpacity>
               <TouchableOpacity 
-                onPress={() => onTimeSelect(selectedHour, selectedPeriod)} 
+                onPress={() => onTimeSelect(selectedHour, selectedMinute, selectedPeriod)} 
                 style={[styles.confirmBtn, { backgroundColor: colors.primary }]}
               >
                 <Text style={{ color: '#fff', fontWeight: 'bold' }}>CONFIRM</Text>
