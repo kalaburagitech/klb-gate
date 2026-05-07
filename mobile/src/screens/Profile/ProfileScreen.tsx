@@ -8,7 +8,7 @@ const { width } = Dimensions.get('window');
 
 export default function ProfileScreen() {
   const { user, logout } = useAuth();
-  const { colors, isDark } = useTheme();
+  const { colors, isDark, themeMode, setThemeMode } = useTheme();
 
   if (!user) return null;
 
