@@ -8,7 +8,8 @@ import {
   TextInput,
   Modal,
   Alert,
-  ActivityIndicator
+  ActivityIndicator,
+  FlatList
 } from 'react-native';
 import { 
   Briefcase, 
@@ -41,6 +42,12 @@ export default function ServiceManagementScreen() {
   const [modalVisible, setModalVisible] = useState(false);
   const [saving, setSaving] = useState(false);
   const [newService, setNewService] = useState({ name: '', type: 'Maid', phone: '', time: '08:00 AM' });
+  const [timePickerVisible, setTimePickerVisible] = useState(false);
+  const [selectedHour, setSelectedHour] = useState('08');
+  const [selectedPeriod, setSelectedPeriod] = useState('AM');
+
+  const HOURS = Array.from({ length: 12 }, (_, i) => (i + 1).toString().padStart(2, '0'));
+  const PERIODS = ['AM', 'PM'];
 
   const fetchServices = async () => {
     try {
@@ -82,6 +89,11 @@ export default function ServiceManagementScreen() {
     } finally {
       setSaving(false);
     }
+  };
+
+  const onTimeSelect = (hour: string, period: string) => {
+    setNewService({ ...newService, time: `${hour}:00 ${period}` });
+    setTimePickerVisible(false);
   };
 
   const removeService = (id: string) => {
@@ -190,13 +202,12 @@ export default function ServiceManagementScreen() {
             />
 
             <Text style={[styles.label, { color: colors.text + '60' }]}>Arrival Time</Text>
-            <TextInput 
-              style={[styles.input, { backgroundColor: isDark ? '#1E1E1E' : '#F5F5F5', color: colors.text }]}
-              placeholder="e.g. 07:00 AM"
-              placeholderTextColor={isDark ? '#555' : '#999'}
-              value={newService.time}
-              onChangeText={(v) => setNewService({ ...newService, time: v })}
-            />
+            <TouchableOpacity 
+              style={[styles.input, { backgroundColor: isDark ? '#1E1E1E' : '#F5F5F5', justifyContent: 'center' }]}
+              onPress={() => setTimePickerVisible(true)}
+            >
+              <Text style={{ color: colors.text, fontSize: 16, fontWeight: '600' }}>{newService.time}</Text>
+            </TouchableOpacity>
 
             <TouchableOpacity 
               style={[styles.submitBtn, { backgroundColor: colors.primary }, saving && { opacity: 0.7 }]} 
@@ -207,6 +218,59 @@ export default function ServiceManagementScreen() {
                 <Text style={styles.submitBtnText}>CREATE SERVICE PASS</Text>
               )}
             </TouchableOpacity>
+          </View>
+        </View>
+      </Modal>
+
+      {/* Custom Time Picker Modal */}
+      <Modal visible={timePickerVisible} animationType="fade" transparent>
+        <View style={styles.pickerOverlay}>
+          <View style={[styles.pickerCard, { backgroundColor: isDark ? '#1E1E1E' : '#fff' }]}>
+            <Text style={[styles.pickerTitle, { color: colors.text }]}>Select Arrival Time</Text>
+            
+            <View style={styles.pickerContent}>
+              <View style={styles.pickerColumn}>
+                <Text style={[styles.pickerLabel, { color: colors.text + '40' }]}>HOUR</Text>
+                <FlatList
+                  data={HOURS}
+                  keyExtractor={item => item}
+                  renderItem={({ item }) => (
+                    <TouchableOpacity 
+                      style={[styles.pickerItem, selectedHour === item && { backgroundColor: colors.primary + '20' }]}
+                      onPress={() => setSelectedHour(item)}
+                    >
+                      <Text style={[styles.pickerItemText, { color: colors.text }, selectedHour === item && { color: colors.primary, fontWeight: 'bold' }]}>{item}</Text>
+                    </TouchableOpacity>
+                  )}
+                  showsVerticalScrollIndicator={false}
+                />
+              </View>
+
+              <View style={styles.pickerColumn}>
+                <Text style={[styles.pickerLabel, { color: colors.text + '40' }]}>PERIOD</Text>
+                {PERIODS.map(p => (
+                  <TouchableOpacity 
+                    key={p}
+                    style={[styles.pickerItem, selectedPeriod === p && { backgroundColor: colors.primary + '20' }]}
+                    onPress={() => setSelectedPeriod(p)}
+                  >
+                    <Text style={[styles.pickerItemText, { color: colors.text }, selectedPeriod === p && { color: colors.primary, fontWeight: 'bold' }]}>{p}</Text>
+                  </TouchableOpacity>
+                ))}
+              </View>
+            </View>
+
+            <View style={styles.pickerFooter}>
+              <TouchableOpacity onPress={() => setTimePickerVisible(false)} style={styles.cancelBtn}>
+                <Text style={{ color: colors.text + '60', fontWeight: 'bold' }}>CANCEL</Text>
+              </TouchableOpacity>
+              <TouchableOpacity 
+                onPress={() => onTimeSelect(selectedHour, selectedPeriod)} 
+                style={[styles.confirmBtn, { backgroundColor: colors.primary }]}
+              >
+                <Text style={{ color: '#fff', fontWeight: 'bold' }}>CONFIRM</Text>
+              </TouchableOpacity>
+            </View>
           </View>
         </View>
       </Modal>
@@ -240,5 +304,17 @@ const styles = StyleSheet.create({
   typeOptionText: { fontSize: 12, fontWeight: 'bold' },
   input: { height: 60, borderRadius: 18, paddingHorizontal: 20, fontSize: 16, fontWeight: '600', marginTop: 4 },
   submitBtn: { height: 64, borderRadius: 32, justifyContent: 'center', alignItems: 'center', marginTop: 32, shadowOpacity: 0.3, shadowRadius: 10, elevation: 8 },
-  submitBtnText: { color: '#fff', fontSize: 16, fontWeight: '900', letterSpacing: 1 }
+  submitBtnText: { color: '#fff', fontSize: 16, fontWeight: '900', letterSpacing: 1 },
+  
+  pickerOverlay: { flex: 1, backgroundColor: 'rgba(0,0,0,0.8)', justifyContent: 'center', alignItems: 'center', padding: 40 },
+  pickerCard: { width: '100%', borderRadius: 32, padding: 24, alignItems: 'center' },
+  pickerTitle: { fontSize: 18, fontWeight: 'bold', marginBottom: 20 },
+  pickerContent: { flexDirection: 'row', gap: 20, height: 200, marginBottom: 20 },
+  pickerColumn: { flex: 1, alignItems: 'center' },
+  pickerLabel: { fontSize: 10, fontWeight: 'bold', marginBottom: 10 },
+  pickerItem: { width: '100%', padding: 12, alignItems: 'center', borderRadius: 12 },
+  pickerItemText: { fontSize: 20 },
+  pickerFooter: { flexDirection: 'row', gap: 16, marginTop: 10 },
+  cancelBtn: { paddingHorizontal: 20, paddingVertical: 12 },
+  confirmBtn: { paddingHorizontal: 24, paddingVertical: 12, borderRadius: 16 }
 });
