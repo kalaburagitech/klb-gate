@@ -4,8 +4,8 @@ import { Platform } from 'react-native';
 
 const api = axios.create({
   baseURL: Platform.OS === 'web' 
-    ? (process.env.EXPO_PUBLIC_WEB_API_URL || 'https://klb-gate-production.up.railway.app/api')
-    : (process.env.EXPO_PUBLIC_API_URL || 'https://klb-gate-production.up.railway.app/api'),
+    ? (process.env.EXPO_PUBLIC_WEB_API_URL || 'https://klb-gate-production.up.railway.app/api/')
+    : (process.env.EXPO_PUBLIC_API_URL || 'https://klb-gate-production.up.railway.app/api/'),
   timeout: 30000,
 });
 
