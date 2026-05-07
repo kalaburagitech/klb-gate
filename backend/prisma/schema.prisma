@@ -114,6 +114,7 @@ model User {
   entriesHandled Entry[]       @relation("HandledBy")
   bookings       Booking[]
   preApprovedVisits PreApprovedVisit[]
+  recurringVisitors RecurringVisitor[]
 
   @@index([tenantId, role])
   @@index([phoneNumber])
@@ -162,6 +163,7 @@ model RecurringVisitor {
   endTime     String      @map("end_time")     // e.g., "10:00"
   days        String      // e.g., "MON,TUE,WED,THU,FRI,SAT,SUN"
   residentId  String      @map("resident_id") @db.Uuid
+  resident    User        @relation(fields: [residentId], references: [id])
   tenantId    String      @map("tenant_id") @db.Uuid
   tenant      Tenant      @relation(fields: [tenantId], references: [id])
   createdAt   DateTime    @default(now()) @map("created_at")
