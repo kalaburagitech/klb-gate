@@ -27,6 +27,7 @@ export default function LoginScreen() {
   const [otp, setOtp] = useState('');
   const [isOtpSent, setIsOtpSent] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [autoAuthorizing, setAutoAuthorizing] = useState(false);
   const { login } = useAuth();
 
   // Animations
@@ -54,8 +55,8 @@ export default function LoginScreen() {
       if (response.data.otp) {
         setOtp(response.data.otp);
         setIsOtpSent(true);
-        setLoading(false);
-        // Auto-submit after a tiny delay
+        setAutoAuthorizing(true);
+        // Keep loading=true through the entire auto-authorization flow
         setTimeout(() => {
           handleVerifyOtp(phoneNumber, response.data.otp);
         }, 1200);
@@ -78,6 +79,7 @@ export default function LoginScreen() {
     } catch (error: any) {
       Alert.alert('Login Failed', error.response?.data?.message || 'Invalid OTP');
       setLoading(false);
+      setAutoAuthorizing(false);
     }
   };
 
@@ -152,7 +154,8 @@ export default function LoginScreen() {
             <Button 
               title={isOtpSent ? 'AUTHORIZE NOW' : 'SEND ACCESS CODE'}
               loadingTitle="AUTHORIZING..."
-              loading={loading}
+              loading={loading || autoAuthorizing}
+              disabled={autoAuthorizing}
               onPress={isOtpSent ? () => handleVerifyOtp() : handleSendOtp}
               icon={<ArrowRight size={20} color="#fff" />}
               style={styles.mainButton}

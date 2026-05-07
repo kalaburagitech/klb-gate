@@ -117,6 +117,7 @@ export const Button = ({
   onPress, 
   variant = 'primary', 
   loading = false, 
+  disabled = false,
   icon,
   style 
 }: { 
@@ -125,6 +126,7 @@ export const Button = ({
   onPress: () => void, 
   variant?: 'primary' | 'secondary' | 'outline',
   loading?: boolean,
+  disabled?: boolean,
   icon?: React.ReactNode,
   style?: ViewStyle
 }) => {
@@ -157,8 +159,8 @@ export const Button = ({
         onPressIn={handlePressIn}
         onPressOut={handlePressOut}
         activeOpacity={0.9}
-        style={[styles.button, getStyle(), style, loading && styles.buttonLoading]}
-        disabled={loading}
+        style={[styles.button, getStyle(), style, (loading || disabled) && styles.buttonLoading]}
+        disabled={loading || disabled}
       >
         <View style={styles.buttonContent}>
           {loading ? (
