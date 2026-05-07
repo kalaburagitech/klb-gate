@@ -16,7 +16,7 @@ import {
   Search, 
   UserPlus, 
   ChevronRight, 
-  User, 
+  User as UserIcon, 
   Shield, 
   Building,
   Trash2,
