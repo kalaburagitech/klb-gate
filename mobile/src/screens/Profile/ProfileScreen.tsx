@@ -123,7 +123,7 @@ export default function ProfileScreen() {
             </View>
             <Text style={[styles.themeDescription, { color: colors.text + '40' }]}>
               {themeMode === 'SYSTEM' 
-                ? 'Currently syncing with your device OS preferences.' 
+                ? `Currently syncing with your device (${isDark ? 'Dark' : 'Light'} detected).` 
                 : `Manually locked to ${themeMode.toLowerCase()} mode.`}
             </Text>
           </View>
