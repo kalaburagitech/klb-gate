@@ -43,8 +43,18 @@ export class EntryService {
       await EntryRepository.markPreApprovedAsUsed(preApproved.id);
     } 
     else if (data.type === VisitorType.DAILY_SERVICE) {
-      // In a real system, we'd check if this visitor is registered as a daily service for this tenant/unit
-      status = EntryStatus.APPROVED;
+      // Auto-approve only if there's a recurring record created by the resident
+      const recurring = await prisma.recurringVisitor.findFirst({
+        where: {
+          phone: data.phone,
+          tenantId: data.tenantId,
+          resident: { unitNumber: data.unitNumber }
+        }
+      });
+      
+      if (recurring) {
+        status = EntryStatus.APPROVED;
+      }
     }
 
     // 3. Create Entry

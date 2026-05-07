@@ -7,7 +7,8 @@ import {
   TouchableOpacity, 
   TextInput,
   Modal,
-  Alert
+  Alert,
+  ActivityIndicator
 } from 'react-native';
 import { 
   Briefcase, 
@@ -19,8 +20,7 @@ import {
   CheckCircle2,
   Coffee,
   BookOpen,
-  Trash,
-  ActivityIndicator
+  Trash
 } from 'lucide-react-native';
 import { visitorApi } from '../../services/api';
 import { useTheme } from '../../context/ThemeContext';
