@@ -12,6 +12,7 @@ import SplashScreen from '../screens/Auth/SplashScreen';
 import LoginScreen from '../screens/Auth/LoginScreen';
 import AddVisitorScreen from '../screens/Visitor/AddVisitorScreen';
 import PreApprovedListScreen from '../screens/Visitor/PreApprovedListScreen';
+import DailyServiceListScreen from '../screens/Visitor/DailyServiceListScreen';
 import { useAuth } from '../context/AuthContext';
 import { useTheme } from '../context/ThemeContext';
 import { DefaultTheme, DarkTheme } from '@react-navigation/native';
@@ -60,6 +61,7 @@ export const RootNavigator = () => {
             <Stack.Screen name="GuardApp" component={GuardTabNavigator} />
             <Stack.Screen name="AddVisitor" component={AddVisitorScreen} />
             <Stack.Screen name="PreApprovedList" component={PreApprovedListScreen} />
+            <Stack.Screen name="DailyServiceList" component={DailyServiceListScreen} />
           </Stack.Group>
         )}
       </Stack.Navigator>

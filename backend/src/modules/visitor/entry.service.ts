@@ -69,11 +69,16 @@ export class EntryService {
         select: { id: true }
       });
       
+      const notificationType = status === EntryStatus.PENDING_APPROVAL ? 'VISITOR_APPROVAL' : 'VISITOR_CHECKED_IN';
+      const notificationMsg = status === EntryStatus.PENDING_APPROVAL 
+        ? `${data.name} is at the gate for your unit.`
+        : `${data.name} has checked in to your unit.`;
+
       for (const res of residents) {
         await notificationQueue.add('visitor_alert', {
           userId: res.id,
-          message: `${data.name} is at the gate for your unit.`,
-          type: 'VISITOR_APPROVAL',
+          message: notificationMsg,
+          type: notificationType,
           entryId: entry.id
         });
       }

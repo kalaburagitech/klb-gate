@@ -67,6 +67,8 @@ export const visitorApi = {
   createPreApproved: (data: any) => api.post('visitors/pre-approved', data),
   getPreApproved: () => api.get('visitors/pre-approved'),
   verifyPreApproved: (code: string) => api.get(`visitors/pre-approved/verify/${code}`),
+  getRecurring: () => api.get('visitors/recurring'),
+  createRecurring: (data: any) => api.post('visitors/recurring', data),
 };
 
 export const mediaApi = {

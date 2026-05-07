@@ -21,4 +21,8 @@ router.post('/pre-approved', VisitorController.createPreApprovedVisit);
 router.get('/pre-approved', VisitorController.listPreApproved);
 router.get('/pre-approved/verify/:code', VisitorController.verifyPreApprovedVisit);
 
+// Recurring
+router.post('/recurring', VisitorController.createRecurringVisitor);
+router.get('/recurring', VisitorController.listRecurringVisitors);
+
 export default router;

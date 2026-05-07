@@ -350,4 +350,62 @@ export class VisitorController {
       next(error);
     }
   }
+
+  // Recurring Visitors
+  static async createRecurringVisitor(req: Request, res: Response, next: NextFunction) {
+    try {
+      const { name, phone, serviceType, startTime, endTime, days } = req.body;
+      const residentId = req.user?.userId;
+      const tenantId = req.user?.tenantId;
+
+      if (!residentId || !tenantId) throw new AppError('Unauthorized', 401);
+
+      const recurring = await prisma.recurringVisitor.create({
+        data: {
+          name,
+          phone,
+          serviceType,
+          startTime,
+          endTime,
+          days,
+          residentId,
+          tenantId
+        }
+      });
+
+      res.status(201).json({ success: true, data: recurring });
+    } catch (error) {
+      next(error);
+    }
+  }
+
+  static async listRecurringVisitors(req: Request, res: Response, next: NextFunction) {
+    try {
+      const { role, userId, tenantId } = req.user!;
+      if (!tenantId) throw new AppError('Tenant context required', 401);
+
+      let where: any = { tenantId };
+      if (role === 'RESIDENT') {
+        where.residentId = userId;
+      }
+
+      const list = await prisma.recurringVisitor.findMany({
+        where,
+        include: {
+          resident: {
+            select: {
+              firstName: true,
+              lastName: true,
+              unitNumber: true
+            }
+          }
+        },
+        orderBy: { name: 'asc' }
+      });
+
+      res.status(200).json({ success: true, data: list });
+    } catch (error) {
+      next(error);
+    }
+  }
 }

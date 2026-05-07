@@ -1,6 +1,6 @@
 import React from 'react';
 import { View, Text, StyleSheet, TouchableOpacity, ScrollView, KeyboardAvoidingView, Platform } from 'react-native';
-import { Plus, ClipboardList, Shield, User, ArrowRight, Clock, Settings } from 'lucide-react-native';
+import { Plus, ClipboardList, Shield, User, ArrowRight, Clock, Settings, Zap } from 'lucide-react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useTheme } from '../../context/ThemeContext';
 import { Card } from '../../components/Card';
@@ -78,6 +78,14 @@ export default function DashboardScreen({ navigation }: any) {
         icon={ClipboardList} 
         color="#2E7D32" 
         onPress={() => navigation.navigate('PreApprovedList')} 
+      />
+
+      <ActionButton 
+        title="Daily Service" 
+        sub="Milk, Maid, Cleaning, etc." 
+        icon={Zap} 
+        color="#00897B" 
+        onPress={() => navigation.navigate('DailyServiceList')} 
       />
 
       <ActionButton 

@@ -155,7 +155,7 @@ export default function AddVisitorScreen({ navigation, route }: any) {
           { text: 'OK', onPress: () => navigation.goBack() }
         ]);
       } else {
-        Alert.alert('Success', 'Visitor approved and checked in.', [
+        Alert.alert('Success', `${form.name} approved and checked in.`, [
           { text: 'OK', onPress: () => navigation.goBack() }
         ]);
       }
