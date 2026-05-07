@@ -2,6 +2,7 @@ import { Request, Response, NextFunction } from 'express';
 import prisma from '../../utils/prisma';
 import bcrypt from 'bcrypt';
 import { AppError } from '../../middleware/error.middleware';
+import { MediaService } from '../media/media.service';
 
 export class AdminController {
   // Organizations
@@ -550,7 +551,13 @@ export class AdminController {
         },
         orderBy: { createdAt: 'desc' }
       });
-      res.status(200).json({ success: true, data: users });
+
+      const formatted = await Promise.all(users.map(async u => ({
+        ...u,
+        photoUrl: u.idProofId ? await MediaService.getMediaUrl(u.idProofId) : null
+      })));
+
+      res.status(200).json({ success: true, data: formatted });
     } catch (error) {
       next(error);
     }

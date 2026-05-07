@@ -40,8 +40,6 @@ export default function UserManagementScreen({ navigation }: any) {
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedPhoto, setSelectedPhoto] = useState<string | null>(null);
 
-  const mediaBaseUrl = api.defaults.baseURL + '/media/';
-
   const fetchUsers = async () => {
     try {
       const res = await api.get('admin/users');
@@ -107,18 +105,18 @@ export default function UserManagementScreen({ navigation }: any) {
     <View style={[styles.userCard, { backgroundColor: colors.card }]}>
       <View style={styles.cardHeader}>
         <TouchableOpacity 
-          onPress={() => item.idProofId && setSelectedPhoto(mediaBaseUrl + item.idProofId)}
+          onPress={() => item.photoUrl && setSelectedPhoto(item.photoUrl)}
           style={[styles.avatarContainer, { backgroundColor: isDark ? colors.background : '#F1F8E9' }]}
         >
-          {item.idProofId ? (
+          {item.photoUrl ? (
             <Image 
-              source={{ uri: mediaBaseUrl + item.idProofId }} 
+              source={{ uri: item.photoUrl }} 
               style={styles.avatarImg} 
             />
           ) : (
             <UserIcon size={24} color={colors.primary} />
           )}
-          {item.idProofId && (
+          {item.photoUrl && (
             <View style={[styles.photoBadge, { backgroundColor: colors.primary }]}>
               <Camera size={10} color="#fff" />
             </View>
