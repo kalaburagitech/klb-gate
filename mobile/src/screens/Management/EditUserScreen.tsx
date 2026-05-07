@@ -144,10 +144,10 @@ export default function EditUserScreen({ route, navigation }: any) {
   return (
     <View style={[styles.container, { backgroundColor: colors.background }]}>
       <View style={[styles.header, { backgroundColor: colors.card, borderBottomColor: colors.border }]}>
-        <TouchableOpacity onPress={() => navigation.goBack()} style={[styles.backBtn, { backgroundColor: isDark ? colors.background : '#f5f5f5' }]}>
-          <ChevronLeft size={24} color={colors.text} />
+        <TouchableOpacity onPress={() => navigation.goBack()} style={[styles.backBtn, { backgroundColor: isDark ? colors.background : '#F1F8E9' }]}>
+          <ChevronLeft size={24} color={colors.primary} />
         </TouchableOpacity>
-        <Text style={[styles.title, { color: colors.primary }]}>Edit Profile</Text>
+        <Text style={[styles.title, { color: colors.text }]}>Manage Personnel</Text>
         <View style={{ width: 44 }} />
       </View>
 
@@ -280,7 +280,7 @@ export default function EditUserScreen({ route, navigation }: any) {
             {saving ? <ActivityIndicator color="#fff" /> : (
               <>
                 <CheckCircle size={20} color="#fff" />
-                <Text style={styles.saveText}>Save Profile Changes</Text>
+                <Text style={styles.saveText}>Commit Account Changes</Text>
               </>
             )}
           </TouchableOpacity>
@@ -303,8 +303,8 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     borderBottomWidth: 1,
   },
-  backBtn: { width: 44, height: 44, borderRadius: 14, justifyContent: 'center', alignItems: 'center' },
-  title: { fontSize: 20, fontWeight: '900' },
+  backBtn: { width: 44, height: 44, borderRadius: 16, justifyContent: 'center', alignItems: 'center' },
+  title: { fontSize: 22, fontWeight: '900' },
   content: { padding: 20 },
   card: { borderRadius: 32, padding: 24, shadowColor: '#000', shadowOpacity: 0.05, shadowRadius: 15, elevation: 3 },
   sectionTitle: { fontSize: 10, fontWeight: '900', color: '#999', letterSpacing: 1.5, marginBottom: 16, textTransform: 'uppercase' },
@@ -313,12 +313,14 @@ const styles = StyleSheet.create({
   inputBox: { 
     flexDirection: 'row', 
     alignItems: 'center', 
-    borderRadius: 16, 
+    borderRadius: 20, 
     paddingHorizontal: 16, 
-    height: 56,
-    marginBottom: 16
+    height: 60,
+    marginBottom: 16,
+    borderWidth: 1,
+    borderColor: 'transparent'
   },
-  input: { flex: 1, marginLeft: 12, fontSize: 15, fontWeight: '600' },
+  input: { flex: 1, marginLeft: 12, fontSize: 16, fontWeight: '600' },
   scrollSelect: { flexDirection: 'row', marginBottom: 4 },
   chip: { 
     flexDirection: 'row', 

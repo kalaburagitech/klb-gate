@@ -21,8 +21,11 @@ import {
   Building,
   CheckCircle,
   X,
-  Globe
+  Globe,
+  Upload,
+  Home as HomeIcon
 } from 'lucide-react-native';
+import * as ImagePicker from 'expo-image-picker';
 import api from '../../services/api';
 import { useAuth } from '../../context/AuthContext';
 import { useTheme } from '../../context/ThemeContext';
@@ -43,8 +46,13 @@ export default function AddUserScreen({ navigation }: any) {
     phoneNumber: '',
     role: 'RESIDENT',
     tenantId: '',
-    organizationId: ''
+    organizationId: '',
+    unitId: '',
+    idProofUrl: ''
   });
+
+  const [units, setUnits] = useState<any[]>([]);
+  const [uploading, setUploading] = useState(false);
 
   useEffect(() => {
     if (currentUser?.role === 'SUPER_ADMIN') {
@@ -55,6 +63,58 @@ export default function AddUserScreen({ navigation }: any) {
       setForm(f => ({ ...f, organizationId: currentUser.organizationId || '' }));
     }
   }, [currentUser]);
+
+  useEffect(() => {
+    if (form.tenantId) {
+      api.get(`admin/units?tenantId=${form.tenantId}`)
+        .then(res => setUnits(res.data.data))
+        .catch(() => setUnits([]));
+    } else {
+      setUnits([]);
+    }
+  }, [form.tenantId]);
+
+  const handlePickImage = async () => {
+    const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync();
+    if (status !== 'granted') {
+      Alert.alert('Permission Denied', 'We need camera roll permissions to upload ID proof.');
+      return;
+    }
+
+    const result = await ImagePicker.launchImageLibraryAsync({
+      mediaTypes: ImagePicker.MediaTypeOptions.Images,
+      allowsEditing: true,
+      quality: 0.7,
+    });
+
+    if (!result.canceled) {
+      setUploading(true);
+      const formData = new FormData();
+      const asset = result.assets[0];
+      
+      formData.append('file', {
+        uri: Platform.OS === 'ios' ? asset.uri.replace('file://', '') : asset.uri,
+        name: 'id_proof.jpg',
+        type: 'image/jpeg',
+      } as any);
+
+      try {
+        const res = await api.post('media/upload', formData, {
+          headers: { 
+            'Content-Type': 'multipart/form-data',
+            'x-tenant-id': form.tenantId || currentUser?.tenantId
+          }
+        });
+        setForm({ ...form, idProofUrl: res.data.data.id });
+        Alert.alert('Success', 'Document uploaded securely');
+      } catch (e) {
+        console.error('Upload failed', e);
+        Alert.alert('Error', 'Failed to upload document. Ensure a society is selected.');
+      } finally {
+        setUploading(false);
+      }
+    }
+  };
 
   const handleSubmit = async () => {
     if (!form.email || !form.password || !form.firstName) {
@@ -242,15 +302,69 @@ export default function AddUserScreen({ navigation }: any) {
             </>
           )}
 
+          {form.tenantId && units.length > 0 && (
+            <>
+              <Text style={[styles.subLabel, { color: isDark ? colors.text + '60' : '#666' }]}>Assign Unit / Flat</Text>
+              <ScrollView horizontal showsHorizontalScrollIndicator={false} style={styles.tenantScroll}>
+                {units.map(u => (
+                  <TouchableOpacity 
+                    key={u.id}
+                    style={[
+                      styles.tenantItem,
+                      { backgroundColor: isDark ? colors.background : '#f5f5f5' },
+                      form.unitId === u.id && { backgroundColor: colors.primary, borderColor: colors.primary }
+                    ]}
+                    onPress={() => setForm({...form, unitId: u.id})}
+                  >
+                    <HomeIcon size={14} color={form.unitId === u.id ? '#fff' : (isDark ? colors.text + '40' : '#666')} />
+                    <Text style={[
+                      styles.tenantItemText,
+                      { color: isDark ? colors.text + '60' : '#666' },
+                      form.unitId === u.id && styles.tenantItemTextSelected
+                    ]}>Unit {u.unitNumber}</Text>
+                  </TouchableOpacity>
+                ))}
+              </ScrollView>
+            </>
+          )}
+
+          <Text style={[styles.subLabel, { color: isDark ? colors.text + '60' : '#666' }]}>Verification Document</Text>
           <TouchableOpacity 
-            style={[styles.submitBtn, { backgroundColor: colors.primary }, loading && { opacity: 0.7 }]}
+            style={[
+              styles.uploadBox, 
+              { 
+                backgroundColor: isDark ? colors.background : '#F1F8E9',
+                borderColor: form.idProofUrl ? colors.primary : (isDark ? colors.border : '#E0E0E0'),
+                borderStyle: form.idProofUrl ? 'solid' : 'dashed'
+              }
+            ]}
+            onPress={handlePickImage}
+            disabled={uploading}
+          >
+            {uploading ? (
+              <ActivityIndicator color={colors.primary} />
+            ) : form.idProofUrl ? (
+              <View style={styles.uploadInner}>
+                <CheckCircle size={24} color={colors.primary} />
+                <Text style={[styles.uploadText, { color: colors.primary }]}>ID Proof Verified & Uploaded</Text>
+              </View>
+            ) : (
+              <View style={styles.uploadInner}>
+                <Upload size={24} color={isDark ? colors.text + '40' : "#999"} />
+                <Text style={[styles.uploadText, { color: isDark ? colors.text + '40' : "#999" }]}>Upload ID Proof (JPG/PNG)</Text>
+              </View>
+            )}
+          </TouchableOpacity>
+
+          <TouchableOpacity 
+            style={[styles.submitBtn, { backgroundColor: colors.primary }, (loading || uploading) && { opacity: 0.7 }]}
             onPress={handleSubmit}
-            disabled={loading}
+            disabled={loading || uploading}
           >
             {loading ? <ActivityIndicator color="#fff" /> : (
               <>
                 <CheckCircle size={20} color="#fff" />
-                <Text style={styles.submitText}>Create User Account</Text>
+                <Text style={styles.submitText}>Finalize Personnel Onboarding</Text>
               </>
             )}
           </TouchableOpacity>
@@ -316,5 +430,21 @@ const styles = StyleSheet.create({
     shadowRadius: 10,
     elevation: 5
   },
-  submitText: { color: '#fff', fontSize: 16, fontWeight: 'bold' }
+  submitText: { color: '#fff', fontSize: 16, fontWeight: 'bold' },
+  uploadBox: {
+    height: 100,
+    borderRadius: 20,
+    borderWidth: 2,
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginTop: 8,
+  },
+  uploadInner: {
+    alignItems: 'center',
+    gap: 8,
+  },
+  uploadText: {
+    fontSize: 13,
+    fontWeight: 'bold',
+  }
 });

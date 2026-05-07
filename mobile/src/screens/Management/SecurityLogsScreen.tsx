@@ -7,7 +7,8 @@ import {
   TouchableOpacity, 
   Image,
   ActivityIndicator,
-  RefreshControl
+  RefreshControl,
+  Modal
 } from 'react-native';
 import { 
   Activity, 
@@ -16,7 +17,9 @@ import {
   ShieldCheck, 
   Clock, 
   MapPin,
-  ChevronRight
+  ChevronRight,
+  Camera,
+  X as CloseIcon
 } from 'lucide-react-native';
 import api from '../../services/api';
 import { useTheme } from '../../context/ThemeContext';
@@ -26,6 +29,7 @@ export default function SecurityLogsScreen() {
   const [logs, setLogs] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
+  const [selectedPhoto, setSelectedPhoto] = useState<string | null>(null);
 
   const fetchLogs = async () => {
     try {
@@ -58,7 +62,12 @@ export default function SecurityLogsScreen() {
     <View style={[styles.logCard, { backgroundColor: colors.card }]}>
       <View style={styles.logHeader}>
         <View style={styles.visitorInfo}>
-          <Image source={{ uri: item.photoUrl }} style={[styles.visitorImg, { backgroundColor: isDark ? colors.background : '#f0f0f0' }]} />
+          <TouchableOpacity onPress={() => item.photoUrl && setSelectedPhoto(item.photoUrl)}>
+            <Image source={{ uri: item.photoUrl }} style={[styles.visitorImg, { backgroundColor: isDark ? colors.background : '#f0f0f0' }]} />
+            <View style={[styles.photoIconBadge, { backgroundColor: colors.primary }]}>
+              <Camera size={10} color="#fff" />
+            </View>
+          </TouchableOpacity>
           <View>
             <Text style={[styles.visitorName, { color: colors.text }]}>{item.visitor.name}</Text>
             <Text style={[styles.visitorType, { color: isDark ? colors.text + '40' : '#999' }]}>{item.type}</Text>
@@ -122,6 +131,17 @@ export default function SecurityLogsScreen() {
           }
         />
       )}
+
+      <Modal visible={!!selectedPhoto} transparent animationType="fade" onRequestClose={() => setSelectedPhoto(null)}>
+        <View style={styles.modalOverlay}>
+          <TouchableOpacity style={styles.modalCloseBtn} onPress={() => setSelectedPhoto(null)}>
+            <CloseIcon size={28} color="#fff" />
+          </TouchableOpacity>
+          {selectedPhoto && (
+            <Image source={{ uri: selectedPhoto }} style={styles.fullImage} resizeMode="contain" />
+          )}
+        </View>
+      </Modal>
     </View>
   );
 }
@@ -158,5 +178,40 @@ const styles = StyleSheet.create({
   detailItem: { flexDirection: 'row', alignItems: 'center', gap: 8 },
   detailText: { fontSize: 12 },
   empty: { alignItems: 'center', marginTop: 100 },
-  emptyText: { marginTop: 16, fontSize: 16, fontWeight: '500' }
+  emptyText: { marginTop: 16, fontSize: 16, fontWeight: '500' },
+  photoIconBadge: {
+    position: 'absolute',
+    bottom: -4,
+    right: -4,
+    width: 20,
+    height: 20,
+    borderRadius: 10,
+    justifyContent: 'center',
+    alignItems: 'center',
+    borderWidth: 2,
+    borderColor: '#fff',
+  },
+  modalOverlay: {
+    flex: 1,
+    backgroundColor: 'rgba(0,0,0,0.9)',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  modalCloseBtn: {
+    position: 'absolute',
+    top: 50,
+    right: 20,
+    zIndex: 1,
+    width: 44,
+    height: 44,
+    borderRadius: 22,
+    backgroundColor: 'rgba(255,255,255,0.2)',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  fullImage: {
+    width: '90%',
+    height: '80%',
+    borderRadius: 20,
+  }
 });

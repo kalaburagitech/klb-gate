@@ -515,11 +515,24 @@ export class AdminController {
 
   static async listUsers(req: Request, res: Response, next: NextFunction) {
     try {
+      const organizationId = req.user?.organizationId;
       const tenantId = req.user?.tenantId;
       const role = req.user?.role;
 
+      let where: any = {};
+      
+      if (role === 'SUPER_ADMIN') {
+        where = {};
+      } else if (role === 'ORG_ADMIN' || role === 'TENANT_ADMIN') {
+        // Show all users in the organization
+        where = { organizationId };
+      } else {
+        // Fallback for others (should ideally not reach here due to authorize middleware)
+        where = { tenantId };
+      }
+
       const users = await prisma.user.findMany({
-        where: role === 'SUPER_ADMIN' ? {} : { tenantId },
+        where,
         select: {
           id: true,
           email: true,
@@ -530,10 +543,12 @@ export class AdminController {
           unitNumber: true,
           unitId: true,
           tenantId: true,
+          idProofId: true,
           createdAt: true,
           tenant: { select: { id: true, name: true, region: { select: { name: true } } } },
           organization: { select: { name: true } }
-        }
+        },
+        orderBy: { createdAt: 'desc' }
       });
       res.status(200).json({ success: true, data: users });
     } catch (error) {
