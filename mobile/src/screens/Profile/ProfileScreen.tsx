@@ -100,6 +100,34 @@ export default function ProfileScreen() {
         <View style={[styles.section, { backgroundColor: colors.card, borderColor: colors.border }]}>
           <Text style={[styles.sectionTitle, { color: colors.text + '40' }]}>SYSTEM PREFERENCES</Text>
 
+          <View style={styles.themeSelectorContainer}>
+            <Text style={[styles.label, { color: colors.text + '60', marginBottom: 12 }]}>APPEARANCE MODE</Text>
+            <View style={[styles.segmentContainer, { backgroundColor: isDark ? colors.background : '#F1F5F9' }]}>
+              {(['LIGHT', 'DARK', 'SYSTEM'] as const).map((mode) => (
+                <TouchableOpacity
+                  key={mode}
+                  style={[
+                    styles.segmentButton,
+                    themeMode === mode && { backgroundColor: colors.primary }
+                  ]}
+                  onPress={() => setThemeMode(mode)}
+                >
+                  {mode === 'LIGHT' && <Sun size={16} color={themeMode === mode ? '#fff' : colors.text + '60'} />}
+                  {mode === 'DARK' && <Moon size={16} color={themeMode === mode ? '#fff' : colors.text + '60'} />}
+                  {mode === 'SYSTEM' && <Settings size={16} color={themeMode === mode ? '#fff' : colors.text + '60'} />}
+                  <Text style={[styles.segmentLabel, { color: themeMode === mode ? '#fff' : colors.text + '60' }]}>
+                    {mode}
+                  </Text>
+                </TouchableOpacity>
+              ))}
+            </View>
+            <Text style={[styles.themeDescription, { color: colors.text + '40' }]}>
+              {themeMode === 'SYSTEM' 
+                ? 'Currently syncing with your device OS preferences.' 
+                : `Manually locked to ${themeMode.toLowerCase()} mode.`}
+            </Text>
+          </View>
+
           <TouchableOpacity style={styles.menuLink}>
             <View style={styles.linkLeft}>
               <Bell size={20} color={colors.text + '40'} />
@@ -107,14 +135,6 @@ export default function ProfileScreen() {
             </View>
             <ChevronRight size={18} color={colors.text + '20'} />
           </TouchableOpacity>
-
-          <View style={styles.menuLink}>
-            <View style={styles.linkLeft}>
-              <Shield size={20} color={colors.text + '40'} />
-              <Text style={[styles.linkText, { color: colors.text }]}>Automatic Theme</Text>
-            </View>
-            <Text style={{ fontSize: 12, fontWeight: 'bold', color: colors.primary }}>SYSTEM SYNCED</Text>
-          </View>
         </View>
 
         <TouchableOpacity style={styles.logoutButton} onPress={logout}>
