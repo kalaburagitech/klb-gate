@@ -44,29 +44,16 @@ export default function DailyServiceListScreen({ navigation }: any) {
     fetchServices();
   }, []);
 
-  const handleQuickCheckIn = async (item: any) => {
-    setProcessingId(item.id);
-    try {
-      // Create a daily service entry automatically
-      const res = await visitorApi.requestEntry({
-        name: item.name,
-        phone: item.phone,
-        type: 'DAILY_SERVICE',
-        unitNumber: item.resident?.unitNumber,
-        residentId: item.residentId,
-        purpose: `Daily Service: ${item.serviceType}`,
-        photoUrl: 'DAILY_ASSET' // Placeholder or the visitor's stored photo
-      });
-
-      if (res.data.success) {
-        Alert.alert('Success', `${item.name} has been let in for Unit ${item.resident?.unitNumber}`);
-        navigation.goBack();
-      }
-    } catch (e: any) {
-      Alert.alert('Error', e.response?.data?.message || 'Quick check-in failed');
-    } finally {
-      setProcessingId(null);
-    }
+  const handleQuickCheckIn = (item: any) => {
+    // Navigate to AddVisitor with pre-filled details for photo/ID capture
+    navigation.navigate('AddVisitor', {
+      type: 'DAILY_SERVICE',
+      name: item.name,
+      phone: item.phone,
+      unitNumber: item.resident?.unitNumber,
+      residentId: item.residentId,
+      purpose: `Daily Service: ${item.serviceType}`
+    });
   };
 
   const filteredServices = services.filter(s => 

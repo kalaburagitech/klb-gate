@@ -41,11 +41,11 @@ export default function AddVisitorScreen({ navigation, route }: any) {
   const [selectedResident, setSelectedResident] = useState<any>(null);
 
   const [form, setForm] = useState({
-    name: '',
-    phone: '',
-    purpose: '',
-    unitNumber: '',
-    residentId: '',
+    name: route?.params?.name || '',
+    phone: route?.params?.phone || '',
+    purpose: route?.params?.purpose || '',
+    unitNumber: route?.params?.unitNumber || '',
+    residentId: route?.params?.residentId || '',
     type: route?.params?.type || 'GUEST',
     verificationCode: route?.params?.code || '',
   });
@@ -54,7 +54,14 @@ export default function AddVisitorScreen({ navigation, route }: any) {
     if (route?.params?.code) {
       handleVerifyCode(route.params.code);
     }
-  }, [route?.params?.code]);
+    if (route?.params?.residentId && route?.params?.unitNumber) {
+      setSelectedResident({
+        name: 'Resident',
+        unitNumber: route.params.unitNumber,
+        id: route.params.residentId
+      });
+    }
+  }, [route?.params?.code, route?.params?.residentId]);
 
   const handleVerifyCode = async (code: string) => {
     setLoading(true);

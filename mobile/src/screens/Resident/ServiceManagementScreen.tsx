@@ -19,8 +19,12 @@ import {
   CheckCircle2,
   Coffee,
   BookOpen,
-  Trash
+  Trash,
+  ActivityIndicator
 } from 'lucide-react-native';
+import { visitorApi } from '../../services/api';
+import { useTheme } from '../../context/ThemeContext';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 const SERVICE_TYPES = [
   { id: 'maid', label: 'Maid', icon: User, color: '#E8F5E9', iconColor: '#2E7D32' },
@@ -30,21 +34,54 @@ const SERVICE_TYPES = [
 ];
 
 export default function ServiceManagementScreen() {
-  const [services, setServices] = useState([
-    { id: '1', name: 'Shanti Bai', type: 'Maid', time: '08:00 AM', days: 'Daily' },
-    { id: '2', name: 'Amul Delivery', type: 'Milk', time: '06:30 AM', days: 'Daily' },
-  ]);
+  const { colors, isDark } = useTheme();
+  const insets = useSafeAreaInsets();
+  const [services, setServices] = useState<any[]>([]);
+  const [loading, setLoading] = useState(true);
   const [modalVisible, setModalVisible] = useState(false);
-  const [newService, setNewService] = useState({ name: '', type: 'Maid', time: '' });
+  const [saving, setSaving] = useState(false);
+  const [newService, setNewService] = useState({ name: '', type: 'Maid', phone: '', time: '08:00 AM' });
 
-  const addService = () => {
-    if (!newService.name || !newService.time) {
-      Alert.alert('Error', 'Please fill all details');
+  const fetchServices = async () => {
+    try {
+      const res = await visitorApi.getRecurring();
+      setServices(res.data.data);
+    } catch (e) {
+      console.error('Fetch services failed', e);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  React.useEffect(() => {
+    fetchServices();
+  }, []);
+
+  const addService = async () => {
+    if (!newService.name || !newService.phone || !newService.time) {
+      Alert.alert('Error', 'Please fill all details including phone number');
       return;
     }
-    setServices([...services, { ...newService, id: Math.random().toString(), days: 'Daily' }]);
-    setModalVisible(false);
-    setNewService({ name: '', type: 'Maid', time: '' });
+
+    setSaving(true);
+    try {
+      await visitorApi.createRecurring({
+        name: newService.name,
+        phone: newService.phone,
+        serviceType: newService.type,
+        startTime: newService.time,
+        endTime: '10:00 AM', // Default or add another field
+        days: 'DAILY'
+      });
+      setModalVisible(false);
+      setNewService({ name: '', type: 'Maid', phone: '', time: '08:00 AM' });
+      fetchServices();
+      Alert.alert('Success', 'Daily service pass created. Guard can now see this in their list.');
+    } catch (e) {
+      Alert.alert('Error', 'Failed to create service pass');
+    } finally {
+      setSaving(false);
+    }
   };
 
   const removeService = (id: string) => {
@@ -57,31 +94,37 @@ export default function ServiceManagementScreen() {
   };
 
   return (
-    <View style={styles.container}>
-      <View style={styles.header}>
-        <Text style={styles.title}>Daily Services</Text>
-        <Text style={styles.subtitle}>Manage your recurring visitors</Text>
+    <View style={[styles.container, { backgroundColor: colors.background }]}>
+      <View style={[styles.header, { backgroundColor: colors.card, paddingTop: insets.top + 20 }]}>
+        <Text style={[styles.title, { color: colors.primary }]}>Daily Services</Text>
+        <Text style={[styles.subtitle, { color: colors.text + '80' }]}>Manage your recurring visitors</Text>
       </View>
 
       <ScrollView contentContainerStyle={styles.content}>
-        <Text style={styles.sectionTitle}>YOUR DAILY HELP</Text>
+        <Text style={[styles.sectionTitle, { color: colors.text + '40' }]}>YOUR DAILY HELP</Text>
         
-        {services.map((item) => (
-          <View key={item.id} style={styles.serviceCard}>
-            <View style={styles.serviceInfo}>
-              <View style={styles.typeIcon}>
-                <Briefcase size={20} color="#2E7D32" />
+        {loading ? (
+          <ActivityIndicator color={colors.primary} style={{ marginTop: 20 }} />
+        ) : services.length > 0 ? (
+          services.map((item) => (
+            <View key={item.id} style={[styles.serviceCard, { backgroundColor: colors.card, borderColor: colors.border }]}>
+              <View style={styles.serviceInfo}>
+                <View style={[styles.typeIcon, { backgroundColor: colors.primary + '15' }]}>
+                  <Briefcase size={20} color={colors.primary} />
+                </View>
+                <View style={styles.textDetails}>
+                  <Text style={[styles.serviceName, { color: colors.text }]}>{item.name}</Text>
+                  <Text style={[styles.serviceSub, { color: colors.text + '60' }]}>{item.serviceType} • {item.startTime} • {item.days}</Text>
+                </View>
               </View>
-              <View style={styles.textDetails}>
-                <Text style={styles.serviceName}>{item.name}</Text>
-                <Text style={styles.serviceSub}>{item.type} • {item.time} • {item.days}</Text>
-              </View>
+              <TouchableOpacity onPress={() => removeService(item.id)}>
+                <Trash2 size={20} color="#FFCDD2" />
+              </TouchableOpacity>
             </View>
-            <TouchableOpacity onPress={() => removeService(item.id)}>
-              <Trash2 size={20} color="#FFCDD2" />
-            </TouchableOpacity>
-          </View>
-        ))}
+          ))
+        ) : (
+          <Text style={{ textAlign: 'center', color: '#999', marginTop: 20 }}>No daily services added yet</Text>
+        )}
 
         <TouchableOpacity 
           style={styles.addCard} 
@@ -119,24 +162,42 @@ export default function ServiceManagementScreen() {
               ))}
             </View>
 
-            <Text style={styles.label}>Name of Helper</Text>
+            <Text style={[styles.label, { color: colors.text + '60' }]}>Name of Helper</Text>
             <TextInput 
-              style={styles.input}
+              style={[styles.input, { backgroundColor: isDark ? colors.background : '#F5F5F5', color: colors.text }]}
               placeholder="e.g. Ramesh Kumar"
+              placeholderTextColor={isDark ? '#555' : '#999'}
               value={newService.name}
               onChangeText={(v) => setNewService({ ...newService, name: v })}
             />
 
-            <Text style={styles.label}>Arrival Time</Text>
+            <Text style={[styles.label, { color: colors.text + '60' }]}>Phone Number</Text>
             <TextInput 
-              style={styles.input}
+              style={[styles.input, { backgroundColor: isDark ? colors.background : '#F5F5F5', color: colors.text }]}
+              placeholder="Required for Guard verification"
+              placeholderTextColor={isDark ? '#555' : '#999'}
+              keyboardType="phone-pad"
+              value={newService.phone}
+              onChangeText={(v) => setNewService({ ...newService, phone: v })}
+            />
+
+            <Text style={[styles.label, { color: colors.text + '60' }]}>Arrival Time</Text>
+            <TextInput 
+              style={[styles.input, { backgroundColor: isDark ? colors.background : '#F5F5F5', color: colors.text }]}
               placeholder="e.g. 07:00 AM"
+              placeholderTextColor={isDark ? '#555' : '#999'}
               value={newService.time}
               onChangeText={(v) => setNewService({ ...newService, time: v })}
             />
 
-            <TouchableOpacity style={styles.submitBtn} onPress={addService}>
-              <Text style={styles.submitBtnText}>CREATE SERVICE PASS</Text>
+            <TouchableOpacity 
+              style={[styles.submitBtn, { backgroundColor: colors.primary }, saving && { opacity: 0.7 }]} 
+              onPress={addService}
+              disabled={saving}
+            >
+              {saving ? <ActivityIndicator color="#fff" /> : (
+                <Text style={styles.submitBtnText}>CREATE SERVICE PASS</Text>
+              )}
             </TouchableOpacity>
           </View>
         </View>
