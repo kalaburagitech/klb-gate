@@ -38,7 +38,6 @@ export default function ResidentTabNavigator() {
           if (route.name === 'Home') return <Home size={size} color={color} />;
           if (route.name === 'Visitors') return <User size={size} color={color} />;
           if (route.name === 'Services') return <Briefcase size={size} color={color} />;
-          if (route.name === 'Clubhouse') return <Building size={size} color={color} />;
           if (route.name === 'Profile') return <User size={size} color={color} />;
         },
         tabBarActiveTintColor: colors.primary,
@@ -65,7 +64,6 @@ export default function ResidentTabNavigator() {
       <Tab.Screen name="Home" component={ResidentStack} />
       <Tab.Screen name="Visitors" component={VisitorManagementScreen} />
       <Tab.Screen name="Services" component={ServiceManagementScreen} />
-      <Tab.Screen name="Clubhouse" component={AmenitiesScreen} />
       <Tab.Screen name="Profile" component={ProfileScreen} />
     </Tab.Navigator>
   );

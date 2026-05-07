@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { 
   View, 
   Text, 
@@ -13,6 +13,7 @@ import {
 import { Clock, Check, X, User, Home, Phone, ArrowRight } from 'lucide-react-native';
 import { visitorApi } from '../../services/api';
 import { useTheme } from '../../context/ThemeContext';
+import { useFocusEffect } from '@react-navigation/native';
 
 export default function PendingApprovalsScreen({ navigation }: any) {
   const { colors, isDark } = useTheme();
@@ -32,11 +33,13 @@ export default function PendingApprovalsScreen({ navigation }: any) {
     }
   };
 
-  useEffect(() => {
-    fetchPending();
-    const interval = setInterval(fetchPending, 10000); 
-    return () => clearInterval(interval);
-  }, []);
+  useFocusEffect(
+    useCallback(() => {
+      fetchPending();
+      const interval = setInterval(fetchPending, 30000); // 30 seconds
+      return () => clearInterval(interval);
+    }, [])
+  );
 
   return (
     <View style={[styles.container, { backgroundColor: colors.background }]}>

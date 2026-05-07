@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { 
   View, 
   Text, 
@@ -10,6 +10,7 @@ import {
   ActivityIndicator
 } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { useFocusEffect } from '@react-navigation/native';
 import { 
   ShieldCheck, 
   User, 
@@ -61,11 +62,13 @@ export default function ResidentHomeScreen({ navigation }: any) {
     }
   };
 
-  useEffect(() => {
-    fetchData();
-    const interval = setInterval(fetchData, 10000);
-    return () => clearInterval(interval);
-  }, []);
+  useFocusEffect(
+    useCallback(() => {
+      fetchData();
+      const interval = setInterval(fetchData, 30000); // 30 seconds
+      return () => clearInterval(interval);
+    }, [])
+  );
 
   const mutedColor = isDark ? 'rgba(255,255,255,0.5)' : 'rgba(0,0,0,0.5)';
 
