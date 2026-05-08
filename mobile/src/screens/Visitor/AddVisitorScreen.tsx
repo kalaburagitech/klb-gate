@@ -39,6 +39,10 @@ export default function AddVisitorScreen({ navigation, route }: any) {
   const [searching, setSearching] = useState(false);
   const [showResults, setShowResults] = useState(false);
   const [selectedResident, setSelectedResident] = useState<any>(null);
+  const [visitorSearching, setVisitorSearching] = useState(false);
+  const [smartSuggestions, setSmartSuggestions] = useState<any[]>([]);
+  const [existingPhotoId, setExistingPhotoId] = useState<string | null>(null);
+  const [isNewPhoto, setIsNewPhoto] = useState(false);
 
   const [form, setForm] = useState({
     name: route?.params?.name || '',
@@ -110,6 +114,40 @@ export default function AddVisitorScreen({ navigation, route }: any) {
     }
   };
 
+  const handleVisitorSearch = async (phone: string) => {
+    if (phone.length !== 10) {
+      setSmartSuggestions([]);
+      setExistingPhotoId(null);
+      return;
+    }
+    
+    setVisitorSearching(true);
+    try {
+      const res = await visitorApi.search(phone);
+      const data = res.data.data;
+      
+      if (data && data.profile) {
+        setForm(prev => ({
+          ...prev,
+          name: data.profile.name,
+          purpose: data.lastPurpose || prev.purpose
+        }));
+        
+        if (data.profile.photoUrl) {
+          setPhoto(data.profile.photoUrl);
+          setExistingPhotoId(data.profile.photoId);
+          setIsNewPhoto(false);
+        }
+        
+        setSmartSuggestions(data.suggestions || []);
+      }
+    } catch (e) {
+      console.error('Visitor search failed');
+    } finally {
+      setVisitorSearching(false);
+    }
+  };
+
   const selectResident = (resident: any) => {
     setSelectedResident(resident);
     setForm({ 
@@ -127,6 +165,7 @@ export default function AddVisitorScreen({ navigation, route }: any) {
 
   const handleCapture = (uri: string) => {
     setPhoto(uri);
+    setIsNewPhoto(true);
     setCameraVisible(false);
   };
 
@@ -138,16 +177,25 @@ export default function AddVisitorScreen({ navigation, route }: any) {
 
     setLoading(true);
     try {
-      // 1. Upload Photo
-      const formData = new FormData();
-      formData.append('file', {
-        uri: photo,
-        type: 'image/jpeg',
-        name: 'visitor.jpg',
-      } as any);
+      // 1. Upload Photo if it's new
+      let photoId = existingPhotoId;
 
-      const mediaRes = await mediaApi.upload(formData);
-      const photoId = mediaRes.data.data.id;
+      if (isNewPhoto && photo) {
+        const formData = new FormData();
+        formData.append('file', {
+          uri: photo,
+          type: 'image/jpeg',
+          name: 'visitor.jpg',
+        } as any);
+
+        const mediaRes = await mediaApi.upload(formData);
+        photoId = mediaRes.data.data.id;
+      }
+
+      if (!photoId) {
+        Alert.alert('Error', 'Please capture a photo or use existing profile');
+        return;
+      }
 
       // 2. Create Visitor Entry Request
       const entryRes = await visitorApi.requestEntry({
@@ -239,8 +287,12 @@ export default function AddVisitorScreen({ navigation, route }: any) {
               placeholderTextColor={isDark ? 'rgba(255,255,255,0.3)' : 'rgba(0,0,0,0.3)'}
               keyboardType="phone-pad"
               value={form.phone}
-              onChangeText={(v) => setForm({...form, phone: v})}
+              onChangeText={(v) => {
+                setForm({...form, phone: v});
+                if (v.length === 10) handleVisitorSearch(v);
+              }}
             />
+            {visitorSearching && <ActivityIndicator size="small" color={colors.primary} />}
           </View>
 
           <View style={styles.searchSection}>
@@ -278,6 +330,24 @@ export default function AddVisitorScreen({ navigation, route }: any) {
                 }}>
                   <X size={20} color="#FF5252" />
                 </TouchableOpacity>
+              </View>
+            )}
+
+            {smartSuggestions.length > 0 && !selectedResident && (
+              <View style={styles.suggestionsContainer}>
+                <Text style={[styles.suggestionLabel, { color: colors.primary }]}>FREQUENTLY VISITED</Text>
+                <View style={styles.suggestionChips}>
+                  {smartSuggestions.map((s) => (
+                    <TouchableOpacity 
+                      key={s.id} 
+                      style={[styles.suggestionChip, { backgroundColor: colors.card, borderColor: colors.primary + '40' }]}
+                      onPress={() => selectResident(s)}
+                    >
+                      <Text style={[styles.suggestionChipText, { color: colors.text }]}>{s.unitNumber}</Text>
+                      <Text style={[styles.suggestionChipSubText, { color: colors.text + '80' }]}>{s.name.split(' ')[0]}</Text>
+                    </TouchableOpacity>
+                  ))}
+                </View>
               </View>
             )}
 
@@ -422,4 +492,17 @@ const styles = StyleSheet.create({
   cameraFooter: { alignItems: 'center', marginBottom: 20 },
   captureButton: { width: 80, height: 80, borderRadius: 40, backgroundColor: 'rgba(255,255,255,0.3)', justifyContent: 'center', alignItems: 'center' },
   captureInner: { width: 64, height: 64, borderRadius: 32, backgroundColor: '#fff' },
+  suggestionsContainer: { marginTop: 16, marginBottom: 8 },
+  suggestionLabel: { fontSize: 9, fontWeight: '900', marginBottom: 8, letterSpacing: 1 },
+  suggestionChips: { flexDirection: 'row', flexWrap: 'wrap', gap: 8 },
+  suggestionChip: { 
+    paddingHorizontal: 12, 
+    paddingVertical: 8, 
+    borderRadius: 12, 
+    borderWidth: 1, 
+    alignItems: 'center',
+    minWidth: 70
+  },
+  suggestionChipText: { fontSize: 14, fontWeight: 'bold' },
+  suggestionChipSubText: { fontSize: 8, fontWeight: '600' },
 });

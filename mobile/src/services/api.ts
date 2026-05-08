@@ -61,6 +61,7 @@ export const unitApi = {
 };
 
 export const visitorApi = {
+  search: (phone: string) => api.get('visitors/search', { params: { phone } }),
   create: (data: any) => api.post('visitors/entries', data),
   requestEntry: (data: any) => api.post('visitors/entries', data),
   approve: (data: { entryId: string, status: string }) => api.post('entries/approve', data),

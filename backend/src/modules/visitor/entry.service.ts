@@ -28,6 +28,15 @@ export class EntryService {
         photoId: data.photoId,
         createdBy: data.handledById
       });
+    } else {
+      // Update visitor info if it has changed (re-use and refresh)
+      visitor = await prisma.visitor.update({
+        where: { id: visitor.id },
+        data: {
+          name: data.name || visitor.name,
+          photoId: data.photoId || visitor.photoId,
+        }
+      });
     }
 
     // 2. Logic based on type

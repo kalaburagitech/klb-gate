@@ -7,6 +7,7 @@ const router = Router();
 router.use(authenticate);
 router.use(tenantIsolation);
 
+router.get('/search', VisitorController.search);
 router.post('/entries', VisitorController.createEntry);
 router.get('/entries', VisitorController.listAll);
 router.get('/entries/pending', VisitorController.listPending);

@@ -7,6 +7,72 @@ import { MediaService } from '../media/media.service';
 import { EntryStatus } from '@prisma/client';
 
 export class VisitorController {
+  // Search visitor by phone and get smart suggestions
+  static async search(req: Request, res: Response, next: NextFunction) {
+    try {
+      const { phone } = req.query;
+      const tenantId = req.user?.tenantId;
+
+      if (!tenantId) throw new AppError('Context missing', 403);
+      if (!phone) throw new AppError('Phone number is required', 400);
+
+      const visitor = await prisma.visitor.findFirst({
+        where: { phone: phone as string, tenantId }
+      });
+
+      if (!visitor) {
+        return res.status(200).json({ success: true, data: null });
+      }
+
+      // Smart Suggestions
+      // 1. Frequently visited units
+      const topUnits = await prisma.entry.groupBy({
+        by: ['unitNumber'],
+        where: { visitorId: visitor.id, tenantId },
+        _count: { unitNumber: true },
+        orderBy: { _count: { unitNumber: 'desc' } },
+        take: 3
+      });
+
+      // 2. Fetch resident details for these units
+      const suggestions = await Promise.all(topUnits.map(async (u) => {
+        const resident = await prisma.user.findFirst({
+          where: { tenantId, unitNumber: u.unitNumber, role: 'RESIDENT' },
+          select: { id: true, firstName: true, lastName: true, unitNumber: true }
+        });
+        return resident ? {
+          id: resident.id,
+          name: `${resident.firstName} ${resident.lastName}`,
+          unitNumber: resident.unitNumber
+        } : null;
+      }));
+
+      // 3. Last purpose
+      const lastEntry = await prisma.entry.findFirst({
+        where: { visitorId: visitor.id, tenantId },
+        orderBy: { createdAt: 'desc' },
+        select: { purpose: true }
+      });
+
+      // 4. Formatted Photo URL
+      const photoUrl = visitor.photoId ? await MediaService.getMediaUrl(visitor.photoId) : null;
+
+      res.status(200).json({
+        success: true,
+        data: {
+          profile: {
+            ...visitor,
+            photoUrl
+          },
+          suggestions: suggestions.filter(s => s !== null),
+          lastPurpose: lastEntry?.purpose || ''
+        }
+      });
+    } catch (error) {
+      next(error);
+    }
+  }
+
   // Guard creates entry
   static async createEntry(req: Request, res: Response, next: NextFunction) {
     try {
