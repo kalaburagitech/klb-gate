@@ -38,11 +38,19 @@ export default function Sidebar() {
 
   return (
     <aside className="w-64 bg-[var(--card)] border-r border-[var(--border)] h-screen flex flex-col fixed left-0 top-0 z-50 transition-all duration-300 shadow-2xl dark:shadow-none">
-      <div className="p-8 flex items-center gap-3">
-        <div className="w-10 h-10 bg-nature-forest rounded-xl flex items-center justify-center shadow-lg shadow-nature-forest/20">
-          <span className="text-white font-bold text-xl">K</span>
+      <div className="p-8 flex items-center gap-4">
+        <div className="w-12 h-12 relative flex-shrink-0 group overflow-hidden rounded-full border border-nature-forest/10">
+          <div className="absolute inset-0 bg-nature-forest/20 rounded-full blur-xl group-hover:bg-nature-forest/30 transition-all duration-500" />
+          <img 
+            src="/logo.png" 
+            alt="KLB Logo" 
+            className="w-full h-full object-cover relative z-10 drop-shadow-2xl transition-transform duration-500 group-hover:scale-110 rounded-full"
+          />
         </div>
-        <span className="font-bold text-xl text-nature-forest tracking-tighter">KLB <span className="opacity-50">Shield</span></span>
+        <div className="flex flex-col">
+          <span className="font-black text-2xl text-nature-forest tracking-tighter leading-none">KLB</span>
+          <span className="text-[10px] font-black text-nature-forest/40 uppercase tracking-[0.2em] mt-1">Shield Elite</span>
+        </div>
       </div>
 
       <nav className="flex-1 px-4 py-4 space-y-1.5">

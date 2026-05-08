@@ -63,7 +63,6 @@ export default function ResidentTabNavigator() {
     >
       <Tab.Screen name="Home" component={ResidentStack} />
       <Tab.Screen name="Visitors" component={VisitorManagementScreen} />
-      <Tab.Screen name="Services" component={ServiceManagementScreen} />
       <Tab.Screen name="Profile" component={ProfileScreen} />
     </Tab.Navigator>
   );

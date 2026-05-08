@@ -1,11 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import { View, Text, StyleSheet, FlatList, TouchableOpacity, ActivityIndicator, RefreshControl, Alert, Image } from 'react-native';
 import { useTheme } from '../../context/ThemeContext';
-import { Card } from '../../components/Card';
-import { Clock, User, LogIn, LogOut, Home, ArrowRight } from 'lucide-react-native';
+import { Clock, User, LogIn, LogOut, Home, ArrowRight, ShieldCheck, ShieldAlert, Phone } from 'lucide-react-native';
 import { visitorApi } from '../../services/api';
 
-export default function EntryLogsScreen() {
+export default function EntryLogsScreen({ navigation }: any) {
   const { colors, isDark } = useTheme();
   const [logs, setLogs] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
@@ -31,10 +30,10 @@ export default function EntryLogsScreen() {
     try {
       if (action === 'checkin') {
         await visitorApi.checkIn(entryId);
-        Alert.alert('Success', 'Visitor allowed entry');
+        Alert.alert('Success', 'Access Granted - Gate Open');
       } else {
         await visitorApi.checkOut(entryId);
-        Alert.alert('Success', 'Visitor checked out');
+        Alert.alert('Success', 'Visitor Exit Recorded');
       }
       fetchLogs();
     } catch (error) {
@@ -42,114 +41,138 @@ export default function EntryLogsScreen() {
     }
   };
 
-  const getStatusColor = (status: string) => {
+  const getStatusConfig = (status: string) => {
     switch (status) {
-      case 'APPROVED': return '#2E7D32';
-      case 'CHECKED_IN': return '#1976D2';
-      case 'CHECKED_OUT': return '#64748B';
-      case 'REJECTED': return '#D32F2F';
-      case 'PENDING_APPROVAL': return '#E65100';
-      default: return '#666';
+      case 'APPROVED': return { label: 'APPROVED', color: '#2E7D32', icon: ShieldCheck };
+      case 'CHECKED_IN': return { label: 'IN SITE', color: '#1976D2', icon: LogIn };
+      case 'CHECKED_OUT': return { label: 'LEFT SITE', color: '#64748B', icon: LogOut };
+      case 'REJECTED': return { label: 'DENIED', color: '#D32F2F', icon: ShieldAlert };
+      case 'PENDING_APPROVAL': return { label: 'PENDING', color: '#E65100', icon: Clock };
+      default: return { label: status, color: '#666', icon: User };
     }
   };
 
   return (
     <View style={[styles.container, { backgroundColor: colors.background }]}>
-      <Text style={[styles.title, { color: colors.text }]}>Site Activity Logs</Text>
+      <View style={styles.header}>
+        <Text style={[styles.title, { color: colors.text }]}>Gate Activity</Text>
+        <Text style={[styles.subtitle, { color: colors.text + '60' }]}>Real-time site visitation logs</Text>
+      </View>
       
       <FlatList
         data={logs}
         keyExtractor={(item) => item.id}
         refreshControl={<RefreshControl refreshing={refreshing} onRefresh={() => { setRefreshing(true); fetchLogs(); }} />}
-        renderItem={({ item }) => (
-          <Card style={styles.logCard}>
-            <View style={styles.topRow}>
-              <View style={styles.visitorInfo}>
-                <Image source={{ uri: item.photoUrl }} style={styles.avatar} />
-                <View>
-                  <Text style={[styles.name, { color: colors.text }]}>{item.visitor.name}</Text>
-                  <View style={styles.metaRow}>
-                    <Home size={12} color={isDark ? colors.text + '40' : '#666'} />
-                    <Text style={[styles.metaText, { color: isDark ? colors.text + '40' : '#666' }]}>Visiting Unit {item.unitNumber}</Text>
+        renderItem={({ item }) => {
+          const config = getStatusConfig(item.status);
+          const StatusIcon = config.icon;
+          
+          return (
+            <View style={[styles.logCard, { backgroundColor: colors.card, borderColor: colors.border }]}>
+              <View style={styles.topRow}>
+                <View style={styles.visitorInfo}>
+                  {item.photoUrl ? (
+                    <Image source={{ uri: item.photoUrl }} style={styles.avatar} />
+                  ) : (
+                    <View style={[styles.avatar, { justifyContent: 'center', alignItems: 'center' }]}>
+                      <User size={24} color={colors.text + '20'} />
+                    </View>
+                  )}
+                  <View>
+                      <Text style={[styles.name, { color: colors.text }]}>{item.visitor.name}</Text>
+                      <View style={styles.phoneRow}>
+                        <Phone size={10} color={colors.primary} />
+                        <Text style={[styles.phoneText, { color: colors.primary }]}>{item.visitor.phone}</Text>
+                      </View>
                   </View>
                 </View>
+                <View style={[styles.statusBadge, { backgroundColor: config.color + '15' }]}>
+                  <StatusIcon size={12} color={config.color} />
+                  <Text style={[styles.statusText, { color: config.color }]}>{config.label}</Text>
+                </View>
               </View>
-              <View style={[styles.statusBadge, { backgroundColor: getStatusColor(item.status) + '20' }]}>
-                <Text style={[styles.statusText, { color: getStatusColor(item.status) }]}>
-                  {item.status === 'PENDING_APPROVAL' ? 'WAITING' : item.status.replace('_', ' ')}
-                </Text>
+
+              <View style={styles.detailsRow}>
+                <View style={styles.detailItem}>
+                  <Home size={14} color={colors.text + '40'} />
+                  <Text style={[styles.detailText, { color: colors.text + '60' }]}>Unit {item.unitNumber}</Text>
+                </View>
+                <View style={styles.detailItem}>
+                  <Clock size={14} color={colors.text + '40'} />
+                  <Text style={[styles.detailText, { color: colors.text + '60' }]}>
+                    {new Date(item.createdAt).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
+                  </Text>
+                </View>
               </View>
+
+              {item.status === 'APPROVED' || item.status === 'CHECKED_IN' ? (
+                <View style={styles.actions}>
+                  {item.status === 'APPROVED' && (
+                    <TouchableOpacity 
+                      style={[styles.actionBtn, { backgroundColor: '#2E7D32' }]} 
+                      onPress={() => handleAction(item.id, 'checkin')}
+                    >
+                      <LogIn size={18} color="#fff" />
+                      <Text style={styles.actionBtnText}>LET IN</Text>
+                    </TouchableOpacity>
+                  )}
+                  {item.status === 'CHECKED_IN' && (
+                    <TouchableOpacity 
+                      style={[styles.actionBtn, { backgroundColor: '#1E293B' }]} 
+                      onPress={() => handleAction(item.id, 'checkout')}
+                    >
+                      <LogOut size={18} color="#fff" />
+                      <Text style={styles.actionBtnText}>LET OUT (EXIT)</Text>
+                    </TouchableOpacity>
+                  )}
+                </View>
+              ) : null}
+
+              {item.status === 'PENDING_APPROVAL' && (
+                <View style={[styles.pendingNotice, { backgroundColor: isDark ? '#E6510022' : '#FFF3E0' }]}>
+                  <ActivityIndicator size="small" color="#E65100" />
+                  <Text style={styles.pendingText}>Awaiting Resident Decision...</Text>
+                </View>
+              )}
             </View>
-
-            <View style={styles.divider} />
-
-            <View style={styles.footer}>
-              <View style={styles.timeInfo}>
-                <Clock size={14} color={isDark ? colors.text + '30' : "#999"} />
-                <Text style={[styles.timeText, { color: colors.text + '40' }]}>
-                  {new Date(item.createdAt).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
-                </Text>
-              </View>
-
-              <View style={styles.actions}>
-                {item.status === 'APPROVED' && (
-                  <TouchableOpacity 
-                    style={[styles.btn, { backgroundColor: '#2E7D32' }]} 
-                    onPress={() => handleAction(item.id, 'checkin')}
-                  >
-                    <LogIn size={16} color="#fff" />
-                    <Text style={styles.btnText}>LET IN</Text>
-                  </TouchableOpacity>
-                )}
-                {item.status === 'CHECKED_IN' && (
-                  <TouchableOpacity 
-                    style={[styles.btn, { backgroundColor: '#1E293B' }]} 
-                    onPress={() => handleAction(item.id, 'checkout')}
-                  >
-                    <LogOut size={16} color="#fff" />
-                    <Text style={styles.btnText}>EXIT</Text>
-                  </TouchableOpacity>
-                )}
-                {item.status === 'PENDING_APPROVAL' && (
-                  <View style={[styles.waitingNotice, { backgroundColor: isDark ? '#E6510022' : '#FFF3E0' }]}>
-                    <ActivityIndicator size="small" color="#E65100" />
-                    <Text style={styles.waitingText}>Awaiting Resident</Text>
-                  </View>
-                )}
-              </View>
-            </View>
-          </Card>
-        )}
+          );
+        }}
         ListEmptyComponent={
-          loading ? <ActivityIndicator color={colors.primary} style={{ marginTop: 40 }} /> : 
-          <View style={styles.empty}><Text style={[styles.emptyText, { color: colors.text + '40' }]}>No activity recorded today</Text></View>
+          loading ? <ActivityIndicator color={colors.primary} style={{ marginTop: 100 }} /> : 
+          <View style={styles.empty}>
+            <ShieldCheck size={48} color={isDark ? colors.text + '10' : '#E2E8F0'} />
+            <Text style={[styles.emptyText, { color: colors.text + '40' }]}>No activity recorded today</Text>
+          </View>
         }
+        contentContainerStyle={styles.listContent}
       />
     </View>
   );
 }
 
 const styles = StyleSheet.create({
-  container: { flex: 1, padding: 20 },
-  title: { fontSize: 24, fontWeight: 'bold', marginTop: 40, marginBottom: 20 },
-  logCard: { marginBottom: 16, padding: 16, borderRadius: 20 },
+  container: { flex: 1 },
+  header: { paddingHorizontal: 24, paddingTop: 60, marginBottom: 24 },
+  title: { fontSize: 28, fontWeight: '900', letterSpacing: -1 },
+  subtitle: { fontSize: 13, marginTop: 4, fontWeight: '600' },
+  listContent: { paddingHorizontal: 20, paddingBottom: 100 },
+  logCard: { marginBottom: 16, padding: 16, borderRadius: 24, borderWidth: 1, elevation: 2, shadowColor: '#000', shadowOpacity: 0.05, shadowRadius: 10 },
   topRow: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'flex-start' },
   visitorInfo: { flexDirection: 'row', gap: 12, alignItems: 'center' },
-  avatar: { width: 48, height: 48, borderRadius: 14, backgroundColor: '#f0f0f0' },
-  name: { fontSize: 16, fontWeight: 'bold' },
-  metaRow: { flexDirection: 'row', alignItems: 'center', gap: 4, marginTop: 4 },
-  metaText: { fontSize: 12 },
-  statusBadge: { paddingHorizontal: 10, paddingVertical: 5, borderRadius: 8 },
-  statusText: { fontSize: 9, fontWeight: 'bold' },
-  divider: { height: 1, marginVertical: 14 },
-  footer: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' },
-  timeInfo: { flexDirection: 'row', alignItems: 'center', gap: 6 },
-  timeText: { fontSize: 12 },
-  actions: { flexDirection: 'row', gap: 8 },
-  btn: { flexDirection: 'row', alignItems: 'center', gap: 6, paddingHorizontal: 14, paddingVertical: 9, borderRadius: 10 },
-  btnText: { color: '#fff', fontSize: 11, fontWeight: 'bold' },
-  waitingNotice: { flexDirection: 'row', alignItems: 'center', gap: 8, paddingHorizontal: 12, paddingVertical: 8, borderRadius: 10 },
-  waitingText: { fontSize: 10, fontWeight: 'bold', color: '#E65100' },
-  empty: { alignItems: 'center', marginTop: 100 },
-  emptyText: { fontSize: 14 }
+  avatar: { width: 56, height: 56, borderRadius: 18, backgroundColor: '#f0f0f0' },
+  name: { fontSize: 17, fontWeight: 'bold' },
+  phoneRow: { flexDirection: 'row', alignItems: 'center', gap: 4, marginTop: 2 },
+  phoneText: { fontSize: 11, fontWeight: '800' },
+  statusBadge: { flexDirection: 'row', alignItems: 'center', gap: 4, paddingHorizontal: 10, paddingVertical: 6, borderRadius: 10 },
+  statusText: { fontSize: 9, fontWeight: '900', letterSpacing: 0.5 },
+  detailsRow: { flexDirection: 'row', gap: 16, marginTop: 16, marginBottom: 4 },
+  detailItem: { flexDirection: 'row', alignItems: 'center', gap: 6 },
+  detailText: { fontSize: 12, fontWeight: '700' },
+  actions: { marginTop: 16, borderTopWidth: 1, borderTopColor: 'rgba(0,0,0,0.05)', paddingTop: 16 },
+  actionBtn: { height: 54, borderRadius: 16, flexDirection: 'row', alignItems: 'center', justifyContent: 'center', gap: 10, shadowOpacity: 0.2, shadowRadius: 8, elevation: 4 },
+  actionBtnText: { color: '#fff', fontSize: 14, fontWeight: '900', letterSpacing: 1 },
+  pendingNotice: { marginTop: 16, flexDirection: 'row', alignItems: 'center', gap: 10, padding: 14, borderRadius: 16 },
+  pendingText: { fontSize: 12, fontWeight: 'bold', color: '#E65100' },
+  empty: { alignItems: 'center', marginTop: 150 },
+  emptyText: { marginTop: 16, fontSize: 15, fontWeight: 'bold' }
 });

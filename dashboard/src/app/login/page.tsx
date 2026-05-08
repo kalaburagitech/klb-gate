@@ -39,9 +39,13 @@ export default function LoginPage() {
         <div className="card-base p-12 neon-border backdrop-blur-xl bg-white/80 dark:bg-nature-950/20">
           {/* Logo Section */}
           <div className="flex flex-col items-center mb-10">
-            <div className="w-20 h-20 bg-nature-forest rounded-2xl flex items-center justify-center shadow-2xl shadow-nature-forest/20 mb-6 group cursor-pointer overflow-hidden relative">
-              <Shield size={40} className="text-white relative z-10" />
-              <div className="absolute inset-0 bg-gradient-to-tr from-nature-forest to-nature-light opacity-0 group-hover:opacity-20 transition-opacity" />
+            <div className="w-24 h-24 bg-white dark:bg-white/5 rounded-full flex items-center justify-center shadow-2xl mb-6 group cursor-pointer overflow-hidden relative border border-nature-forest/10">
+              <img 
+                src="/logo.png" 
+                alt="KLB Logo" 
+                className="w-full h-full object-cover relative z-10 transition-transform duration-500 group-hover:scale-110 rounded-full" 
+              />
+              <div className="absolute inset-0 bg-gradient-to-tr from-nature-forest/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
             </div>
             <h1 className="text-4xl font-black text-gray-900 dark:text-white tracking-tighter mb-2">
               KLB<span className="text-nature-forest">Connect</span>

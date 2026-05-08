@@ -57,12 +57,20 @@ export class VisitorController {
       // 4. Formatted Photo URL
       const photoUrl = visitor.photoId ? await MediaService.getMediaUrl(visitor.photoId) : null;
 
+      // 5. Recent Media (ID Proof, etc)
+      const recentMedia = await prisma.visitorMedia.findMany({
+        where: { visitorId: visitor.id },
+        orderBy: { createdAt: 'desc' },
+        take: 5
+      });
+
       res.status(200).json({
         success: true,
         data: {
           profile: {
             ...visitor,
-            photoUrl
+            photoUrl,
+            media: recentMedia
           },
           suggestions: suggestions.filter(s => s !== null),
           lastPurpose: lastEntry?.purpose || ''
@@ -82,10 +90,12 @@ export class VisitorController {
       if (!tenantId || !handledById) throw new AppError('Context missing', 403);
 
       // Map photoUrl from body to photoId for the service
-      const { photoUrl, ...rest } = req.body;
+      const { photoUrl, additionalPhotos, comment, ...rest } = req.body;
       const entry = await EntryService.processNewEntry({
         ...rest,
-        photoId: photoUrl, // Using photoUrl from body as photoId
+        photoId: photoUrl, 
+        additionalPhotos,
+        comment,
         tenantId,
         handledById
       });
@@ -141,7 +151,11 @@ export class VisitorController {
       const tenantId = req.user?.tenantId;
       if (!tenantId) throw new AppError('Context missing', 403);
 
-      const pending = await EntryRepository.findPendingApprovals(tenantId);
+      const pending = await prisma.entry.findMany({
+        where: { tenantId, status: 'PENDING_APPROVAL' },
+        include: { visitor: true, media: true },
+        orderBy: { createdAt: 'desc' }
+      });
 
       // Transform photoId from ID to full URL
       const formattedPending = await Promise.all(pending.map(async (e: any) => ({
@@ -184,7 +198,7 @@ export class VisitorController {
           tenantId: tenantId as string, 
           unitNumber: unitNumber as string 
         },
-        include: { visitor: true },
+        include: { visitor: true, media: true },
         orderBy: { createdAt: 'desc' }
       });
 
@@ -206,7 +220,7 @@ export class VisitorController {
     }
   }
 
-  // List all entries for a tenant (Dashboard)
+  // List all entries for a tenant (Dashboard / Unified Hub)
   static async listAll(req: Request, res: Response, next: NextFunction) {
     try {
       const tenantId = req.user?.tenantId;
@@ -216,12 +230,20 @@ export class VisitorController {
         where: { tenantId },
         include: { 
           visitor: true,
+          media: true,
           handledBy: { select: { firstName: true, lastName: true } }
         },
         orderBy: { createdAt: 'desc' }
       });
 
-      // Transform photoId from ID to full URL
+      // Fetch Unused Pre-Approvals
+      const preApproved = await prisma.preApprovedVisit.findMany({
+        where: { tenantId, isUsed: false },
+        include: { resident: true },
+        orderBy: { expectedDate: 'asc' }
+      });
+
+      // Transform entries to full URL
       const formattedEntries = await Promise.all(entries.map(async (e: any) => ({
         ...e,
         photoUrl: e.photoId ? await MediaService.getMediaUrl(e.photoId) : null,
@@ -231,7 +253,33 @@ export class VisitorController {
         }
       })));
 
-      res.status(200).json({ success: true, data: formattedEntries });
+      // Map Pre-Approvals to Entry format
+      const mappedPre = preApproved.map(p => ({
+        id: p.id,
+        visitor: { name: p.visitorName, phone: p.phoneNumber || 'N/A' },
+        unitNumber: p.resident?.unitNumber || '',
+        purpose: 'Pre-Approved Guest',
+        status: 'PRE_APPROVED',
+        code: p.code,
+        isPreApproved: true
+      }));
+
+      // Find Entries that came from pre-approvals and are still in site
+      const activePreEntries = formattedEntries.filter(e => 
+        e.status === 'CHECKED_IN' && (e.preApprovedId || e.purpose === 'Pre-approved visit')
+      ).map(e => ({
+        ...e,
+        isPreApproved: true
+      }));
+
+      // Merge and Sort (Pending first, then by date)
+      const combined = [...mappedPre, ...activePreEntries, ...formattedEntries.filter(e => !activePreEntries.find(ae => ae.id === e.id))].sort((a: any, b: any) => {
+        if (a.status === 'PENDING_APPROVAL' && b.status !== 'PENDING_APPROVAL') return -1;
+        if (b.status === 'PENDING_APPROVAL' && a.status !== 'PENDING_APPROVAL') return 1;
+        return new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime();
+      });
+
+      res.status(200).json({ success: true, data: combined });
     } catch (error) {
       next(error);
     }
@@ -273,11 +321,12 @@ export class VisitorController {
   // Security guard approves a pre‑approved visit and creates an Entry record
   static async approvePreApprovedVisit(req: Request, res: Response, next: NextFunction) {
     try {
-      const { id } = req.params; // pre‑approved visit ID
+      const id = req.params.id || req.body.preApprovedId; // pre‑approved visit ID
       const guardId = req.user?.userId;
       const tenantId = req.user?.tenantId;
 
       if (!guardId || !tenantId) throw new AppError('Unauthorized', 401);
+      if (!id) throw new AppError('Pre-approved visit ID is required', 400);
 
       const pre = await prisma.preApprovedVisit.findUnique({ 
         where: { id: id as string },
@@ -309,14 +358,27 @@ export class VisitorController {
         });
       }
 
+      // Capture photo and media from request body
+      const { photoUrl, additionalPhotos } = req.body;
+ 
       const entry = await prisma.entry.create({
         data: {
           tenantId: tenantId as string,
           unitNumber: unitNumber || '',
           visitorId: visitor.id,
+          residentId: pre.residentId,
           purpose: 'Pre-approved visit',
-          status: 'APPROVED',
+          status: 'CHECKED_IN',
+          checkInTime: new Date(),
           handledById: guardId,
+          preApprovedId: id,
+          photoId: photoUrl,
+          media: {
+            create: additionalPhotos?.filter((m: any) => !m.isExisting).map((m: any) => ({
+              fileUrl: m.url,
+              type: m.type
+            }))
+          }
         }
       });
 

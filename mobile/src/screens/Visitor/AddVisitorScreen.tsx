@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { 
   View, 
   Text, 
@@ -11,135 +11,133 @@ import {
   Alert,
   Modal,
   Dimensions,
-  FlatList,
   KeyboardAvoidingView,
-  Platform,
-  Linking
+  Platform
 } from 'react-native';
 import { SafeAreaView, useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useIsFocused } from '@react-navigation/native';
-import { Camera as CameraIcon, User, Phone, Clipboard, CheckCircle, X, RotateCcw, Home as HomeIcon, Search } from 'lucide-react-native';
+import { 
+  Camera as CameraIcon, 
+  User, 
+  Phone, 
+  Clipboard, 
+  CheckCircle, 
+  X, 
+  RotateCcw, 
+  Home as HomeIcon, 
+  Search,
+  ChevronDown,
+  Info,
+  LogIn
+} from 'lucide-react-native';
 import CameraScreen from '../../components/CameraModule';
-import api, { visitorApi, mediaApi, unitApi } from '../../services/api';
+import api, { visitorApi, mediaApi, getMediaUrl } from '../../services/api';
 import { useTheme } from '../../context/ThemeContext';
 
-const { width, height } = Dimensions.get('window');
+const { width } = Dimensions.get('window');
 
 export default function AddVisitorScreen({ navigation, route }: any) {
   const insets = useSafeAreaInsets();
   const { colors, isDark } = useTheme();
-  const [loading, setLoading] = useState(false);
-  const [photo, setPhoto] = useState<string | null>(null);
-  const [cameraVisible, setCameraVisible] = useState(false);
   const isFocused = useIsFocused();
+  const [loading, setLoading] = useState(false);
 
-  // Search States
-  const [searchQuery, setSearchQuery] = useState('');
-  const [searchResults, setSearchResults] = useState<any[]>([]);
-  const [searching, setSearching] = useState(false);
-  const [showResults, setShowResults] = useState(false);
-  const [selectedResident, setSelectedResident] = useState<any>(null);
-  const [visitorSearching, setVisitorSearching] = useState(false);
-  const [smartSuggestions, setSmartSuggestions] = useState<any[]>([]);
-  const [existingPhotoId, setExistingPhotoId] = useState<string | null>(null);
-  const [isNewPhoto, setIsNewPhoto] = useState(false);
 
+  // Form State
   const [form, setForm] = useState({
-    name: route?.params?.name || '',
-    phone: route?.params?.phone || '',
-    purpose: route?.params?.purpose || '',
-    unitNumber: route?.params?.unitNumber || '',
-    residentId: route?.params?.residentId || '',
-    type: route?.params?.type || 'GUEST',
-    verificationCode: route?.params?.code || '',
+    name: '',
+    phone: '',
+    purpose: '',
+    comment: '',
+    unitNumber: '',
+    residentId: '',
   });
 
+  // Media State
+  const [photos, setPhotos] = useState<{uri: string, type: 'FACE' | 'ID_PROOF' | 'VEHICLE', isRemote?: boolean}[]>([]);
+  const [cameraVisible, setCameraVisible] = useState(false);
+  const [activePhotoType, setActivePhotoType] = useState<'FACE' | 'ID_PROOF' | 'VEHICLE'>('FACE');
+
+  // Search/Suggestions States
+  const [visitorSearching, setVisitorSearching] = useState(false);
+  const [visitorSuggestions, setVisitorSuggestions] = useState<any[]>([]);
+  const [residentSearchQuery, setResidentSearchQuery] = useState('');
+  const [residentSuggestions, setResidentSuggestions] = useState<any[]>([]);
+  const [searchingResidents, setSearchingResidents] = useState(false);
+  const [selectedResident, setSelectedResident] = useState<any>(null);
+  const [selectedPreviewImage, setSelectedPreviewImage] = useState<string | null>(null);
+  const [purposes] = useState([
+    { id: '1', name: 'Delivery' },
+    { id: '2', name: 'Friend' },
+    { id: '3', name: 'Relative' },
+    { id: '4', name: 'Meeting' },
+    { id: '5', name: 'Maintenance' },
+    { id: '6', name: 'Food Delivery' },
+    { id: '7', name: 'Courier' },
+    { id: '8', name: 'Maid' },
+    { id: '9', name: 'Milk' },
+    { id: '10', name: 'Newspaper' },
+    { id: '11', name: 'Water Can' },
+    { id: '12', name: 'Electrician' },
+    { id: '13', name: 'Plumber' },
+    { id: '14', name: 'Other' }
+  ]);
+  const [showPurposes, setShowPurposes] = useState(false);
+
+
   useEffect(() => {
-    if (route?.params?.code) {
-      handleVerifyCode(route.params.code);
+    if (route.params?.preApprovedData) {
+      const p = route.params.preApprovedData;
+      setForm(prev => ({
+        ...prev,
+        name: p.visitor?.name || p.visitorName || '',
+        phone: p.visitor?.phone || p.phoneNumber || '',
+        unitNumber: p.unitNumber || '',
+        residentId: p.residentId || '',
+        purpose: 'Pre-approved visit',
+        preApprovedId: p.id
+      }));
+      setResidentSearchQuery(`${p.resident?.firstName || ''} (Unit ${p.unitNumber || ''})`);
     }
-    if (route?.params?.residentId && route?.params?.unitNumber) {
-      setSelectedResident({
-        name: 'Resident',
-        unitNumber: route.params.unitNumber,
-        id: route.params.residentId
-      });
-    }
-  }, [route?.params?.code, route?.params?.residentId]);
-
-  const handleVerifyCode = async (code: string) => {
-    setLoading(true);
-    try {
-      const res = await visitorApi.verifyPreApproved(code);
-      const pre = res.data.data;
-      setForm({
-        ...form,
-        name: pre.visitorName,
-        phone: pre.phoneNumber || '',
-        unitNumber: pre.resident.unitNumber,
-        residentId: pre.residentId,
-      });
-      setSelectedResident({
-        name: `${pre.resident.firstName} ${pre.resident.lastName}`,
-        unitNumber: pre.resident.unitNumber,
-        id: pre.residentId
-      });
-      Alert.alert('Code Verified', `This code is for ${pre.visitorName} visiting Flat ${pre.resident.unitNumber}`);
-    } catch (e: any) {
-      Alert.alert('Error', e.response?.data?.message || 'Invalid or expired code');
-      setForm({...form, verificationCode: ''});
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  const handleSearch = async (text: string) => {
-    setSearchQuery(text);
-    if (text.length < 2) {
-      setSearchResults([]);
-      setShowResults(false);
-      return;
-    }
-
-    setSearching(true);
-    setShowResults(true);
-    try {
-      // Using the new /users/search API
-      const res = await api.get(`admin/users/search?q=${text}`);
-      setSearchResults(res.data.data);
-    } catch (e) {
-      console.error('Search failed');
-    } finally {
-      setSearching(false);
-    }
-  };
+  }, [route.params]);
 
   const handleVisitorSearch = async (phone: string) => {
-    if (phone.length !== 10) {
-      setSmartSuggestions([]);
-      setExistingPhotoId(null);
-      return;
-    }
-    
+    if (phone.length !== 10) return;
     setVisitorSearching(true);
     try {
       const res = await visitorApi.search(phone);
       const data = res.data.data;
-      
       if (data && data.profile) {
         setForm(prev => ({
           ...prev,
           name: data.profile.name,
           purpose: data.lastPurpose || prev.purpose
         }));
-        
-        if (data.profile.photoUrl) {
-          setPhoto(data.profile.photoUrl);
-          setExistingPhotoId(data.profile.photoId);
-          setIsNewPhoto(false);
+
+        // Pre-fill photos from previous visits
+        if (data.profile.media && data.profile.media.length > 0) {
+          const prevFace = data.profile.media.find((m: any) => m.type === 'FACE');
+          const prevId = data.profile.media.find((m: any) => m.type === 'ID_PROOF');
+          const prevVehicle = data.profile.media.find((m: any) => m.type === 'VEHICLE');
+          
+          const autofilledPhotos = [];
+          if (prevFace) autofilledPhotos.push({ uri: prevFace.fileUrl, type: 'FACE' as const, isRemote: true });
+          if (prevId) autofilledPhotos.push({ uri: prevId.fileUrl, type: 'ID_PROOF' as const, isRemote: true });
+          if (prevVehicle) autofilledPhotos.push({ uri: prevVehicle.fileUrl, type: 'VEHICLE' as const, isRemote: true });
+          
+          if (autofilledPhotos.length > 0) {
+            setPhotos(autofilledPhotos);
+          }
         }
-        
-        setSmartSuggestions(data.suggestions || []);
+
+        // Suggestions for residents
+        if (data.suggestions && data.suggestions.length > 0) {
+          setVisitorSuggestions(data.suggestions);
+          // Auto-select if only one clear suggestion
+          if (data.suggestions.length === 1) {
+            selectResident(data.suggestions[0]);
+          }
+        }
       }
     } catch (e) {
       console.error('Visitor search failed');
@@ -148,72 +146,94 @@ export default function AddVisitorScreen({ navigation, route }: any) {
     }
   };
 
-  const selectResident = (resident: any) => {
-    setSelectedResident(resident);
-    setForm({ 
-      ...form, 
-      unitNumber: resident.unitNumber,
-      residentId: resident.id 
-    });
-    setSearchQuery(`${resident.name} - ${resident.unitNumber}`);
-    setShowResults(false);
+  const handleResidentSearch = async (text: string) => {
+    setResidentSearchQuery(text);
+    if (text.length < 2) {
+      setResidentSuggestions([]);
+      return;
+    }
+    setSearchingResidents(true);
+    try {
+      const res = await api.get(`admin/users/search?q=${text}`);
+      setResidentSuggestions(res.data.data);
+    } catch (e) {
+      console.error('Resident search failed');
+    } finally {
+      setSearchingResidents(false);
+    }
   };
 
-  const handleOpenCamera = () => {
-    setCameraVisible(true);
+  const selectResident = (res: any) => {
+    setSelectedResident(res);
+    setForm({ ...form, residentId: res.id, unitNumber: res.unitNumber });
+    setResidentSearchQuery(`${res.name} (Unit ${res.unitNumber})`);
+    setResidentSuggestions([]);
   };
 
   const handleCapture = (uri: string) => {
-    setPhoto(uri);
-    setIsNewPhoto(true);
+    // If we're retaking a specific index
+    const existingIndex = photos.findIndex(p => p.type === activePhotoType);
+    if (existingIndex !== -1) {
+      const newPhotos = [...photos];
+      newPhotos[existingIndex] = { uri, type: activePhotoType };
+      setPhotos(newPhotos);
+    } else {
+      const newPhotos = [...photos, { uri, type: activePhotoType }];
+      setPhotos(newPhotos);
+    }
     setCameraVisible(false);
   };
 
-  const handleCheckIn = async () => {
-    if (!form.name || !form.phone || !form.unitNumber || !photo) {
-      Alert.alert('Error', 'Please fill all mandatory fields and capture a photo');
-      return;
-    }
+  const handleSubmit = async () => {
+
 
     setLoading(true);
     try {
-      // 1. Upload Photo if it's new
-      let photoId = existingPhotoId;
-
-      if (isNewPhoto && photo) {
+      // 1. Upload only local Photos
+      const uploadedMedia = await Promise.all(photos.map(async (p) => {
+        if (p.isRemote) {
+          // Extract the media ID from the URL if needed, but for now we assume fileUrl is fine 
+          // Actually we should probably just send the URL or the ID back.
+          // In processNewEntry, it expects photoId or media objects.
+          return { url: p.uri, type: p.type, isExisting: true };
+        }
+        
         const formData = new FormData();
         formData.append('file', {
-          uri: photo,
+          uri: p.uri,
           type: 'image/jpeg',
-          name: 'visitor.jpg',
+          name: `${p.type.toLowerCase()}.jpg`,
         } as any);
+        const res = await mediaApi.upload(formData);
+        return { url: res.data.data.id, type: p.type };
+      }));
 
-        const mediaRes = await mediaApi.upload(formData);
-        photoId = mediaRes.data.data.id;
-      }
-
-      if (!photoId) {
-        Alert.alert('Error', 'Please capture a photo or use existing profile');
-        return;
-      }
-
-      // 2. Create Visitor Entry Request
-      const entryRes = await visitorApi.requestEntry({
-        ...form,
-        photoUrl: photoId
-      });
-
-      const entry = entryRes.data.data;
-      
-      if (entry.status === 'PENDING_APPROVAL') {
-        Alert.alert('Success', 'Approval request sent to resident.', [
-          { text: 'OK', onPress: () => navigation.goBack() }
-        ]);
+      // 2. Create Entry or Approve Pre-approval
+      if (form.preApprovedId) {
+        await visitorApi.approvePreApprovedVisit(form.preApprovedId, {
+          photoUrl: uploadedMedia.find(m => m.type === 'FACE')?.url,
+          additionalPhotos: uploadedMedia,
+        });
       } else {
-        Alert.alert('Success', `${form.name} approved and checked in.`, [
-          { text: 'OK', onPress: () => navigation.goBack() }
-        ]);
+        await visitorApi.requestEntry({
+          ...form,
+          photoUrl: uploadedMedia.find(m => m.type === 'FACE')?.url,
+          additionalPhotos: uploadedMedia,
+          type: 'GUEST'
+        });
       }
+
+      Alert.alert(
+        'Success', 
+        form.preApprovedId ? 'Pre-approved visitor checked in.' : 'Visitor request sent to resident.', 
+        [
+          { text: 'OK', onPress: () => {
+            setForm({ name: '', phone: '', purpose: '', comment: '', unitNumber: '', residentId: '' });
+            setPhotos([]);
+            navigation.navigate('Activity');
+          }}
+        ]
+      );
     } catch (error: any) {
       Alert.alert('Error', error.response?.data?.message || 'Failed to process entry');
     } finally {
@@ -221,220 +241,243 @@ export default function AddVisitorScreen({ navigation, route }: any) {
     }
   };
 
+
   return (
     <View style={[styles.container, { paddingTop: insets.top, backgroundColor: colors.background }]}>
-      <KeyboardAvoidingView
-        behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
-        style={{ flex: 1 }}
-      >
-        <ScrollView contentContainerStyle={[styles.content, { paddingBottom: insets.bottom + 120 }]} keyboardShouldPersistTaps="handled">
-        <Text style={[styles.title, { color: colors.primary }]}>Visitor Entry</Text>
-        
-        <View style={styles.typeSelector}>
-          {['GUEST', 'DAILY_SERVICE', 'PRE_APPROVED'].map((t) => (
-            <TouchableOpacity 
-              key={t}
-              style={[
-                styles.typeButton, 
-                { backgroundColor: colors.card, borderColor: colors.border },
-                form.type === t && { backgroundColor: colors.primary, borderColor: colors.primary }
-              ]} 
-              onPress={() => setForm({...form, type: t})}
-            >
-              <Text style={[styles.typeText, { color: isDark ? 'rgba(255,255,255,0.4)' : '#666' }, form.type === t && styles.typeTextActive]}>
-                {t === 'DAILY_SERVICE' ? 'DAILY' : t === 'PRE_APPROVED' ? 'PRE-APP' : 'GUEST'}
-              </Text>
-            </TouchableOpacity>
-          ))}
-        </View>
+      <KeyboardAvoidingView behavior={Platform.OS === 'ios' ? 'padding' : 'height'} style={{ flex: 1 }}>
+        <ScrollView contentContainerStyle={styles.content} keyboardShouldPersistTaps="handled">
+          <Text style={[styles.title, { color: colors.primary }]}>Visitor Entry</Text>
+          
 
-        <View style={styles.form}>
-          <View style={styles.photoContainer}>
-            {photo ? (
-              <View style={{ flex: 1 }}>
-                <Image source={{ uri: photo }} style={styles.previewImage} />
-                <TouchableOpacity style={styles.retakeBadge} onPress={() => setCameraVisible(true)}>
-                  <RotateCcw size={14} color="#fff" />
-                  <Text style={styles.retakeText}>Retake</Text>
-                </TouchableOpacity>
-              </View>
-            ) : (
-              <TouchableOpacity style={[styles.photoPlaceholder, { backgroundColor: colors.card }]} onPress={handleOpenCamera}>
-                <View style={styles.iconCircle}>
-                  <CameraIcon size={32} color="#fff" />
+          <View style={styles.form}>
+            <View style={[styles.inputGroup, { backgroundColor: colors.card }]}>
+              <Phone size={20} color={colors.primary} style={styles.icon} />
+              <TextInput 
+                style={[styles.input, { color: colors.text }]}
+                placeholder="Mobile Number"
+                placeholderTextColor={isDark ? 'rgba(255,255,255,0.3)' : '#94A3B8'}
+                keyboardType="phone-pad"
+                maxLength={10}
+                value={form.phone}
+                onChangeText={(v) => {
+                  setForm({ ...form, phone: v });
+                  if (v.length < 10) {
+                    setVisitorSuggestions([]);
+                    setSelectedResident(null);
+                  }
+                  if (v.length === 10) handleVisitorSearch(v);
+                }}
+              />
+              {visitorSearching && <ActivityIndicator size="small" color={colors.primary} />}
+              {!visitorSearching && form.phone.length === 10 && visitorSuggestions.length > 0 && (
+                <View style={[styles.matchedBadge, { backgroundColor: '#4CAF5015' }]}>
+                  <CheckCircle size={14} color="#4CAF50" />
+                  <Text style={{ color: '#4CAF50', fontSize: 10, fontWeight: '900', marginLeft: 4 }}>RECOGNIZED</Text>
                 </View>
-                <Text style={[styles.photoText, { color: colors.primary }]}>CAPTURE PHOTO</Text>
-              </TouchableOpacity>
-            )}
-          </View>
+              )}
+            </View>
 
-          <View style={[styles.inputGroup, { backgroundColor: colors.card }]}>
-            <User size={20} color={colors.primary} style={styles.inputIcon} />
-            <TextInput 
-              style={[styles.input, { color: colors.text }]}
-              placeholder="Visitor Name"
-              placeholderTextColor={isDark ? 'rgba(255,255,255,0.3)' : 'rgba(0,0,0,0.3)'}
-              value={form.name}
-              onChangeText={(v) => setForm({...form, name: v})}
-            />
-          </View>
-
-          <View style={[styles.inputGroup, { backgroundColor: colors.card }]}>
-            <Phone size={20} color={colors.primary} style={styles.inputIcon} />
-            <TextInput 
-              style={[styles.input, { color: colors.text }]}
-              placeholder="Phone Number"
-              placeholderTextColor={isDark ? 'rgba(255,255,255,0.3)' : 'rgba(0,0,0,0.3)'}
-              keyboardType="phone-pad"
-              value={form.phone}
-              onChangeText={(v) => {
-                setForm({...form, phone: v});
-                if (v.length === 10) handleVisitorSearch(v);
-              }}
-            />
-            {visitorSearching && <ActivityIndicator size="small" color={colors.primary} />}
-          </View>
-
-          <View style={styles.searchSection}>
-            <Text style={[styles.fieldLabel, { color: colors.primary }]}>WHO ARE THEY VISITING?</Text>
-            {!selectedResident ? (
-              <View style={[
-                styles.inputGroup, 
-                { backgroundColor: colors.card },
-                searchQuery.length > 0 && styles.inputGroupSearchActive
-              ]}>
-                <HomeIcon size={20} color={colors.primary} style={styles.inputIcon} />
-                <TextInput 
-                  style={[styles.input, { color: colors.text }]}
-                  placeholder="Search Unit or Resident Name..."
-                  placeholderTextColor={isDark ? 'rgba(255,255,255,0.3)' : 'rgba(0,0,0,0.3)'}
-                  value={searchQuery}
-                  onChangeText={handleSearch}
-                />
-              </View>
-            ) : (
-              <View style={[styles.selectedResidentCard, { backgroundColor: colors.card, borderColor: colors.primary }]}>
-                <View style={styles.selectedResidentInfo}>
-                  <View style={[styles.iconCircleSmall, { backgroundColor: colors.primary }]}>
-                    <HomeIcon size={16} color="#fff" />
-                  </View>
-                  <View>
-                    <Text style={[styles.selectedName, { color: colors.text }]}>{selectedResident.name}</Text>
-                    <Text style={[styles.selectedUnit, { color: colors.text + '60' }]}>Unit {selectedResident.unitNumber}</Text>
-                  </View>
+            <View style={[styles.inputGroup, { backgroundColor: colors.card }]}>
+              <User size={20} color={colors.primary} style={styles.icon} />
+              <TextInput 
+                style={[styles.input, { color: colors.text }]}
+                placeholder="Visitor Name"
+                placeholderTextColor={isDark ? 'rgba(255,255,255,0.3)' : '#94A3B8'}
+                value={form.name}
+                onChangeText={(v) => setForm({ ...form, name: v })}
+              />
+              {form.name.length > 0 && visitorSuggestions.length > 0 && (
+                <View style={{ marginRight: 8 }}>
+                  <CheckCircle size={18} color="#4CAF50" />
                 </View>
-                <TouchableOpacity onPress={() => {
-                  setSelectedResident(null);
-                  setSearchQuery('');
-                  setForm({...form, residentId: '', unitNumber: ''});
-                }}>
-                  <X size={20} color="#FF5252" />
-                </TouchableOpacity>
-              </View>
-            )}
+              )}
+            </View>
 
-            {smartSuggestions.length > 0 && !selectedResident && (
-              <View style={styles.suggestionsContainer}>
-                <Text style={[styles.suggestionLabel, { color: colors.primary }]}>FREQUENTLY VISITED</Text>
-                <View style={styles.suggestionChips}>
-                  {smartSuggestions.map((s) => (
+            {visitorSuggestions.length > 0 && !selectedResident && (
+              <View style={styles.visitorSuggestions}>
+                <Text style={[styles.suggestionLabel, { color: colors.text + '60' }]}>RECENTLY VISITED UNITS</Text>
+                <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={styles.suggestionScroll}>
+                  {visitorSuggestions.map((s, idx) => (
                     <TouchableOpacity 
-                      key={s.id} 
-                      style={[styles.suggestionChip, { backgroundColor: colors.card, borderColor: colors.primary + '40' }]}
+                      key={idx} 
+                      style={[styles.unitChip, { backgroundColor: colors.primary + '15', borderColor: colors.primary + '30' }]}
                       onPress={() => selectResident(s)}
                     >
-                      <Text style={[styles.suggestionChipText, { color: colors.text }]}>{s.unitNumber}</Text>
-                      <Text style={[styles.suggestionChipSubText, { color: colors.text + '80' }]}>{s.name.split(' ')[0]}</Text>
+                      <HomeIcon size={14} color={colors.primary} />
+                      <Text style={[styles.unitChipText, { color: colors.primary }]}>{s.unitNumber}</Text>
+                    </TouchableOpacity>
+                  ))}
+                </ScrollView>
+              </View>
+            )}
+
+            <View style={styles.searchSection}>
+              <View style={[styles.inputGroup, { backgroundColor: colors.card }]}>
+                <HomeIcon size={20} color={colors.primary} style={styles.icon} />
+                <TextInput 
+                  style={[styles.input, { color: colors.text }]}
+                  placeholder="Search Resident or Flat..."
+                  placeholderTextColor={isDark ? 'rgba(255,255,255,0.3)' : '#94A3B8'}
+                  value={residentSearchQuery}
+                  onChangeText={handleResidentSearch}
+                />
+                {searchingResidents && <ActivityIndicator size="small" color={colors.primary} />}
+              </View>
+              
+              {residentSuggestions.length > 0 && (
+                <View style={[styles.suggestions, { backgroundColor: colors.card, borderColor: colors.border }]}>
+                  {residentSuggestions.map((item) => (
+                    <TouchableOpacity 
+                      key={item.id} 
+                      style={[styles.suggestionItem, { borderBottomColor: colors.border }]}
+                      onPress={() => selectResident(item)}
+                    >
+                      <Text style={[styles.suggestionText, { color: colors.text }]}>{item.name}</Text>
+                      <Text style={styles.suggestionUnit}>Unit {item.unitNumber}</Text>
                     </TouchableOpacity>
                   ))}
                 </View>
-              </View>
-            )}
-
-            {showResults && searchResults.length > 0 && !selectedResident && (
-              <View style={[styles.resultsDropdown, { backgroundColor: colors.card, borderTopColor: colors.border }]}>
-                {searching ? (
-                  <ActivityIndicator color={colors.primary} />
-                ) : searchResults.length > 0 ? (
-                  searchResults.map((item: any) => (
-                    <TouchableOpacity 
-                      key={item.id} 
-                      style={[styles.resultItem, { borderBottomColor: colors.border }]} 
-                      onPress={() => {
-                        setSelectedResident(item);
-                        setForm({...form, residentId: item.id, unitNumber: item.unitNumber});
-                        setShowResults(false);
-                      }}
-                    >
-                      <View>
-                        <Text style={[styles.resultUnit, { color: colors.primary }]}>{item.name}</Text>
-                        <Text style={[styles.resultOwner, { color: colors.text + '60' }]}>Unit {item.unitNumber}</Text>
-                      </View>
-                      <CheckCircle size={20} color={colors.primary} />
-                    </TouchableOpacity>
-                  ))
-                ) : (
-                  <Text style={{ padding: 10, color: '#999', textAlign: 'center' }}>No residents found</Text>
-                )}
-              </View>
-            )}
-          </View>
-
-          {form.type === 'PRE_APPROVED' && (
-            <View style={[styles.inputGroup, { backgroundColor: colors.card, borderBottomWidth: form.verificationCode.length === 6 ? 2 : 1, borderBottomColor: form.verificationCode.length === 6 ? colors.primary : colors.border }]}>
-              <Clipboard size={20} color={colors.primary} style={styles.inputIcon} />
-              <TextInput
-                style={[styles.input, { color: colors.text }]}
-                placeholder="Verification Code"
-                placeholderTextColor={isDark ? 'rgba(255,255,255,0.3)' : 'rgba(0,0,0,0.3)'}
-                maxLength={6}
-                value={form.verificationCode}
-                onChangeText={(v) => {
-                  const val = v.toUpperCase();
-                  setForm({...form, verificationCode: val});
-                  if (val.length === 6) {
-                    handleVerifyCode(val);
-                  }
-                }}
-              />
-              {loading && <ActivityIndicator size="small" color="#2E7D32" />}
+              )}
             </View>
-          )}
 
-          <View style={[styles.inputGroup, { backgroundColor: colors.card }]}>
-            <Clipboard size={20} color={colors.primary} style={styles.inputIcon} />
-            <TextInput
-              style={[styles.input, { color: colors.text }]}
-              placeholder="Purpose of visit (Optional)"
-              placeholderTextColor={isDark ? 'rgba(255,255,255,0.3)' : 'rgba(0,0,0,0.3)'}
-              value={form.purpose}
-              onChangeText={(v) => setForm({...form, purpose: v})}
-            />
+            <TouchableOpacity 
+              style={[styles.inputGroup, { backgroundColor: colors.card }]}
+              onPress={() => setShowPurposes(true)}
+            >
+              <Clipboard size={20} color={colors.primary} style={styles.icon} />
+              <Text style={[styles.input, { color: form.purpose ? colors.text : (isDark ? 'rgba(255,255,255,0.3)' : '#94A3B8'), paddingTop: 18 }]}>
+                {form.purpose || 'Purpose of Visit'}
+              </Text>
+              <ChevronDown size={20} color={colors.primary} />
+            </TouchableOpacity>
+
+            <Modal visible={showPurposes} transparent animationType="fade">
+              <TouchableOpacity 
+                style={styles.modalOverlay} 
+                activeOpacity={1} 
+                onPress={() => setShowPurposes(false)}
+              >
+                <View style={[styles.purposeModal, { backgroundColor: colors.card }]}>
+                  <View style={styles.modalHeader}>
+                    <Text style={[styles.modalTitle, { color: colors.text }]}>Select Purpose</Text>
+                    <TouchableOpacity onPress={() => setShowPurposes(false)}>
+                      <X size={24} color={colors.text} />
+                    </TouchableOpacity>
+                  </View>
+                  <ScrollView style={styles.purposeList}>
+                    {purposes.map((p) => (
+                      <TouchableOpacity 
+                        key={p.id} 
+                        style={[styles.purposeItem, form.purpose === p.name && { backgroundColor: colors.primary + '20' }]}
+                        onPress={() => {
+                          setForm({ ...form, purpose: p.name });
+                          setShowPurposes(false);
+                        }}
+                      >
+                        <Text style={[styles.purposeTextItem, { color: form.purpose === p.name ? colors.primary : colors.text }]}>
+                          {p.name}
+                        </Text>
+                        {form.purpose === p.name && <CheckCircle size={18} color={colors.primary} />}
+                      </TouchableOpacity>
+                    ))}
+                  </ScrollView>
+                </View>
+              </TouchableOpacity>
+            </Modal>
+
+            {/* Combined Photo Capture Section */}
+            <View style={styles.photoContainer}>
+              <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginBottom: 12 }}>
+                <Text style={[styles.photoLabel, { color: colors.text + '60', marginBottom: 0 }]}>SECURITY CAPTURE</Text>
+                <View style={[styles.optionalBadge, { backgroundColor: isDark ? 'rgba(74, 222, 128, 0.1)' : 'rgba(46, 125, 50, 0.1)' }]}>
+                  <Text style={[styles.optionalText, { color: colors.primary }]}>PHOTOS (OPTIONAL)</Text>
+                </View>
+              </View>
+              <View style={styles.photoList}>
+                {['FACE', 'ID_PROOF'].map((type: any, idx) => {
+                  const photo = photos.find(p => p.type === type);
+                  return (
+                    <View key={type} style={{ flex: 1 }}>
+                      <Text style={[styles.slotLabel, { color: colors.text + '40' }]}>{type === 'FACE' ? 'VISITOR FACE (OPTIONAL)' : 'ID / VEHICLE (OPTIONAL)'}</Text>
+                      {photo ? (
+                        <View style={[styles.photoPreview, { borderColor: colors.border, backgroundColor: colors.card }]}>
+                          <TouchableOpacity 
+                            style={{ flex: 1 }} 
+                            onPress={() => setSelectedPreviewImage(getMediaUrl(photo.uri))}
+                          >
+                            <Image source={{ uri: getMediaUrl(photo.uri) }} style={styles.previewImg} />
+                          </TouchableOpacity>
+                          <TouchableOpacity 
+                            style={[styles.retakeBtn, { backgroundColor: colors.primary }]} 
+                            onPress={() => {
+                              setActivePhotoType(type);
+                              setCameraVisible(true);
+                            }}
+                          >
+                            <RotateCcw size={12} color="#fff" />
+                            <Text style={styles.retakeText}>Retake</Text>
+                          </TouchableOpacity>
+                          <TouchableOpacity 
+                            style={styles.removeBtn} 
+                            onPress={() => setPhotos(photos.filter(p => p.type !== type))}
+                          >
+                            <X size={12} color="#fff" />
+                          </TouchableOpacity>
+                        </View>
+                      ) : (
+                        <TouchableOpacity 
+                          style={[styles.addPhotoBtn, { backgroundColor: colors.card, borderColor: colors.border, borderStyle: 'dashed' }]}
+                          onPress={() => {
+                            setActivePhotoType(type);
+                            setCameraVisible(true);
+                          }}
+                        >
+                          <View style={[styles.cameraIconBg, { backgroundColor: colors.primary + '15' }]}>
+                            <CameraIcon size={24} color={colors.primary} />
+                          </View>
+                          <Text style={[styles.addPhotoText, { color: colors.primary }]}>{type === 'FACE' ? 'Tap to Capture' : 'Optional'}</Text>
+                        </TouchableOpacity>
+                      )}
+                    </View>
+                  );
+                })}
+              </View>
+            </View>
+
+            <TouchableOpacity 
+              style={[styles.submitButton, { backgroundColor: colors.primary }, loading && { opacity: 0.7 }]}
+              onPress={handleSubmit}
+              disabled={loading}
+            >
+              {loading ? (
+                <ActivityIndicator color="#fff" />
+              ) : (
+                <>
+                  {form.preApprovedId ? <LogIn size={20} color="#fff" /> : <CheckCircle size={20} color="#fff" />}
+                  <Text style={styles.submitText}>
+                    {form.preApprovedId ? 'LET IN (PRE-APPROVED)' : 'Submit Visitor Entry'}
+                  </Text>
+                </>
+              )}
+            </TouchableOpacity>
           </View>
-        </View>
-
-        <TouchableOpacity 
-          style={[styles.submitButton, loading && styles.disabledButton]} 
-          onPress={handleCheckIn}
-          disabled={loading}
-        >
-          {loading ? (
-            <ActivityIndicator color="#fff" />
-          ) : (
-            <>
-              <CheckCircle size={24} color="#fff" />
-              <Text style={styles.submitText}>SUBMIT CHECK-IN</Text>
-            </>
-          )}
-        </TouchableOpacity>
-      </ScrollView>
-    </KeyboardAvoidingView>
+        </ScrollView>
+      </KeyboardAvoidingView>
 
       <Modal visible={cameraVisible && isFocused} animationType="slide">
-        <CameraScreen 
-          onCapture={handleCapture} 
-          onClose={() => setCameraVisible(false)} 
-        />
+        <CameraScreen onCapture={handleCapture} onClose={() => setCameraVisible(false)} />
+      </Modal>
+
+      {/* Image Preview Modal */}
+      <Modal visible={!!selectedPreviewImage} transparent animationType="fade">
+        <View style={styles.modalBg}>
+          <TouchableOpacity style={styles.modalClose} onPress={() => setSelectedPreviewImage(null)}>
+            <X size={32} color="#fff" />
+          </TouchableOpacity>
+          {selectedPreviewImage && (
+            <Image source={{ uri: getMediaUrl(selectedPreviewImage) }} style={styles.fullImage} resizeMode="contain" />
+          )}
+        </View>
       </Modal>
     </View>
   );
@@ -442,67 +485,63 @@ export default function AddVisitorScreen({ navigation, route }: any) {
 
 const styles = StyleSheet.create({
   container: { flex: 1 },
-  content: { padding: 24 },
-  title: { fontSize: 32, fontWeight: '900', marginBottom: 32, letterSpacing: -1, marginTop: 20 },
-  photoContainer: { width: '100%', height: 280, borderRadius: 32, overflow: 'hidden', marginBottom: 32, shadowColor: '#2E7D32', shadowOpacity: 0.1, shadowRadius: 20, elevation: 10, borderWidth: 1 },
-  photoPlaceholder: { flex: 1, justifyContent: 'center', alignItems: 'center' },
-  iconCircle: { width: 80, height: 80, borderRadius: 40, backgroundColor: '#2E7D32', justifyContent: 'center', alignItems: 'center', marginBottom: 16 },
-  photoText: { fontWeight: '800', letterSpacing: 1, fontSize: 12 },
-  previewImage: { width: '100%', height: '100%' },
-  retakeBadge: { position: 'absolute', bottom: 20, right: 20, backgroundColor: 'rgba(0,0,0,0.6)', paddingVertical: 8, paddingHorizontal: 16, borderRadius: 20, flexDirection: 'row', alignItems: 'center', gap: 6 },
-  retakeText: { color: '#fff', fontSize: 10, fontWeight: 'bold' },
-  form: { gap: 20, marginBottom: 40 },
-  inputGroup: { flexDirection: 'row', alignItems: 'center', borderRadius: 20, paddingHorizontal: 20, height: 68, shadowColor: '#000', shadowOpacity: 0.03, shadowRadius: 15, elevation: 2, borderWidth: 1, borderColor: 'rgba(0,0,0,0.02)' },
-  inputGroupSearchActive: { borderBottomLeftRadius: 0, borderBottomRightRadius: 0 },
-  inputIcon: { marginRight: 16 },
-  input: { flex: 1, fontSize: 18, fontWeight: '500' },
-  searchSection: { position: 'relative', zIndex: 100 },
-  resultsDropdown: { borderBottomLeftRadius: 20, borderBottomRightRadius: 20, padding: 10, shadowColor: '#000', shadowOpacity: 0.1, shadowRadius: 10, elevation: 5, borderTopWidth: 1 },
-  resultItem: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', padding: 16, borderBottomWidth: 1 },
-  resultUnit: { fontSize: 16, fontWeight: 'bold' },
-  resultOwner: { fontSize: 12 },
-  submitButton: { backgroundColor: '#2E7D32', height: 72, borderRadius: 36, flexDirection: 'row', justifyContent: 'center', alignItems: 'center', gap: 16, shadowColor: '#2E7D32', shadowOpacity: 0.4, shadowRadius: 20, elevation: 12 },
-  disabledButton: { opacity: 0.7 },
-  submitText: { color: '#fff', fontSize: 20, fontWeight: '900', letterSpacing: 1 },
-  typeSelector: { flexDirection: 'row', gap: 10, marginBottom: 24 },
-  typeButton: { flex: 1, paddingVertical: 12, borderRadius: 16, alignItems: 'center', borderWidth: 1 },
-  typeText: { fontSize: 10, fontWeight: '800', letterSpacing: 1 },
-  typeTextActive: { color: '#fff' },
-  fieldLabel: { fontSize: 10, fontWeight: '900', marginBottom: 12, letterSpacing: 1 },
-  selectedResidentCard: { 
+  content: { padding: 24, paddingBottom: 100 },
+  title: { fontSize: 32, fontWeight: '900', marginBottom: 24, letterSpacing: -1 },
+  form: { gap: 16 },
+  inputGroup: { flexDirection: 'row', alignItems: 'center', height: 60, borderRadius: 16, paddingHorizontal: 16, borderWidth: 1, borderColor: 'rgba(0,0,0,0.05)' },
+  textArea: { height: 100, alignItems: 'flex-start', paddingTop: 16 },
+  icon: { marginRight: 12 },
+  input: { flex: 1, fontSize: 16, fontWeight: '600' },
+  searchSection: { zIndex: 100 },
+  suggestions: { position: 'absolute', top: 64, left: 0, right: 0, borderRadius: 16, borderWidth: 1, elevation: 5, shadowColor: '#000', shadowOpacity: 0.1, shadowRadius: 10 },
+  suggestionItem: { padding: 16, borderBottomWidth: 1, flexDirection: 'row', justifyContent: 'space-between' },
+  suggestionText: { fontSize: 14, fontWeight: '700' },
+  suggestionUnit: { fontSize: 12, color: '#94A3B8' },
+  modalOverlay: { flex: 1, backgroundColor: 'rgba(0,0,0,0.5)', justifyContent: 'center', alignItems: 'center', padding: 20 },
+  purposeModal: { width: '100%', maxHeight: '70%', borderRadius: 32, padding: 24, shadowColor: '#000', shadowOpacity: 0.2, shadowRadius: 20, elevation: 10 },
+  modalHeader: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginBottom: 20 },
+  modalTitle: { fontSize: 20, fontWeight: 'bold' },
+  purposeList: { marginBottom: 10 },
+  purposeItem: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', paddingVertical: 16, paddingHorizontal: 12, borderRadius: 12, marginBottom: 4 },
+  purposeTextItem: { fontSize: 16, fontWeight: '600' },
+  photoContainer: { marginTop: 10, marginBottom: 10 },
+  photoLabel: { fontSize: 10, fontWeight: '900', letterSpacing: 2, marginBottom: 12, textTransform: 'uppercase' },
+  photoList: { flexDirection: 'row', gap: 16 },
+  photoPreview: { flex: 1, height: 160, borderRadius: 20, borderWidth: 1, overflow: 'hidden' },
+  previewImg: { width: '100%', height: '100%' },
+  removeBtn: { position: 'absolute', top: 8, right: 8, backgroundColor: 'rgba(0,0,0,0.3)', borderRadius: 10, padding: 6 },
+  addPhotoBtn: { flex: 1, height: 160, borderRadius: 20, borderWidth: 1, justifyContent: 'center', alignItems: 'center' },
+  addPhotoText: { fontSize: 10, fontWeight: '900', marginTop: 8 },
+  cameraIconBg: { width: 44, height: 44, borderRadius: 22, justifyContent: 'center', alignItems: 'center' },
+  slotLabel: { fontSize: 9, fontWeight: '900', marginBottom: 8, letterSpacing: 0.5 },
+  retakeBtn: { position: 'absolute', bottom: 8, right: 8, flexDirection: 'row', alignItems: 'center', gap: 4, paddingHorizontal: 8, paddingVertical: 4, borderRadius: 8 },
+  retakeText: { color: '#fff', fontSize: 9, fontWeight: 'bold' },
+  modalBg: { flex: 1, backgroundColor: 'rgba(0,0,0,0.9)', justifyContent: 'center', alignItems: 'center' },
+  modalClose: { position: 'absolute', top: 60, right: 20, zIndex: 10 },
+  fullImage: { width: '90%', height: '80%' },
+  visitorSuggestions: { marginBottom: 8 },
+  suggestionLabel: { fontSize: 9, fontWeight: '900', letterSpacing: 1.5, marginBottom: 8, textTransform: 'uppercase' },
+  suggestionScroll: { gap: 8 },
+  unitChip: { flexDirection: 'row', alignItems: 'center', gap: 6, paddingHorizontal: 12, paddingVertical: 8, borderRadius: 12, borderWidth: 1 },
+  unitChipText: { fontSize: 13, fontWeight: 'bold' },
+  submitButton: { height: 60, borderRadius: 30, flexDirection: 'row', justifyContent: 'center', alignItems: 'center', gap: 8, marginTop: 20 },
+  submitText: { color: '#fff', fontSize: 18, fontWeight: 'bold' },
+  matchedBadge: { 
     flexDirection: 'row', 
     alignItems: 'center', 
-    justifyContent: 'space-between', 
-    borderRadius: 20, 
-    padding: 16,
-    borderWidth: 1,
-    shadowOpacity: 0.1,
-    shadowRadius: 10,
-    elevation: 3
+    paddingHorizontal: 8, 
+    paddingVertical: 4, 
+    borderRadius: 8,
+    marginLeft: 8
   },
-  selectedResidentInfo: { flexDirection: 'row', alignItems: 'center', gap: 12 },
-  iconCircleSmall: { width: 32, height: 32, borderRadius: 16, justifyContent: 'center', alignItems: 'center' },
-  selectedName: { fontSize: 16, fontWeight: 'bold' },
-  selectedUnit: { fontSize: 12, fontWeight: '500' },
-  cameraContainer: { flex: 1, backgroundColor: '#000' },
-  camera: { flex: 1 },
-  cameraOverlay: { flex: 1, justifyContent: 'space-between', padding: 40 },
-  closeCameraButton: { alignSelf: 'flex-end', marginTop: 20 },
-  captureBoundary: { width: width - 80, height: width - 80, borderWidth: 2, borderColor: 'rgba(255,255,255,0.3)', borderRadius: 20, alignSelf: 'center', borderStyle: 'dashed' },
-  cameraFooter: { alignItems: 'center', marginBottom: 20 },
-  captureButton: { width: 80, height: 80, borderRadius: 40, backgroundColor: 'rgba(255,255,255,0.3)', justifyContent: 'center', alignItems: 'center' },
-  captureInner: { width: 64, height: 64, borderRadius: 32, backgroundColor: '#fff' },
-  suggestionsContainer: { marginTop: 16, marginBottom: 8 },
-  suggestionLabel: { fontSize: 9, fontWeight: '900', marginBottom: 8, letterSpacing: 1 },
-  suggestionChips: { flexDirection: 'row', flexWrap: 'wrap', gap: 8 },
-  suggestionChip: { 
-    paddingHorizontal: 12, 
-    paddingVertical: 8, 
-    borderRadius: 12, 
-    borderWidth: 1, 
-    alignItems: 'center',
-    minWidth: 70
+  optionalBadge: {
+    paddingHorizontal: 8,
+    paddingVertical: 3,
+    borderRadius: 6,
   },
-  suggestionChipText: { fontSize: 14, fontWeight: 'bold' },
-  suggestionChipSubText: { fontSize: 8, fontWeight: '600' },
+  optionalText: {
+    fontSize: 9,
+    fontWeight: '900',
+    letterSpacing: 0.5,
+  }
 });

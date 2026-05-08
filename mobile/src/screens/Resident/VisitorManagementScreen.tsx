@@ -10,8 +10,8 @@ import {
   RefreshControl,
   Alert
 } from 'react-native';
-import { ShieldCheck, ShieldX, Clock, History, Calendar, CheckCircle2, XCircle, User } from 'lucide-react-native';
-import { visitorApi } from '../../services/api';
+import { visitorApi, getMediaUrl } from '../../services/api';
+import { ShieldCheck, ShieldX, Clock, History, Calendar, CheckCircle2, XCircle, User, Clipboard, ChevronDown, ChevronUp } from 'lucide-react-native';
 import { useAuth } from '../../context/AuthContext';
 import { useTheme } from '../../context/ThemeContext';
 import { PhotoModal } from '../../components/UI';
@@ -24,6 +24,14 @@ export default function VisitorManagementScreen() {
   const [loading, setLoading] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
   const [decisionLoading, setDecisionLoading] = useState<string | null>(null);
+  const [expandedCards, setExpandedCards] = useState<Set<string>>(new Set());
+
+  const toggleExpand = (id: string) => {
+    const newSet = new Set(expandedCards);
+    if (newSet.has(id)) newSet.delete(id);
+    else newSet.add(id);
+    setExpandedCards(newSet);
+  };
 
   // Photo Modal State
   const [modalVisible, setModalVisible] = useState(false);
@@ -70,16 +78,36 @@ export default function VisitorManagementScreen() {
   const renderVisitorItem = ({ item }: any) => (
     <View style={[styles.card, { backgroundColor: colors.card, borderColor: colors.border }]}>
       <View style={styles.cardMain}>
-        <TouchableOpacity onPress={() => {
-          setSelectedPhoto(item.photoUrl);
-          setSelectedVisitorName(item.visitor?.name || 'Visitor');
-          setModalVisible(true);
-        }}>
-          <Image source={{ uri: item.photoUrl || undefined }} style={styles.visitorImg} />
-        </TouchableOpacity>
-        <View style={styles.info}>
+        {(!item.media || item.media.length === 0) && (
+          <TouchableOpacity onPress={() => {
+            setSelectedPhoto(getMediaUrl(item.photoUrl));
+            setSelectedVisitorName(item.visitor?.name || 'Visitor');
+            setModalVisible(true);
+          }}>
+            <Image source={{ uri: getMediaUrl(item.photoUrl) || undefined }} style={styles.visitorImg} />
+          </TouchableOpacity>
+        )}
+        <View style={[styles.info, (!item.media || item.media.length === 0) ? { marginLeft: 16 } : { marginLeft: 0 }]}>
           <View style={styles.nameRow}>
-            <Text style={[styles.name, { color: colors.text }]}>{item.visitor?.name || 'Visitor'}</Text>
+            <View>
+              <View style={{ flexDirection: 'row', alignItems: 'center', gap: 8 }}>
+                <Text style={[styles.name, { color: colors.text }]}>{item.visitor?.name || 'Visitor'}</Text>
+                {item.status === 'CHECKED_IN' && (
+                  <View style={[styles.statusBadge, { backgroundColor: '#4CAF5020' }]}>
+                    <View style={[styles.dot, { backgroundColor: '#4CAF50' }]} />
+                    <Text style={[styles.statusBadgeText, { color: '#4CAF50' }]}>IN SITE</Text>
+                  </View>
+                )}
+                {item.status === 'APPROVED' && (
+                  <View style={[styles.statusBadge, { backgroundColor: colors.primary + '20' }]}>
+                    <Text style={[styles.statusBadgeText, { color: colors.primary }]}>EXPECTED</Text>
+                  </View>
+                )}
+              </View>
+              <View style={styles.phoneRow}>
+                <Text style={[styles.phoneText, { color: colors.primary, fontWeight: 'bold' }]}>{item.visitor?.phone}</Text>
+              </View>
+            </View>
             <View style={[styles.typeBadge, { backgroundColor: item.type === 'DAILY_SERVICE' ? (isDark ? '#E6510033' : '#FFF3E0') : (isDark ? '#2E7D3233' : '#E8F5E9') }]}>
               <Text style={[styles.typeText, { color: item.type === 'DAILY_SERVICE' ? (isDark ? '#FFB74D' : '#E65100') : (isDark ? '#A5D6A7' : '#2E7D32') }]}>{item.type || 'GUEST'}</Text>
             </View>
@@ -88,9 +116,65 @@ export default function VisitorManagementScreen() {
             <Clock size={14} color={colors.text + '60'} />
             <Text style={[styles.timeText, { color: colors.text + '60' }]}>{new Date(item.createdAt).toLocaleString()}</Text>
           </View>
-          {item.purpose && <Text style={[styles.purposeText, { color: colors.text + '80' }]}>“{item.purpose}”</Text>}
+          <View style={styles.purposeRow}>
+            <Clipboard size={14} color={colors.primary} />
+            <Text style={[styles.purposeText, { color: colors.text + '80' }]}>{item.purpose}</Text>
+          </View>
         </View>
       </View>
+
+      {item.comment && (
+        <View style={styles.commentBox}>
+           <Text style={[styles.commentLabel, { color: colors.text + '40' }]}>Comment:</Text>
+           <Text style={[styles.commentText, { color: colors.text + '80' }]}>{item.comment}</Text>
+        </View>
+      )}
+
+      {item.media && item.media.length > 0 && (
+        <View style={styles.captureSection}>
+          <TouchableOpacity 
+            style={[
+              styles.captureHeader, 
+              { backgroundColor: isDark ? '#fff05' : '#f8fafc', borderColor: colors.border }
+            ]} 
+            onPress={() => toggleExpand(item.id)}
+            activeOpacity={0.7}
+          >
+            <Text style={[styles.captureTitle, { color: colors.text + '60' }]}>SECURITY CAPTURE</Text>
+            {expandedCards.has(item.id) ? (
+              <ChevronUp size={16} color={colors.primary} />
+            ) : (
+              <ChevronDown size={16} color={colors.text + '40'} />
+            )}
+          </TouchableOpacity>
+          
+          {expandedCards.has(item.id) && (
+            <View style={styles.captureGrid}>
+              {item.media.map((m: any, idx: number) => (
+                <TouchableOpacity 
+                  key={idx} 
+                  activeOpacity={0.9}
+                  onPress={() => {
+                    setSelectedPhoto(getMediaUrl(m.fileUrl));
+                    setSelectedVisitorName(`${item.visitor?.name} - ${idx === 0 ? 'Face' : 'ID / Vehicle'}`);
+                    setModalVisible(true);
+                  }}
+                  style={[
+                    styles.captureCard, 
+                    { backgroundColor: isDark ? '#fff05' : '#f8f8f8' },
+                    item.media.length === 1 && styles.fullCaptureCard
+                  ]}
+                >
+                  <Image source={{ uri: getMediaUrl(m.fileUrl) }} style={styles.captureImage} resizeMode="cover" />
+                  <View style={[styles.captureLabel, { backgroundColor: idx === 0 ? colors.primary + 'CC' : '#475569CC' }]}>
+                    <Text style={styles.captureLabelText}>{idx === 0 ? 'FACE' : 'ID / VEHICLE'}</Text>
+                  </View>
+                </TouchableOpacity>
+              ))}
+            </View>
+          )}
+        </View>
+      )}
 
       {item.status === 'PENDING_APPROVAL' && (
         <View style={styles.actionRow}>
@@ -214,11 +298,56 @@ const styles = StyleSheet.create({
   info: { flex: 1, marginLeft: 16 },
   nameRow: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'flex-start' },
   name: { fontSize: 18, fontWeight: 'bold' },
+  phoneText: { fontSize: 13, marginTop: 2 },
   typeBadge: { paddingHorizontal: 8, paddingVertical: 2, borderRadius: 6 },
   typeText: { fontSize: 9, fontWeight: '900' },
+  statusBadge: { flexDirection: 'row', alignItems: 'center', gap: 4, paddingHorizontal: 8, paddingVertical: 2, borderRadius: 6 },
+  statusBadgeText: { fontSize: 9, fontWeight: '900', letterSpacing: 0.5 },
+  dot: { width: 6, height: 6, borderRadius: 3 },
+  phoneRow: { flexDirection: 'row', alignItems: 'center', gap: 6, marginTop: 4 },
   timeRow: { flexDirection: 'row', alignItems: 'center', gap: 4, marginTop: 4 },
   timeText: { fontSize: 11 },
-  purposeText: { fontSize: 13, marginTop: 8, fontStyle: 'italic' },
+  purposeRow: { flexDirection: 'row', alignItems: 'center', gap: 6, marginTop: 8 },
+  purposeText: { fontSize: 13, fontWeight: '700' },
+  commentBox: { marginTop: 16, padding: 12, backgroundColor: 'rgba(0,0,0,0.03)', borderRadius: 12 },
+  commentLabel: { fontSize: 10, fontWeight: '900', textTransform: 'uppercase', marginBottom: 4 },
+  commentText: { fontSize: 13, fontStyle: 'italic' },
+  statusLabel: { fontSize: 11, fontWeight: '600' },
+  
+  captureSection: { marginTop: 20 },
+  captureHeader: { 
+    flexDirection: 'row', 
+    alignItems: 'center', 
+    justifyContent: 'space-between', 
+    marginBottom: 12, 
+    paddingVertical: 12, 
+    paddingHorizontal: 16,
+    borderRadius: 12,
+    borderWidth: 1,
+    borderStyle: 'dashed'
+  },
+  captureTitle: { fontSize: 10, fontWeight: '900', letterSpacing: 1.5, textTransform: 'uppercase' },
+  captureGrid: { flexDirection: 'row', gap: 12 },
+  captureCard: { 
+    flex: 1, 
+    height: 120, 
+    borderRadius: 20, 
+    overflow: 'hidden',
+    borderWidth: 1,
+    borderColor: 'rgba(0,0,0,0.05)'
+  },
+  fullCaptureCard: { height: 180 },
+  captureImage: { width: '100%', height: '100%' },
+  captureLabel: { 
+    position: 'absolute', 
+    bottom: 0, 
+    left: 0, 
+    right: 0, 
+    paddingVertical: 6, 
+    alignItems: 'center' 
+  },
+  captureLabelText: { color: '#fff', fontSize: 10, fontWeight: '900', letterSpacing: 1 },
+
   actionRow: { flexDirection: 'row', gap: 12, marginTop: 20, borderTopWidth: 1, borderTopColor: 'rgba(0,0,0,0.05)', paddingTop: 16 },
   btn: { flex: 1, height: 48, borderRadius: 14, flexDirection: 'row', alignItems: 'center', justifyContent: 'center', gap: 8 },
   rejectBtn: { backgroundColor: '#FEF2F2', borderWidth: 1, borderColor: '#FEE2E2' },

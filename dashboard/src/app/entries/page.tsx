@@ -124,6 +124,7 @@ export default function EntryLogsPage() {
                       </div>
                       <div>
                         <span className="text-sm font-bold text-gray-800 dark:text-white block">{entry.visitor.name}</span>
+                        <span className="text-[10px] text-nature-forest font-bold block">{entry.visitor.phone}</span>
                         <span className="text-[10px] text-gray-500 font-medium flex items-center gap-1">
                           <ShieldCheck size={10} className="text-green-500" />
                           {entry.purpose}

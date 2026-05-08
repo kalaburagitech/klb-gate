@@ -8,6 +8,7 @@ router.use(authenticate);
 router.use(tenantIsolation);
 
 router.get('/search', VisitorController.search);
+
 router.post('/entries', VisitorController.createEntry);
 router.get('/entries', VisitorController.listAll);
 router.get('/entries/pending', VisitorController.listPending);
@@ -21,6 +22,7 @@ router.patch('/entries/:entryId/approval', VisitorController.updateApproval);
 router.post('/pre-approved', VisitorController.createPreApprovedVisit);
 router.get('/pre-approved', VisitorController.listPreApproved);
 router.get('/pre-approved/verify/:code', VisitorController.verifyPreApprovedVisit);
+router.post('/pre-approved/checkin', VisitorController.approvePreApprovedVisit);
 
 // Recurring
 router.post('/recurring', VisitorController.createRecurringVisitor);

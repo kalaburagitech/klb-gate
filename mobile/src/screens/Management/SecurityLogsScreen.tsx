@@ -27,11 +27,14 @@ import { useTheme } from '../../context/ThemeContext';
 export default function SecurityLogsScreen() {
   const { colors, isDark } = useTheme();
   const [logs, setLogs] = useState<any[]>([]);
+  const isFetching = React.useRef(false);
   const [loading, setLoading] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
   const [selectedPhoto, setSelectedPhoto] = useState<string | null>(null);
 
   const fetchLogs = async () => {
+    if (isFetching.current) return;
+    isFetching.current = true;
     try {
       const res = await api.get('entries/all');
       setLogs(res.data.data);
@@ -40,6 +43,7 @@ export default function SecurityLogsScreen() {
     } finally {
       setLoading(false);
       setRefreshing(false);
+      isFetching.current = false;
     }
   };
 
@@ -64,9 +68,11 @@ export default function SecurityLogsScreen() {
         <View style={styles.visitorInfo}>
           <TouchableOpacity onPress={() => item.photoUrl && setSelectedPhoto(item.photoUrl)}>
             <Image source={{ uri: item.photoUrl }} style={[styles.visitorImg, { backgroundColor: isDark ? colors.background : '#f0f0f0' }]} />
-            <View style={[styles.photoIconBadge, { backgroundColor: colors.primary }]}>
-              <Camera size={10} color="#fff" />
-            </View>
+            {item.photoUrl && (
+              <View style={[styles.photoIconBadge, { backgroundColor: colors.primary }]}>
+                <Camera size={10} color="#fff" />
+              </View>
+            )}
           </TouchableOpacity>
           <View>
             <Text style={[styles.visitorName, { color: colors.text }]}>{item.visitor.name}</Text>

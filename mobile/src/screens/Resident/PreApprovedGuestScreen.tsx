@@ -104,24 +104,10 @@ const shareViaWhatsApp = async () => {
             <CheckCircle size={60} color="#fff" />
           </View>
           <Text style={[styles.successTitle, { color: colors.primary }]}>Guest Pre-Approved!</Text>
-          <Text style={[styles.successSub, { color: colors.text + '80' }]}>Share this code with {form.visitorName}</Text>
+          <Text style={[styles.successSub, { color: colors.text + '80' }]}>Invitation sent for {form.visitorName}</Text>
           
-          <View style={[styles.codeCard, { backgroundColor: colors.card, borderColor: colors.border }]}>
-            <Text style={[styles.codeLabel, { color: colors.text + '40' }]}>ENTRY CODE</Text>
-            <Text style={[styles.codeValue, { color: colors.primary }]}>{generatedCode}</Text>
-          </View>
-
-          <TouchableOpacity style={[styles.shareBtn, { backgroundColor: colors.primary }]} onPress={copyToClipboard}>
-            <Share2 size={20} color="#fff" />
-            <Text style={styles.shareText}>Copy Invite</Text>
-          </TouchableOpacity>
-          <TouchableOpacity style={[styles.whatsappBtn, { backgroundColor: isDark ? colors.card : '#fff', borderColor: '#25D366' }]} onPress={shareViaWhatsApp}>
-            <Share2 size={20} color="#25D366" />
-            <Text style={styles.whatsappText}>WhatsApp</Text>
-          </TouchableOpacity>
-
-          <TouchableOpacity style={styles.doneBtn} onPress={() => navigation.goBack()}>
-            <Text style={[styles.doneText, { color: colors.primary }]}>Go Back</Text>
+          <TouchableOpacity style={[styles.shareBtn, { backgroundColor: colors.primary }]} onPress={() => navigation.goBack()}>
+            <Text style={styles.shareText}>Back to Home</Text>
           </TouchableOpacity>
         </View>
       </View>
@@ -196,7 +182,7 @@ const shareViaWhatsApp = async () => {
             {loading ? <ActivityIndicator color="#fff" /> : (
               <>
                 <CheckCircle size={20} color="#fff" />
-                <Text style={styles.createText}>Generate Entry Code</Text>
+                <Text style={styles.createText}>Pre-Approve Guest</Text>
               </>
             )}
           </TouchableOpacity>

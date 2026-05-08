@@ -10,6 +10,14 @@ const getBaseURL = () => {
   return url.endsWith('/') ? url : `${url}/`;
 };
 
+const MEDIA_BASE_URL = 'https://klb-media-production.up.railway.app/api/media/';
+
+export const getMediaUrl = (idOrUrl: string) => {
+  if (!idOrUrl) return undefined;
+  if (idOrUrl.startsWith('http') || idOrUrl.startsWith('file://')) return idOrUrl;
+  return `${MEDIA_BASE_URL}${idOrUrl}`;
+};
+
 const api = axios.create({
   baseURL: getBaseURL(),
   timeout: 30000,
@@ -74,6 +82,7 @@ export const visitorApi = {
   createPreApproved: (data: any) => api.post('visitors/pre-approved', data),
   getPreApproved: () => api.get('visitors/pre-approved'),
   verifyPreApproved: (code: string) => api.get(`visitors/pre-approved/verify/${code}`),
+  approvePreApprovedVisit: (preApprovedId: string, data?: any) => api.post('visitors/pre-approved/checkin', { preApprovedId, ...data }),
   getRecurring: () => api.get('visitors/recurring'),
   createRecurring: (data: any) => api.post('visitors/recurring', data),
 };

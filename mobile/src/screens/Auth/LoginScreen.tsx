@@ -9,6 +9,7 @@ import {
   ActivityIndicator, 
   Dimensions, 
   Animated,
+  Image,
   KeyboardAvoidingView,
   Platform,
   StatusBar
@@ -100,8 +101,12 @@ export default function LoginScreen() {
           
           <Animated.View style={[styles.header, { transform: [{ scale: logoScale }] }]}>
             <View style={[styles.logoGlow, { backgroundColor: isDark ? 'rgba(74, 222, 128, 0.1)' : 'rgba(46, 125, 50, 0.1)' }]}>
-              <View style={[styles.logoContainer, { backgroundColor: colors.primary }]}>
-                <Shield size={48} color="#fff" />
+              <View style={[styles.logoContainer, { backgroundColor: '#fff' }]}>
+                <Animated.Image 
+                  source={require('../../../assets/logo.png')} 
+                  style={{ width: 90, height: 90, borderRadius: 45 }} 
+                  resizeMode="cover"
+                />
               </View>
             </View>
             <Text style={[styles.title, { color: isDark ? '#fff' : colors.primary }]}>KLB Connect</Text>
@@ -189,7 +194,7 @@ const styles = StyleSheet.create({
   inner: { flex: 1, padding: 32, justifyContent: 'center' },
   header: { alignItems: 'center', marginBottom: 48 },
   logoGlow: { padding: 10, borderRadius: 40 },
-  logoContainer: { width: 90, height: 90, borderRadius: 45, justifyContent: 'center', alignItems: 'center', shadowColor: '#4ADE80', shadowOpacity: 0.3, shadowRadius: 20, elevation: 15, borderWidth: 1, borderColor: 'rgba(255,255,255,0.2)' },
+  logoContainer: { width: 90, height: 90, borderRadius: 45, justifyContent: 'center', alignItems: 'center', shadowColor: '#4ADE80', shadowOpacity: 0.3, shadowRadius: 20, elevation: 15, borderWidth: 1, borderColor: 'rgba(255,255,255,0.2)', overflow: 'hidden' },
   title: { fontSize: 36, fontWeight: '900', marginTop: 16, letterSpacing: -1 },
   badge: { paddingHorizontal: 12, paddingVertical: 4, borderRadius: 8, marginTop: 8 },
   badgeText: { fontSize: 10, fontWeight: 'bold', letterSpacing: 2 },

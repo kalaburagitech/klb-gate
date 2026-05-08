@@ -110,25 +110,15 @@ export default function ResidentHomeScreen({ navigation }: any) {
         )}
 
         {/* Quick Actions */}
-        <Text style={[styles.sectionTitle, { color: mutedColor }]}>FAST ACCESS</Text>
+        <Text style={[styles.sectionTitle, { color: mutedColor }]}>QUICK ACTIONS</Text>
         <View style={styles.actionRow}>
           <TouchableOpacity style={{ flex: 1 }} onPress={() => navigation.navigate('AddPreApproved')}>
             <Card style={styles.actionCard}>
               <View style={[styles.actionIcon, { backgroundColor: isDark ? 'rgba(76, 175, 80, 0.15)' : '#E8F5E9' }]}>
                 <UserPlus size={28} color={isDark ? '#81C784' : '#2E7D32'} />
               </View>
-              <Text style={[styles.actionText, { color: colors.text }]}>Pre-Approve</Text>
-              <Text style={[styles.actionSub, { color: mutedColor }]}>Invite Guest</Text>
-            </Card>
-          </TouchableOpacity>
-          <View style={{ width: 16 }} />
-          <TouchableOpacity style={{ flex: 1 }} onPress={() => navigation.navigate('Services')}>
-            <Card style={styles.actionCard}>
-              <View style={[styles.actionIcon, { backgroundColor: isDark ? 'rgba(255, 183, 77, 0.15)' : '#FFF3E0' }]}>
-                <Truck size={28} color={isDark ? '#FFB74D' : '#E65100'} />
-              </View>
-              <Text style={[styles.actionText, { color: colors.text }]}>Services</Text>
-              <Text style={[styles.actionSub, { color: mutedColor }]}>Daily Help</Text>
+              <Text style={[styles.actionText, { color: colors.text }]}>Pre-Approve Guest</Text>
+              <Text style={[styles.actionSub, { color: mutedColor }]}>Quick entry code</Text>
             </Card>
           </TouchableOpacity>
         </View>

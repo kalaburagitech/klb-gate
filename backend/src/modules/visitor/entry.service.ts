@@ -13,7 +13,9 @@ export class EntryService {
     unitNumber: string;
     tenantId: string;
     photoId?: string;
+    additionalPhotos?: { url: string, type: string }[];
     purpose?: string;
+    comment?: string;
     verificationCode?: string; // For Pre-approved
     handledById: string;
   }) {
@@ -72,9 +74,11 @@ export class EntryService {
       tenantId: data.tenantId,
       unitNumber: data.unitNumber,
       purpose: data.purpose,
+      comment: data.comment,
       photoId: data.photoId,
       status,
-      handledById: data.handledById
+      handledById: data.handledById,
+      media: data.additionalPhotos?.map(p => ({ fileUrl: p.url, type: p.type }))
     });
 
     // 4. Trigger Notification for Residents

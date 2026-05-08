@@ -8,15 +8,26 @@ export class EntryRepository {
     residentId?: string;
     unitNumber: string;
     purpose?: string;
+    comment?: string;
     photoId?: string;
     status: EntryStatus;
     handledById?: string;
+    media?: { fileUrl: string, type: string }[];
   }) {
+    const { media, ...entryData } = data;
     return prisma.entry.create({
       data: {
-        ...data,
+        ...entryData,
         checkInTime: data.status === 'CHECKED_IN' ? new Date() : null,
-      }
+        media: media ? {
+          create: media.map(m => ({
+            fileUrl: m.fileUrl,
+            type: m.type,
+            visitorId: data.visitorId
+          }))
+        } : undefined
+      },
+      include: { media: true, visitor: true }
     });
   }
 
