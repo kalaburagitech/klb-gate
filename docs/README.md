@@ -5,7 +5,7 @@
 - **/dashboard**: Next.js Admin Dashboard. High-level management for Super Admins.
 - **/mobile**: Expo React Native app. Primary tool for Guards and Residents.
 - **/docs**: System architecture, API specs, and setup guides.
-
+  
 ## 🚀 Getting Started
 
 ### 1. Database Setup
